@@ -20,7 +20,7 @@ import { bigNumberArrayFrom } from 'utils/bigNumber'
 import { randomAddress } from 'utils/randomAddress'
 import { Bid } from './bid'
 import { parseEther } from 'ethers/lib/utils'
-import { randomBigNumbers } from 'scripts/utils/random'
+import { randomBN } from 'scripts/utils/random'
 import { heapKey } from 'utils/heapKey'
 
 describe('AuctionRaffle', function () {
@@ -409,27 +409,6 @@ describe('AuctionRaffle', function () {
         .to.be.revertedWith('AuctionRaffle: is in invalid state')
     })
 
-    it('reverts if called with zero random numbers', async function () {
-      await endBidding(auctionRaffleAsOwner)
-      await settleAuction()
-
-      await expect(auctionRaffleAsOwner.settleRaffle([]))
-        .to.be.revertedWith('AuctionRaffle: there must be at least one random number passed')
-    })
-
-    it('reverts if called with incorrect amount of random numbers', async function () {
-      ({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ raffleWinnersCount: 16 })))
-      auctionRaffleAsOwner = auctionRaffle.connect(owner())
-
-      await bid(20)
-      await endBidding(auctionRaffleAsOwner)
-      await settleAuction()
-
-      // Reverts because it expects 2 random numbers
-      await expect(auctionRaffleAsOwner.settleRaffle(randomBigNumbers(3)))
-        .to.be.revertedWith('AuctionRaffle: passed incorrect number of random numbers')
-    })
-
     describe('when bidders count is less than raffleWinnersCount', function () {
       it('picks all participants as winners', async function () {
         ({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ raffleWinnersCount: 16 })))
@@ -442,12 +421,12 @@ describe('AuctionRaffle', function () {
 
         // Golden ticket winner participant index generated from this number: 2, bidderID: 3
         const randomNumber = BigNumber.from('65155287986987035700835155359065462427392489128550609102552042044410661181326')
-        await auctionRaffleAsOwner.settleRaffle([randomNumber])
+        await auctionRaffleAsOwner.settleRaffle(randomNumber)
 
         for (let i = 1; i <= 4; i++) {
           const bid = await getBidByID(i)
 
-          if (bid.bidderID.eq(3)) {
+          if (bid.bidderID.eq(4)) {
             expect(bid.winType).to.be.eq(WinType.goldenTicket)
           } else {
             expect(bid.winType).to.be.eq(WinType.raffle)
@@ -483,7 +462,7 @@ describe('AuctionRaffle', function () {
       await settleAuction()
 
       const randomNumber = BigNumber.from('65155287986987035700835155359065462427392489128550609102552042044410661181326')
-      await auctionRaffleAsOwner.settleRaffle([randomNumber])
+      await auctionRaffleAsOwner.settleRaffle(randomNumber)
 
       const raffleWinners = await getAllBidsByWinType(10, WinType.raffle)
       const goldenWinners = await getAllBidsByWinType(10, WinType.goldenTicket)
@@ -501,16 +480,12 @@ describe('AuctionRaffle', function () {
       await endBidding(auctionRaffleAsOwner)
       await settleAuction()
 
-      // Participant indexes generated from this number:
-      // [[16, 16, 6, 7, 4, 9, 0, 1], [6, 3, 6, 7, 1, 3, 2, 2]]
-      const randomNumbers = [
-        BigNumber.from('112726022748934390014388827089462711312944969753614146584009694773482609536945'),
-        BigNumber.from('105047327762739474822912977776629330956455721538092382425528863739595553862604'),
-      ]
+      const randomNumber =
+        BigNumber.from('112726022748934390014388827089462711312944969753614146584009694773482609536945')
 
-      await auctionRaffleAsOwner.settleRaffle(randomNumbers)
+      await auctionRaffleAsOwner.settleRaffle(randomNumber)
 
-      const winnersBidderIDs = [17, 19, 7, 8, 5, 10, 20, 2, 18, 4, 14, 16, 12, 10, 3, 15]
+      const winnersBidderIDs = [20, 9, 16, 13,  2, 12, 15, 4, 19, 10, 8, 18, 11, 3, 7, 14]
       for (let i = 0; i < winnersBidderIDs.length; i++) {
         const winningBid = await getBidByID(winnersBidderIDs[i])
         if (i === 0) {
@@ -533,7 +508,7 @@ describe('AuctionRaffle', function () {
 
       await settleAuction()
 
-      await auctionRaffleAsOwner.settleRaffle(randomBigNumbers(1))
+      await auctionRaffleAsOwner.settleRaffle(randomBN())
 
       expect(await auctionRaffleAsOwner.getState()).to.be.eq(State.raffleSettled)
     })
@@ -553,13 +528,9 @@ describe('AuctionRaffle', function () {
         await settleAuction() // auction winner bidderID: 1
 
         // Golden ticket winner participant index generated from this number: 7, bidderID: 8
-        const tx = await auctionRaffleAsOwner.settleRaffle([7])
-
-        const raffleWinners: number[][] = [[9]]
-        for (let i = 2; i < 8; i++) {
-          raffleWinners.push([i])
-        }
-        await emitsEvents(tx, 'NewRaffleWinner', ...raffleWinners)
+        const tx = await auctionRaffleAsOwner.settleRaffle(7)
+        const raffleWinners = await auctionRaffleAsOwner.getRaffleWinners()
+        await emitsEvents(tx, 'NewRaffleWinner', ...raffleWinners.slice(1).map(winner => [winner]))
       })
     })
 
@@ -1080,12 +1051,12 @@ describe('AuctionRaffle', function () {
     })
   }
 
-  async function bidAndSettleRaffle(bidCount: number, randomNumbers?: BigNumberish[]): Promise<ContractTransaction> {
+  async function bidAndSettleRaffle(bidCount: number, randomNumber?: BigNumberish): Promise<ContractTransaction> {
     await bid(bidCount)
     await endBidding(auctionRaffleAsOwner)
     await settleAuction()
 
-    const numbers = randomNumbers || randomBigNumbers(1)
+    const numbers = randomNumber || randomBN()
     return auctionRaffleAsOwner.settleRaffle(numbers)
   }
 

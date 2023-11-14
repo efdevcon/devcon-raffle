@@ -3,7 +3,7 @@ import { auctionRaffleE2EFixture, minBidIncrement, reservePrice } from 'fixtures
 import { AuctionRaffleMock } from 'contracts'
 import { Provider } from '@ethersproject/providers'
 import { BigNumber, constants, Wallet } from 'ethers'
-import { randomBigNumbers } from 'scripts/utils/random'
+import { randomBN, randomBigNumbers } from 'scripts/utils/random'
 import { expect } from 'chai'
 import { heapKey } from 'utils/heapKey'
 import { network } from 'hardhat'
@@ -86,7 +86,7 @@ describe('AuctionRaffle - E2E', function () {
   })
 
   it('lets the owner settle the raffle', async function () {
-    await auctionRaffleAsOwner.settleRaffle(randomBigNumbers(10))
+    await auctionRaffleAsOwner.settleRaffle(randomBN())
 
     expect(await auctionRaffle.getRaffleWinners()).to.have.lengthOf(80)
     expect(await auctionRaffle.getRaffleParticipants()).to.have.lengthOf(20)

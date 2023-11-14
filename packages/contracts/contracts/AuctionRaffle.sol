@@ -10,6 +10,7 @@ import "./Config.sol";
 import "./models/BidModel.sol";
 import "./models/StateModel.sol";
 import "./libs/MaxHeap.sol";
+import "./libs/FeistelShuffleOptimised.sol";
 
 /***
  * @title Auction & Raffle
@@ -38,6 +39,8 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel {
     uint256 _claimedFeesIndex;
 
     uint256[] _tempWinners; // temp array for sorting auction winners used by settleAuction method
+
+    uint256 public _randomSeed;
 
     /// @dev A new bid has been placed or an existing bid has been bumped
     event NewBid(address bidder, uint256 bidderID, uint256 bidAmount);
@@ -160,35 +163,29 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel {
     /**
      * @notice Draws raffle winners and changes contract state to RAFFLE_SETTLED. The first selected raffle winner
      * becomes the Golden Ticket winner.
-     * @dev Sets WinType of the first selected bid to GOLDEN_TICKET. Sets WinType to RAFFLE for the remaining selected
-     * bids.
-     * @param randomNumbers The source of randomness for the function. Each random number is used to draw at most
-     * `_winnersPerRandom` raffle winners.
+     * @param randomSeed A single 256-bit random seed.
      */
-    function settleRaffle(uint256[] memory randomNumbers) external onlyOwner onlyInState(State.AUCTION_SETTLED) {
-        require(randomNumbers.length > 0, "AuctionRaffle: there must be at least one random number passed");
-
+    function settleRaffle(uint256 randomSeed) external onlyOwner onlyInState(State.AUCTION_SETTLED) {
         _settleState = SettleState.RAFFLE_SETTLED;
+        _randomSeed = randomSeed;
 
-        uint256 participantsLength = _raffleParticipants.length;
-        if (participantsLength == 0) {
-            return;
-        }
-
-        (participantsLength, randomNumbers[0]) = selectGoldenTicketWinner(participantsLength, randomNumbers[0]);
-
+        uint256 participantsCount = _raffleParticipants.length;
         uint256 raffleWinnersCount = _raffleWinnersCount;
-        if (participantsLength < raffleWinnersCount) {
-            selectAllRaffleParticipantsAsWinners(participantsLength);
-            return;
+        uint256 n = participantsCount < raffleWinnersCount ? participantsCount : raffleWinnersCount;
+
+        for (uint256 i; i < n; ++i) {
+            // Map inverse `i`th place winner -> original index
+            uint256 winnerIndex = FeistelShuffleOptimised.deshuffle(i, participantsCount, randomSeed, 4);
+            // Map original participant index -> bidder id
+            uint256 winningBidderId = _raffleParticipants[winnerIndex];
+            // Record winner in storage
+            if (i == 0) {
+                addGoldenTicketWinner(winningBidderId);
+            } else {
+                addRaffleWinner(winningBidderId);
+            }
         }
-
-        require(
-            randomNumbers.length == raffleWinnersCount / _winnersPerRandom,
-            "AuctionRaffle: passed incorrect number of random numbers"
-        );
-
-        selectRaffleWinners(participantsLength, randomNumbers);
+        delete _raffleParticipants;
     }
 
     /**
@@ -310,7 +307,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel {
     }
 
     /// @return A list of raffle winner bidder IDs.
-    function getRaffleWinners() external view returns (uint256[] memory) {
+    function getRaffleWinners() external view onlyInState(State.RAFFLE_SETTLED) returns (uint256[] memory) {
         return _raffleWinners;
     }
 
@@ -463,78 +460,6 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel {
     }
 
     /**
-     * @dev Selects one Golden Ticket winner from a random number.
-     * Saves the winner at the beginning of _raffleWinners array and sets bidder WinType to GOLDEN_TICKET.
-     * @param participantsLength The length of current participants array
-     * @param randomNumber The random number to select raffle winner from
-     * @return participantsLength New participants array length
-     * @return randomNumber Shifted random number by `_randomMaskLength` bits to the right
-     */
-    function selectGoldenTicketWinner(uint256 participantsLength, uint256 randomNumber)
-        private
-        returns (uint256, uint256)
-    {
-        uint256 winnerIndex = winnerIndexFromRandomNumber(participantsLength, randomNumber);
-
-        uint256 bidderID = _raffleParticipants[winnerIndex];
-        addGoldenTicketWinner(bidderID);
-
-        removeRaffleParticipant(winnerIndex);
-        return (participantsLength - 1, randomNumber >> _randomMaskLength);
-    }
-
-    function selectAllRaffleParticipantsAsWinners(uint256 participantsLength) private {
-        for (uint256 i = 0; i < participantsLength; ++i) {
-            uint256 bidderID = _raffleParticipants[i];
-            addRaffleWinner(bidderID);
-        }
-        delete _raffleParticipants;
-    }
-
-    /**
-     * @dev Selects `_winnersPerRandom` - 1 raffle winners for the first random number -- it assumes that one bidder
-     * was selected before as the Golden Ticket winner. Then it selects `_winnersPerRandom` winners for each remaining
-     * random number.
-     * @param participantsLength The length of current participants array
-     * @param randomNumbers The array of random numbers to select raffle winners from
-     */
-    function selectRaffleWinners(uint256 participantsLength, uint256[] memory randomNumbers) private {
-        participantsLength = selectRandomRaffleWinners(participantsLength, randomNumbers[0], _winnersPerRandom - 1);
-        for (uint256 i = 1; i < randomNumbers.length; ++i) {
-            participantsLength = selectRandomRaffleWinners(participantsLength, randomNumbers[i], _winnersPerRandom);
-        }
-    }
-
-    /**
-     * @notice Selects a number of raffle winners from _raffleParticipants array. Saves the winners in _raffleWinners
-     * array and sets their WinType to RAFFLE.
-     * @dev Divides passed randomNumber into `_randomMaskLength` bit numbers and then selects one raffle winner using
-     * each small number.
-     * @param participantsLength The length of current participants array
-     * @param randomNumber The random number used to select raffle winners
-     * @param winnersCount The number of raffle winners to select from a single random number
-     * @return New participants length
-     */
-    function selectRandomRaffleWinners(
-        uint256 participantsLength,
-        uint256 randomNumber,
-        uint256 winnersCount
-    ) private returns (uint256) {
-        for (uint256 i = 0; i < winnersCount; ++i) {
-            uint256 winnerIndex = winnerIndexFromRandomNumber(participantsLength, randomNumber);
-
-            uint256 bidderID = _raffleParticipants[winnerIndex];
-            addRaffleWinner(bidderID);
-
-            removeRaffleParticipant(winnerIndex);
-            --participantsLength;
-            randomNumber = randomNumber >> _randomMaskLength;
-        }
-
-        return participantsLength;
-    }
-
-    /**
      * @notice Removes a participant from _raffleParticipants array.
      * @dev Swaps _raffleParticipants[index] with the last one, then removes the last one.
      * @param index The index of raffle participant to remove
@@ -566,21 +491,5 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel {
      */
     function extractBidderID(uint256 key) private pure returns (uint256) {
         return _bidderMask - (key & _bidderMask);
-    }
-
-    /**
-     * @notice Calculates winner index
-     * @dev Calculates modulo of `_randomMaskLength` lower bits of randomNumber and participantsLength
-     * @param participantsLength The length of current participants array
-     * @param randomNumber The random number to select raffle winner from
-     * @return Winner index
-     */
-    function winnerIndexFromRandomNumber(uint256 participantsLength, uint256 randomNumber)
-        private
-        pure
-        returns (uint256)
-    {
-        uint256 smallRandom = randomNumber & _randomMask;
-        return smallRandom % participantsLength;
     }
 }
