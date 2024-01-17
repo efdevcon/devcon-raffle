@@ -150,11 +150,18 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
     }
 
     /**
+     * @notice Initiate raffle draw by requesting a random number from Chainlink VRF.
+     */
+    function settleRaffle() external onlyOwner onlyInState(State.AUCTION_SETTLED) returns (uint256 requestId) {
+        return _getRandomNumber();
+    }
+
+    /**
      * @notice Draws raffle winners and changes contract state to RAFFLE_SETTLED. The first selected raffle winner
      * becomes the Golden Ticket winner.
      * @param randomSeed A single 256-bit random seed.
      */
-    function settleRaffle(uint256 randomSeed) external onlyOwner onlyInState(State.AUCTION_SETTLED) {
+    function _receiveRandomNumber(uint256 randomSeed) internal override onlyInState(State.AUCTION_SETTLED) {
         _settleState = SettleState.RAFFLE_SETTLED;
         _randomSeed = randomSeed;
 

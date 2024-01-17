@@ -1,8 +1,8 @@
 import { setupFixtureLoader } from '../setup'
 import { auctionRaffleE2EFixture, minBidIncrement, reservePrice } from 'fixtures/auctionRaffleFixture'
-import { AuctionRaffleMock } from 'contracts'
+import { AuctionRaffleMock, VrfCoordinatorV2MockWithErc677 } from 'contracts'
 import { Provider } from '@ethersproject/providers'
-import { BigNumber, constants, Wallet } from 'ethers'
+import { BigNumber, BigNumberish, constants, Wallet } from 'ethers'
 import { randomBN, randomBigNumbers } from 'scripts/utils/random'
 import { expect } from 'chai'
 import { heapKey } from 'utils/heapKey'
@@ -24,6 +24,7 @@ describe('AuctionRaffle - E2E', function () {
   let auctionRaffle: AuctionRaffleMock
   let auctionRaffleAsOwner: AuctionRaffleMock
   let wallets: Wallet[]
+  let vrfCoordinator: VrfCoordinatorV2MockWithErc677
 
   let bids: Bid[]
   let sortedBids: Bid[]
@@ -32,7 +33,7 @@ describe('AuctionRaffle - E2E', function () {
   this.timeout(60_000)
 
   before('prepare contracts', async function () {
-    ({ provider, auctionRaffle, wallets } = await loadFixture(auctionRaffleE2EFixture))
+    ({ provider, auctionRaffle, wallets, vrfCoordinator } = await loadFixture(auctionRaffleE2EFixture))
     auctionRaffleAsOwner = auctionRaffle.connect(owner())
   })
 
@@ -87,7 +88,7 @@ describe('AuctionRaffle - E2E', function () {
 
   // NB: This test depends on the previous test (settle auction)
   it('lets the owner settle the raffle', async function () {
-    await auctionRaffleAsOwner.settleRaffle(randomBN())
+    await settleAndFulfillRaffle(randomBN())
 
     const raffleWinners = await auctionRaffle.getRaffleWinners()
     expect(raffleWinners).to.have.lengthOf(80)
@@ -158,6 +159,12 @@ describe('AuctionRaffle - E2E', function () {
     const endTime = await auctionRaffle.claimingEndTime()
     await network.provider.send('evm_setNextBlockTimestamp', [endTime.add(HOUR).toNumber()])
     await network.provider.send('evm_mine')
+  }
+
+  async function settleAndFulfillRaffle(randomNumber: BigNumberish) {
+    await auctionRaffleAsOwner.settleRaffle()
+    const requestId = await auctionRaffleAsOwner.requestId()
+    return vrfCoordinator.fulfillRandomWords(requestId, auctionRaffleAsOwner.address, [randomNumber])
   }
 
   /**

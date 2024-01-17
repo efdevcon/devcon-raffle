@@ -7,13 +7,13 @@ import {
   minBidIncrement,
   reservePrice,
 } from 'fixtures/auctionRaffleFixture'
-import { AuctionRaffleMock, ExampleToken } from 'contracts'
+import { AuctionRaffleMock, ExampleToken, VrfCoordinatorV2MockWithErc677, VrfCoordinatorV2MockWithErc677__factory } from 'contracts'
 import { getLatestBlockTimestamp } from 'utils/getLatestBlockTimestamp'
 import { Provider } from '@ethersproject/providers'
 import { Zero } from '@ethersproject/constants'
 import { HOUR, MINUTE } from 'scripts/utils/consts'
 import { network } from 'hardhat'
-import { BigNumber, BigNumberish, ContractTransaction, Wallet } from 'ethers'
+import { BigNumber, BigNumberish, ContractTransaction, VoidSigner, Wallet } from 'ethers'
 import { State } from './state'
 import { WinType } from './winType'
 import { bigNumberArrayFrom } from 'utils/bigNumber'
@@ -29,12 +29,14 @@ describe('AuctionRaffle', function () {
   let provider: Provider
   let auctionRaffle: AuctionRaffleMock
   let auctionRaffleAsOwner: AuctionRaffleMock
+  let vrfCoordinator: VrfCoordinatorV2MockWithErc677
   let bidderAddress: string
   let wallets: Wallet[]
 
   beforeEach(async function () {
     ({ provider, auctionRaffle, wallets } = await loadFixture(auctionRaffleFixture))
     auctionRaffleAsOwner = auctionRaffle.connect(owner())
+    vrfCoordinator = new VrfCoordinatorV2MockWithErc677__factory(owner()).attach(await auctionRaffleAsOwner.vrfCoordinator())
     bidderAddress = await auctionRaffle.signer.getAddress()
   })
 
@@ -400,12 +402,12 @@ describe('AuctionRaffle', function () {
     })
 
     it('reverts if called not by owner', async function () {
-      await expect(auctionRaffle.settleRaffle([1]))
+      await expect(auctionRaffle.settleRaffle())
         .to.be.revertedWith('Ownable: caller is not the owner')
     })
 
     it('reverts if raffle is not settled', async function () {
-      await expect(auctionRaffleAsOwner.settleRaffle([1]))
+      await expect(auctionRaffleAsOwner.settleRaffle())
         .to.be.revertedWith('AuctionRaffle: is in invalid state')
     })
 
@@ -421,7 +423,7 @@ describe('AuctionRaffle', function () {
 
         // Golden ticket winner participant index generated from this number: 2, bidderID: 3
         const randomNumber = BigNumber.from('65155287986987035700835155359065462427392489128550609102552042044410661181326')
-        await auctionRaffleAsOwner.settleRaffle(randomNumber)
+        await settleAndFulfillRaffle(randomNumber)
 
         for (let i = 1; i <= 4; i++) {
           const bid = await getBidByID(i)
@@ -463,7 +465,7 @@ describe('AuctionRaffle', function () {
       await settleAuction()
 
       const randomNumber = BigNumber.from('65155287986987035700835155359065462427392489128550609102552042044410661181326')
-      await auctionRaffleAsOwner.settleRaffle(randomNumber)
+      await settleAndFulfillRaffle(randomNumber)
 
       const raffleWinners = await getAllBidsByWinType(10, WinType.raffle)
       const goldenWinners = await getAllBidsByWinType(10, WinType.goldenTicket)
@@ -484,7 +486,7 @@ describe('AuctionRaffle', function () {
       const randomNumber =
         BigNumber.from('112726022748934390014388827089462711312944969753614146584009694773482609536945')
 
-      await auctionRaffleAsOwner.settleRaffle(randomNumber)
+      await settleAndFulfillRaffle(randomNumber)
 
       const winnersBidderIDs = [20, 9, 16, 13,  2, 12, 15, 4, 19, 10, 8, 18, 11, 3, 7, 14]
       for (let i = 0; i < winnersBidderIDs.length; i++) {
@@ -509,7 +511,7 @@ describe('AuctionRaffle', function () {
 
       await settleAuction()
 
-      await auctionRaffleAsOwner.settleRaffle(randomBN())
+      await settleAndFulfillRaffle(randomBN())
 
       expect(await auctionRaffleAsOwner.getState()).to.be.eq(State.raffleSettled)
     })
@@ -529,7 +531,7 @@ describe('AuctionRaffle', function () {
         await settleAuction() // auction winner bidderID: 1
 
         // Golden ticket winner participant index generated from this number: 7, bidderID: 8
-        const tx = await auctionRaffleAsOwner.settleRaffle(7)
+        const tx = await settleAndFulfillRaffle(7)
         const raffleWinners = await auctionRaffleAsOwner.getRaffleWinners()
         await emitsEvents(tx, 'NewRaffleWinner', ...raffleWinners.slice(1).map(winner => [winner]))
       })
@@ -1061,7 +1063,16 @@ describe('AuctionRaffle', function () {
     await settleAuction()
 
     const numbers = randomNumber || randomBN()
-    return auctionRaffleAsOwner.settleRaffle(numbers)
+    return settleAndFulfillRaffle(numbers)
+  }
+
+  async function settleAndFulfillRaffle(randomNumber: BigNumberish) {
+    await auctionRaffleAsOwner.settleRaffle().then(tx => tx.wait(1))
+    const requestId = await auctionRaffleAsOwner.requestId()
+    expect(requestId).to.not.eq(0)
+    const tx = await vrfCoordinator.fulfillRandomWords(requestId, auctionRaffleAsOwner.address, [randomNumber])
+    expect(await auctionRaffleAsOwner.getState()).to.eq(State.raffleSettled)
+    return tx
   }
 
   async function endBidding(auctionRaffle: AuctionRaffleMock) {

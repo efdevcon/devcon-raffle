@@ -58,6 +58,7 @@ export function configuredAuctionRaffleFixture(configParams: auctionRaffleParams
     // Create sub
     const subId = await vrfCoordinator.callStatic.createSubscription()
     await vrfCoordinator.createSubscription()
+
     // Fund sub
     await linkToken.transferAndCall(
       vrfCoordinator.address,
@@ -88,6 +89,9 @@ export function configuredAuctionRaffleFixture(configParams: auctionRaffleParams
       },
       vrfRequesterParams
     )
+
+    // Whitelist auctionRaffle as VRF consumer on this subscription
+    await vrfCoordinator.addConsumer(subId, auctionRaffle.address)
 
     return {
       provider,
