@@ -1,8 +1,9 @@
-import { AuctionRaffleMock__factory, ExampleToken__factory } from 'contracts'
+import { AuctionRaffleMock__factory, ExampleToken__factory, MockLinkToken__factory, VrfCoordinatorV2MockWithErc677__factory } from 'contracts'
 import { BigNumberish, utils, Wallet } from 'ethers'
 import { MockProvider } from 'ethereum-waffle'
 import { getLatestBlockTimestamp } from 'utils/getLatestBlockTimestamp'
 import { WEEK } from 'scripts/utils/consts'
+import { parseEther, parseUnits } from 'ethers/lib/utils'
 
 export const auctionWinnersCount = 1
 export const raffleWinnersCount = 8
@@ -39,23 +40,62 @@ export async function auctionRaffleE2EFixture(wallets: Wallet[], provider: MockP
   })(wallets, provider)
 }
 
-export function configuredAuctionRaffleFixture(params: auctionRaffleParams) {
+export function configuredAuctionRaffleFixture(configParams: auctionRaffleParams) {
   return async ([deployer, owner]: Wallet[], provider: MockProvider) => {
     const currentBlockTimestamp = await getLatestBlockTimestamp(provider)
-    params = setAuctionRaffleParamsDefaults(owner, currentBlockTimestamp, params)
+    configParams = setAuctionRaffleParamsDefaults(owner, currentBlockTimestamp, configParams)
 
-    const auctionRaffle = await new AuctionRaffleMock__factory(deployer).deploy(
-      params.initialOwner,
-      params.biddingStartTime,
-      params.biddingEndTime,
-      params.claimingEndTime,
-      params.auctionWinnersCount,
-      params.raffleWinnersCount,
-      params.reservePrice,
-      params.minBidIncrement,
+    // Mock mintable LINK token
+    const linkToken = await new MockLinkToken__factory(deployer).deploy()
+    await linkToken.grantMintAndBurnRoles(deployer.address)
+    await linkToken.mint(deployer.address, parseEther('1000'))
+
+    const vrfCoordinator = await new VrfCoordinatorV2MockWithErc677__factory(deployer).deploy(
+        parseEther('0.005'),
+        parseUnits('1', 'gwei'),
+        linkToken.address,
+    )
+    // Create sub
+    const subId = await vrfCoordinator.callStatic.createSubscription()
+    await vrfCoordinator.createSubscription()
+    // Fund sub
+    await linkToken.transferAndCall(
+      vrfCoordinator.address,
+      parseEther('100'),
+      utils.defaultAbiCoder.encode(['uint64'], [subId])
     )
 
-    return { provider, auctionRaffle }
+    const vrfRequesterParams = {
+      vrfCoordinator: vrfCoordinator.address,
+      linkToken: linkToken.address,
+      linkPremium: parseEther('0.005'),
+      gasLaneKeyHash: '0x72d2b016bb5b62912afea355ebf33b91319f828738b111b723b78696b9847b63', // 30 gwei
+      callbackGasLimit: 2_500_000, // maximum
+      minConfirmations: 1, // minimum
+      subId,
+    }
+
+    const auctionRaffle = await new AuctionRaffleMock__factory(deployer).deploy(
+      configParams.initialOwner,
+      {
+        biddingStartTime: configParams.biddingStartTime,
+        biddingEndTime: configParams.biddingEndTime,
+        claimingEndTime: configParams.claimingEndTime,
+        auctionWinnersCount: configParams.auctionWinnersCount,
+        raffleWinnersCount: configParams.raffleWinnersCount,
+        reservePrice: configParams.reservePrice,
+        minBidIncrement: configParams.minBidIncrement,
+      },
+      vrfRequesterParams
+    )
+
+    return {
+      provider,
+      auctionRaffle,
+      vrfCoordinator,
+      subId,
+      linkToken
+    }
   }
 }
 

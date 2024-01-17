@@ -11,13 +11,14 @@ import "./models/BidModel.sol";
 import "./models/StateModel.sol";
 import "./libs/MaxHeap.sol";
 import "./libs/FeistelShuffleOptimised.sol";
+import "./libs/VRFRequester.sol";
 
 /***
  * @title Auction & Raffle
  * @notice Draws winners using a mixed auction & raffle scheme.
  * @author TrueFi Engineering team
  */
-contract AuctionRaffle is Ownable, Config, BidModel, StateModel {
+contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
     using SafeERC20 for IERC20;
     using MaxHeap for uint256[];
 
@@ -66,23 +67,11 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel {
 
     constructor(
         address initialOwner,
-        uint256 biddingStartTime,
-        uint256 biddingEndTime,
-        uint256 claimingEndTime,
-        uint256 auctionWinnersCount,
-        uint256 raffleWinnersCount,
-        uint256 reservePrice,
-        uint256 minBidIncrement
+        ConfigParams memory configParams,
+        VRFRequesterParams memory vrfRequesterParams
     )
-        Config(
-            biddingStartTime,
-            biddingEndTime,
-            claimingEndTime,
-            auctionWinnersCount,
-            raffleWinnersCount,
-            reservePrice,
-            minBidIncrement
-        )
+        Config(configParams)
+        VRFRequester(vrfRequesterParams)
         Ownable()
     {
         if (initialOwner != msg.sender) {

@@ -7,23 +7,13 @@ import "../AuctionRaffle.sol";
 contract AuctionRaffleMock is AuctionRaffle {
     constructor(
         address initialOwner,
-        uint256 biddingStartTime,
-        uint256 biddingEndTime,
-        uint256 claimingEndTime,
-        uint256 auctionWinnersCount,
-        uint256 raffleWinnersCount,
-        uint256 reservePrice,
-        uint256 minBidIncrement
+        ConfigParams memory configParams,
+        VRFRequesterParams memory vrfRequesterParams
     )
         AuctionRaffle(
             initialOwner,
-            biddingStartTime,
-            biddingEndTime,
-            claimingEndTime,
-            auctionWinnersCount,
-            raffleWinnersCount,
-            reservePrice,
-            minBidIncrement
+            configParams,
+            vrfRequesterParams
         )
     {}
 
