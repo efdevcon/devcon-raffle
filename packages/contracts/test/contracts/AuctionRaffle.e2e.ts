@@ -85,11 +85,20 @@ describe('AuctionRaffle - E2E', function () {
     expect(await auctionRaffle.getRaffleParticipants()).to.have.lengthOf(100)
   })
 
+  // NB: This test depends on the previous test (settle auction)
   it('lets the owner settle the raffle', async function () {
     await auctionRaffleAsOwner.settleRaffle(randomBN())
 
-    expect(await auctionRaffle.getRaffleWinners()).to.have.lengthOf(80)
-    expect(await auctionRaffle.getRaffleParticipants()).to.have.lengthOf(20)
+    const raffleWinners = await auctionRaffle.getRaffleWinners()
+    expect(raffleWinners).to.have.lengthOf(80)
+    // NB: `getRaffleParticipants` includes raffle winners
+    const raffleParticipants = await auctionRaffle.getRaffleParticipants()
+    expect(raffleParticipants).to.have.lengthOf(100)
+    const losers = setDifferenceOf(
+      new Set(raffleParticipants.map(bn => bn.toString())),
+      new Set(raffleWinners.map(bn => bn.toString()))
+    )
+    expect(losers.size).to.eq(20)
   })
 
   it('lets everyone claim their funds', async function () {
@@ -100,19 +109,25 @@ describe('AuctionRaffle - E2E', function () {
     }
 
     await auctionRaffleAsOwner.claimProceeds()
-    await auctionRaffleAsOwner.claimFees(20)
+    // NB: The `claimFees` function has been removed.
+    // await auctionRaffleAsOwner.claimFees(20)
 
     for (const { wallet, bidderID } of nonAuctionBids.slice(50, 100)) {
       await auctionRaffle.connect(wallet).claim(bidderID)
     }
 
+    // The only way to claim the 2% fees of non-winning bids now is to
+    // wait until claims have ended, and then invoking the
+    // `withdrawUnclaimedFunds` function.
+    await endClaiming(auctionRaffle)
+    await auctionRaffleAsOwner.withdrawUnclaimedFunds()
+
     expect(await provider.getBalance(auctionRaffle.address)).to.eq(0)
   })
 
-  it('divides bidders into 3 disjoint sets', async function () {
+  it('divides bidders into 2 disjoint sets', async function () {
     const bidders = [
       ...await auctionRaffle.getAuctionWinners(),
-      ...await auctionRaffle.getRaffleWinners(),
       ...await auctionRaffle.getRaffleParticipants(),
     ]
 
@@ -137,5 +152,22 @@ describe('AuctionRaffle - E2E', function () {
     const endTime = await auctionRaffle.biddingEndTime()
     await network.provider.send('evm_setNextBlockTimestamp', [endTime.add(HOUR).toNumber()])
     await network.provider.send('evm_mine')
+  }
+
+  async function endClaiming(auctionRaffle: AuctionRaffleMock) {
+    const endTime = await auctionRaffle.claimingEndTime()
+    await network.provider.send('evm_setNextBlockTimestamp', [endTime.add(HOUR).toNumber()])
+    await network.provider.send('evm_mine')
+  }
+
+  /**
+   * Compute A \ B
+   */
+  function setDifferenceOf<T>(a: Set<T>, b: Set<T>) {
+    const result = new Set(a)
+    for (const element of b) {
+      result.delete(element)
+    }
+    return result
   }
 })

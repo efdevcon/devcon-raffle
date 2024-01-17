@@ -185,7 +185,6 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel {
                 addRaffleWinner(winningBidderId);
             }
         }
-        delete _raffleParticipants;
     }
 
     /**
@@ -249,34 +248,6 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel {
     }
 
     /**
-     * @notice Allows the owner to claim the 2% fees from non-winning bids after the raffle is settled.
-     * @dev This function is designed to be called multiple times, to split iteration though all non-winning bids across
-     * multiple transactions.
-     * @param bidsCount The number of bids to be processed at once.
-     */
-    function claimFees(uint256 bidsCount) external onlyOwner onlyInState(State.RAFFLE_SETTLED) {
-        uint256 claimedFeesIndex = _claimedFeesIndex;
-        uint256 feesCount = _raffleParticipants.length;
-        require(feesCount > 0, "AuctionRaffle: there are no fees to claim");
-        require(claimedFeesIndex < feesCount, "AuctionRaffle: fees have already been claimed");
-
-        uint256 endIndex = claimedFeesIndex + bidsCount;
-        if (endIndex > feesCount) {
-            endIndex = feesCount;
-        }
-
-        uint256 fee = 0;
-        for (uint256 i = claimedFeesIndex; i < endIndex; ++i) {
-            address bidderAddress = getBidderAddress(_raffleParticipants[i]);
-            uint256 bidAmount = _bids[bidderAddress].amount;
-            fee += bidAmount - (bidAmount * 98) / 100;
-        }
-
-        _claimedFeesIndex = endIndex;
-        payable(owner()).transfer(fee);
-    }
-
-    /**
      * @notice Allows the owner to withdraw all funds left in the contract by the participants.
      * Callable only after the claiming window is closed.
      */
@@ -297,6 +268,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel {
         token.safeTransfer(owner(), balance);
     }
 
+    /// @return A list of raffle participants; including the winners (if settled)
     function getRaffleParticipants() external view returns (uint256[] memory) {
         return _raffleParticipants;
     }
