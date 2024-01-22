@@ -71,7 +71,7 @@ export function configuredAuctionRaffleFixture(configParams: auctionRaffleParams
       linkToken: linkToken.address,
       linkPremium: parseEther('0.005'),
       gasLaneKeyHash: '0x72d2b016bb5b62912afea355ebf33b91319f828738b111b723b78696b9847b63', // 30 gwei
-      callbackGasLimit: 2_500_000, // maximum
+      callbackGasLimit: 10_000_000, // maximum
       minConfirmations: 1, // minimum
       subId,
     }

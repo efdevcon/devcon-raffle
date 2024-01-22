@@ -34,7 +34,7 @@ describe('AuctionRaffle', function () {
   let wallets: Wallet[]
 
   beforeEach(async function () {
-    ({ provider, auctionRaffle, wallets } = await loadFixture(auctionRaffleFixture))
+    ({ provider: provider as any, auctionRaffle, wallets } = await loadFixture(auctionRaffleFixture))
     auctionRaffleAsOwner = auctionRaffle.connect(owner())
     vrfCoordinator = new VrfCoordinatorV2MockWithErc677__factory(owner()).attach(await auctionRaffleAsOwner.vrfCoordinator())
     bidderAddress = await auctionRaffle.signer.getAddress()
@@ -81,7 +81,7 @@ describe('AuctionRaffle', function () {
 
       expect(bid.bidderID).to.be.equal(1)
       expect(bid.amount).to.be.equal(reservePrice)
-      expect(bid.winType).to.be.equal(WinType.loss)
+      expect(await auctionRaffle.getBidWinType(bid.bidderID)).to.be.equal(WinType.loss)
       expect(bid.claimed).to.be.false
     })
 
@@ -351,7 +351,7 @@ describe('AuctionRaffle', function () {
       await settleAuction()
 
       const bid = await getBidByID(1)
-      expect(bid.winType).to.deep.equal(WinType.auction)
+      expect(await auctionRaffle.getBidWinType(bid.bidderID)).to.deep.equal(WinType.auction)
     })
 
     it('saves auction winners', async function () {
@@ -428,10 +428,11 @@ describe('AuctionRaffle', function () {
         for (let i = 1; i <= 4; i++) {
           const bid = await getBidByID(i)
 
+          const winType = await auctionRaffle.getBidWinType(bid.bidderID)
           if (bid.bidderID.eq(4)) {
-            expect(bid.winType).to.be.eq(WinType.goldenTicket)
+            expect(winType).to.be.eq(WinType.goldenTicket)
           } else {
-            expect(bid.winType).to.be.eq(WinType.raffle)
+            expect(winType).to.be.eq(WinType.raffle)
           }
         }
       })
@@ -491,11 +492,12 @@ describe('AuctionRaffle', function () {
       const winnersBidderIDs = [20, 9, 16, 13,  2, 12, 15, 4, 19, 10, 8, 18, 11, 3, 7, 14]
       for (let i = 0; i < winnersBidderIDs.length; i++) {
         const winningBid = await getBidByID(winnersBidderIDs[i])
+        const winType = await auctionRaffle.getBidWinType(winningBid.bidderID)
         if (i === 0) {
-          expect(winningBid.winType).to.be.eq(WinType.goldenTicket)
+          expect(winType).to.be.eq(WinType.goldenTicket)
           continue
         }
-        expect(winningBid.winType).to.be.eq(WinType.raffle)
+        expect(winType).to.be.eq(WinType.raffle)
       }
     })
 
@@ -516,24 +518,14 @@ describe('AuctionRaffle', function () {
       expect(await auctionRaffleAsOwner.getState()).to.be.eq(State.raffleSettled)
     })
 
-    describe('when golden ticket winner has been selected', function () {
-      it('emits event', async function () {
-        const tx = await bidAndSettleRaffle(0)
-
-        const goldenBid = await getBidByWinType(9, WinType.goldenTicket)
-        await emitsEvents(tx, 'NewGoldenTicketWinner', [goldenBid.bidderID])
-      })
-    })
-
-    describe('when raffle winners have been selected', function () {
+    describe('when raffle winners have been selected (including golden ticket winner)', function () {
       it('emits events', async function () {
         await endBidding(auctionRaffleAsOwner)
         await settleAuction() // auction winner bidderID: 1
 
         // Golden ticket winner participant index generated from this number: 7, bidderID: 8
         const tx = await settleAndFulfillRaffle(7)
-        const raffleWinners = await auctionRaffleAsOwner.getRaffleWinners()
-        await emitsEvents(tx, 'NewRaffleWinner', ...raffleWinners.slice(1).map(winner => [winner]))
+        await expect(tx).to.emit(auctionRaffle, 'RaffleWinnersDrawn').withArgs(7)
       })
     })
 
@@ -542,12 +534,13 @@ describe('AuctionRaffle', function () {
 
       for (let i = 0; i < raffleWinners.length; i++) {
         const winnerBid = await getBidByID(raffleWinners[i].toNumber())
+        const winType = await auctionRaffle.getBidWinType(winnerBid.bidderID)
         if (i === 0) {
-          expect(winnerBid.winType).to.be.equal(WinType.goldenTicket)
+          expect(winType).to.be.equal(WinType.goldenTicket)
           continue
         }
 
-        expect(winnerBid.winType).to.be.equal(WinType.raffle)
+        expect(winType).to.be.equal(WinType.raffle)
       }
     }
   })
@@ -782,7 +775,7 @@ describe('AuctionRaffle', function () {
     let exampleToken: ExampleToken
 
     beforeEach(async function () {
-      ({ exampleToken, auctionRaffle, provider } = await loadFixture(auctionRaffleFixtureWithToken))
+      ({ exampleToken, auctionRaffle, provider: provider as any } = await loadFixture(auctionRaffleFixtureWithToken))
       auctionRaffleAsOwner = auctionRaffle.connect(owner())
     })
 
@@ -963,10 +956,10 @@ describe('AuctionRaffle', function () {
 
     it('returns bid details', async function () {
       await bid(1)
-      const { bidderID, amount, winType, claimed } = await auctionRaffle.getBid(wallets[0].address)
+      const { bidderID, amount, claimed } = await auctionRaffle.getBid(wallets[0].address)
       expect(bidderID).to.eq(1)
       expect(amount).to.eq(reservePrice)
-      expect(winType).to.eq(0)
+      expect(await auctionRaffle.getBidWinType(bidderID)).to.eq(0)
       expect(claimed).to.be.false
     })
   })
@@ -985,10 +978,10 @@ describe('AuctionRaffle', function () {
 
     it('returns bidder address', async function () {
       await bid(1)
-      const { bidderID, amount, winType, claimed } = await auctionRaffle.getBidByID(1)
+      const { bidderID, amount, claimed } = await auctionRaffle.getBidByID(1)
       expect(bidderID).to.eq(1)
       expect(amount).to.eq(reservePrice)
-      expect(winType).to.eq(0)
+      expect(await auctionRaffle.getBidWinType(bidderID)).to.eq(0)
       expect(claimed).to.be.false
     })
   })
@@ -1008,7 +1001,7 @@ describe('AuctionRaffle', function () {
     it('returns correct bid with bidder address', async function () {
       await bid(1)
       const bidWithAddress = await auctionRaffle.getBidWithAddress(1)
-      validateBidsWithAddresses([bidWithAddress])
+      await validateBidsWithAddresses([bidWithAddress])
     })
   })
 
@@ -1021,7 +1014,7 @@ describe('AuctionRaffle', function () {
       await bid(3)
       const bids = await auctionRaffle.getBidsWithAddresses()
       expect(bids).to.be.of.length(3)
-      validateBidsWithAddresses(bids)
+      await validateBidsWithAddresses(bids)
     })
   })
 
@@ -1047,14 +1040,15 @@ describe('AuctionRaffle', function () {
     return wallets[1]
   }
 
-  function validateBidsWithAddresses(bids) {
-    bids.forEach(({ bidder, bid: bid_ }, index) => {
-      expect(bidder).to.eq(wallets[index].address)
-      expect(bid_.bidderID).to.eq(index + 1)
+  async function validateBidsWithAddresses(bids: { bidder: string, bid: Bid }[]) {
+    for (let i = 0; i < bids.length; i++) {
+      const { bidder, bid: bid_ } = bids[i]
+      expect(bidder).to.eq(wallets[i].address)
+      expect(bid_.bidderID).to.eq(i + 1)
       expect(bid_.amount).to.eq(reservePrice)
-      expect(bid_.winType).to.eq(0)
+      expect(await auctionRaffle.getBidWinType(bid_.bidderID)).to.eq(0)
       expect(bid_.claimed).to.be.false
-    })
+    }
   }
 
   async function bidAndSettleRaffle(bidCount: number, randomNumber?: BigNumberish): Promise<ContractTransaction> {
@@ -1070,7 +1064,9 @@ describe('AuctionRaffle', function () {
     await auctionRaffleAsOwner.settleRaffle().then(tx => tx.wait(1))
     const requestId = await auctionRaffleAsOwner.requestId()
     expect(requestId).to.not.eq(0)
-    const tx = await vrfCoordinator.fulfillRandomWords(requestId, auctionRaffleAsOwner.address, [randomNumber])
+    const tx = await vrfCoordinator.fulfillRandomWords(requestId, auctionRaffleAsOwner.address, [randomNumber], {
+      gasLimit: 2_500_000
+    })
     expect(await auctionRaffleAsOwner.getState()).to.eq(State.raffleSettled)
     return tx
   }
@@ -1103,7 +1099,8 @@ describe('AuctionRaffle', function () {
   async function getBidByWinType(bidCount: number, winType: WinType): Promise<Bid> {
     for (let i = 1; i <= bidCount; i++) {
       const bid = await getBidByID(i)
-      if (bid.winType === winType) {
+      const bidWinType = await auctionRaffle.getBidWinType(bid.bidderID)
+      if (bidWinType === winType) {
         return bid
       }
     }
@@ -1113,7 +1110,8 @@ describe('AuctionRaffle', function () {
     const bids = []
     for (let i = 1; i <= bidCount; i++) {
       const bid = await getBidByID(i)
-      if (bid.winType === winType) {
+      const bidWinType = await auctionRaffle.getBidWinType(bid.bidderID)
+      if (bidWinType === winType) {
         bids.push(bid)
       }
     }

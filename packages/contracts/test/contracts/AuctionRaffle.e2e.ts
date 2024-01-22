@@ -33,7 +33,7 @@ describe('AuctionRaffle - E2E', function () {
   this.timeout(60_000)
 
   before('prepare contracts', async function () {
-    ({ provider, auctionRaffle, wallets, vrfCoordinator } = await loadFixture(auctionRaffleE2EFixture))
+    ({ provider: provider as any, auctionRaffle, wallets, vrfCoordinator } = await loadFixture(auctionRaffleE2EFixture))
     auctionRaffleAsOwner = auctionRaffle.connect(owner())
   })
 
@@ -164,7 +164,9 @@ describe('AuctionRaffle - E2E', function () {
   async function settleAndFulfillRaffle(randomNumber: BigNumberish) {
     await auctionRaffleAsOwner.settleRaffle()
     const requestId = await auctionRaffleAsOwner.requestId()
-    return vrfCoordinator.fulfillRandomWords(requestId, auctionRaffleAsOwner.address, [randomNumber])
+    return vrfCoordinator.fulfillRandomWords(requestId, auctionRaffleAsOwner.address, [randomNumber], {
+      gasLimit: 10_000_000
+    })
   }
 
   /**
