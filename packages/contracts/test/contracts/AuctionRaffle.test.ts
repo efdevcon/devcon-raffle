@@ -388,7 +388,7 @@ describe('AuctionRaffle', function () {
       await endBidding(auctionRaffleAsOwner)
       await settleAuction()
 
-      expect(await auctionRaffle.getRaffleParticipants()).to.deep.eq(bigNumberArrayFrom([9, 10, 3, 4, 5, 6, 7, 8]))
+      expect(await auctionRaffle.getRaffleParticipants()).to.deep.eq(bigNumberArrayFrom([10, 9, 3, 4, 5, 6, 7, 8]))
     })
 
     it('emits events', async function () {

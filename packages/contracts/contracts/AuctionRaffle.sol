@@ -38,8 +38,6 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
 
     bool _proceedsClaimed;
 
-    uint256[] _tempWinners; // temp array for sorting auction winners used by settleAuction method
-
     uint256 public _randomSeed;
 
     /// @dev A new bid has been placed or an existing bid has been bumped
@@ -129,17 +127,11 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
             uint256 key = _heap.removeMax();
             uint256 bidderID = extractBidderID(key);
             addAuctionWinner(bidderID);
-            _tempWinners.insert(bidderID);
         }
 
         delete _heap;
         delete _minKeyIndex;
         delete _minKeyValue;
-
-        for (uint256 i = 0; i < winnersLength; ++i) {
-            uint256 bidderID = _tempWinners.removeMax();
-            removeRaffleParticipant(bidderID - 1);
-        }
     }
 
     /**
@@ -394,11 +386,17 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
         (_minKeyIndex, _minKeyValue) = _heap.findMin();
     }
 
+    /**
+     * Record auction winner, and additionally remove them from the raffle
+     * participants list.
+     * @param bidderID Unique bidder ID
+     */
     function addAuctionWinner(uint256 bidderID) private {
         address bidderAddress = getBidderAddress(bidderID);
         _bids[bidderAddress].isAuctionWinner = true;
         _auctionWinners.push(bidderID);
         emit NewAuctionWinner(bidderID);
+        removeRaffleParticipant(_bids[bidderAddress].raffleParticipantIndex);
     }
 
     /**
