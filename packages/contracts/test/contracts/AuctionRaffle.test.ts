@@ -627,7 +627,8 @@ describe('AuctionRaffle', function () {
 
       const bidderAddress = await auctionRaffleAsOwner.getBidderAddress(lostBid.bidderID)
       const bidderBalance = await provider.getBalance(bidderAddress)
-      const expectedBidderBalance = bidderBalance.add(reservePrice.mul(98).div(100))
+      // NB: There is no longer a 2% non-winner fee retained
+      const expectedBidderBalance = bidderBalance.add(reservePrice)
 
       await auctionRaffleAsOwner.claim(lostBid.bidderID)
 
@@ -836,99 +837,6 @@ describe('AuctionRaffle', function () {
       })
     })
   })
-
-  // NB: The `claimFees` function has been removed. Unclaimed fees shall be withdrawn using the
-  //  `withdrawUnclaimedFunds` function after claiming period, as was done last time:
-  //  https://etherscan.io/tx/0xeb964699211b72a8225658de8e51b243579421f0db791ad7328228adb72192f0
-  // describe('claimFees', function () {
-  //   describe('when called not by owner', function () {
-  //     it('reverts', async function () {
-  //       await expect(auctionRaffle.claimFees(10))
-  //         .to.be.revertedWith('Ownable: caller is not the owner')
-  //     })
-  //   })
-
-  //   describe('when raffle has not been settled yet', function () {
-  //     it('reverts', async function () {
-  //       await bid(2)
-  //       await expect(auctionRaffleAsOwner.claimFees(2))
-  //         .to.be.revertedWith('AuctionRaffle: is in invalid state')
-  //     })
-  //   })
-
-  //   describe('when fees have already been claimed', function () {
-  //     it('reverts', async function () {
-  //       await bidAndSettleRaffle(10)
-  //       await auctionRaffleAsOwner.claimFees(1)
-
-  //       await expect(auctionRaffleAsOwner.claimFees(1))
-  //         .to.be.revertedWith('AuctionRaffle: fees have already been claimed')
-  //     })
-  //   })
-
-  //   describe('when there are no non-winning bids', function () {
-  //     it('reverts', async function () {
-  //       await bidAndSettleRaffle(6)
-
-  //       await expect(auctionRaffleAsOwner.claimFees(6))
-  //         .to.be.revertedWith('AuctionRaffle: there are no fees to claim')
-  //     })
-  //   })
-
-  //   describe('when claiming using multiple transactions', function () {
-  //     it('transfers correct amount', async function () {
-  //       await bidAndSettleRaffle(15)
-  //       const singleBidFee = calculateFee(reservePrice)
-
-  //       let claimAmount = singleBidFee.mul(2)
-  //       expect(await claimFees(2)).to.be.equal(claimAmount)
-
-  //       claimAmount = singleBidFee.mul(4)
-  //       expect(await claimFees(4)).to.be.equal(claimAmount)
-  //     })
-  //   })
-
-  //   describe('when claiming using single transactions', function () {
-  //     it('transfers correct amount', async function () {
-  //       const additionalBidAmount = parseEther('0.1')
-  //       for (let i = 0; i < 16; i++) {
-  //         await bidAsWallet(wallets[i], reservePrice.add(additionalBidAmount.mul(i)))
-  //       }
-  //       await bidAndSettleRaffle(0)
-
-  //       const bids = await getAllBidsByWinType(16, WinType.loss)
-  //       let claimAmount = Zero
-  //       bids.forEach((bid) => {
-  //         claimAmount = claimAmount.add(calculateFee(bid.amount))
-  //       })
-
-  //       expect(await claimFees(bids.length)).to.be.equal(claimAmount)
-  //     })
-  //   })
-
-  //   describe('when bid amount is not divisible by 100', function () {
-  //     it('transfers correct amount with remainder', async function () {
-  //       const bidAmount = reservePrice.add(21)
-  //       await bid(8)
-  //       await bidAsWallet(wallets[9], bidAmount)
-  //       await bidAsWallet(wallets[10], reservePrice.mul(2))
-
-  //       // Non-winning bidderID from random number: 9
-  //       await bidAndSettleRaffle(0, [10])
-
-  //       expect(await claimFees(1)).to.be.equal(calculateFee(bidAmount))
-  //     })
-  //   })
-
-  //   // Returns amount transferred to owner by claimFees method
-  //   async function claimFees(bidsNumber: number): Promise<BigNumber> {
-  //     return calculateTransferredAmount(() => auctionRaffleAsOwner.claimFees(bidsNumber))
-  //   }
-
-  //   function calculateFee(bidAmount: BigNumber): BigNumber {
-  //     return bidAmount.sub(bidAmount.mul(98).div(100))
-  //   }
-  // })
 
   describe('getState', function () {
     it('waiting for bidding', async function () {

@@ -37,7 +37,6 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
     uint256[] _raffleWinners;
 
     bool _proceedsClaimed;
-    uint256 _claimedFeesIndex;
 
     uint256[] _tempWinners; // temp array for sorting auction winners used by settleAuction method
 
@@ -178,13 +177,10 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
 
         WinType winType = getBidWinType(bidderID);
         uint256 claimAmount;
-        if (winType == WinType.GOLDEN_TICKET) {
+        if (winType == WinType.GOLDEN_TICKET || winType == WinType.LOSS) {
             claimAmount = bidder.amount;
         } else if (winType == WinType.RAFFLE) {
             claimAmount = bidder.amount - _reservePrice;
-        } else {
-            // Loser
-            claimAmount = (bidder.amount * 98) / 100;
         }
 
         if (claimAmount > 0) {
