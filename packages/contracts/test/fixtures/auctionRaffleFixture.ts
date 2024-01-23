@@ -1,4 +1,9 @@
-import { AuctionRaffleMock__factory, ExampleToken__factory, MockLinkToken__factory, VrfCoordinatorV2MockWithErc677__factory } from 'contracts'
+import {
+  AuctionRaffleMock__factory,
+  ExampleToken__factory,
+  MockLinkToken__factory,
+  VrfCoordinatorV2MockWithErc677__factory,
+} from 'contracts'
 import { BigNumberish, utils, Wallet } from 'ethers'
 import { MockProvider } from 'ethereum-waffle'
 import { getLatestBlockTimestamp } from 'utils/getLatestBlockTimestamp'
@@ -11,14 +16,14 @@ export const reservePrice = utils.parseEther('0.5')
 export const minBidIncrement = utils.parseEther('0.005')
 
 export type auctionRaffleParams = {
-  initialOwner?: string,
-  biddingStartTime?: number,
-  biddingEndTime?: number,
-  claimingEndTime?: number,
-  auctionWinnersCount?: number,
-  raffleWinnersCount?: number,
-  reservePrice?: BigNumberish,
-  minBidIncrement?: BigNumberish,
+  initialOwner?: string
+  biddingStartTime?: number
+  biddingEndTime?: number
+  claimingEndTime?: number
+  auctionWinnersCount?: number
+  raffleWinnersCount?: number
+  reservePrice?: BigNumberish
+  minBidIncrement?: BigNumberish
 }
 
 export function auctionRaffleFixture(wallets: Wallet[], provider: MockProvider) {
@@ -42,7 +47,7 @@ export async function auctionRaffleE2EFixture(wallets: Wallet[], provider: MockP
 
 export function configuredAuctionRaffleFixture(configParams: auctionRaffleParams) {
   return async ([deployer, owner]: Wallet[], provider: MockProvider) => {
-    const currentBlockTimestamp = await getLatestBlockTimestamp(provider)
+    const currentBlockTimestamp = await getLatestBlockTimestamp(provider as any)
     configParams = setAuctionRaffleParamsDefaults(owner, currentBlockTimestamp, configParams)
 
     // Mock mintable LINK token
@@ -51,9 +56,9 @@ export function configuredAuctionRaffleFixture(configParams: auctionRaffleParams
     await linkToken.mint(deployer.address, parseEther('1000'))
 
     const vrfCoordinator = await new VrfCoordinatorV2MockWithErc677__factory(deployer).deploy(
-        parseEther('0.005'),
-        parseUnits('1', 'gwei'),
-        linkToken.address,
+      parseEther('0.005'),
+      parseUnits('1', 'gwei'),
+      linkToken.address
     )
     // Create sub
     const subId = await vrfCoordinator.callStatic.createSubscription()
@@ -98,12 +103,16 @@ export function configuredAuctionRaffleFixture(configParams: auctionRaffleParams
       auctionRaffle,
       vrfCoordinator,
       subId,
-      linkToken
+      linkToken,
     }
   }
 }
 
-export function setAuctionRaffleParamsDefaults(owner: Wallet, blockTimestamp: number, params: auctionRaffleParams): auctionRaffleParams {
+export function setAuctionRaffleParamsDefaults(
+  owner: Wallet,
+  blockTimestamp: number,
+  params: auctionRaffleParams
+): auctionRaffleParams {
   return { ...defaultAuctionRaffleParams(owner, blockTimestamp), ...params }
 }
 

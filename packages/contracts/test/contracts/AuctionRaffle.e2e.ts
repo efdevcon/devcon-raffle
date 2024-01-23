@@ -11,10 +11,10 @@ import { compareBids } from 'utils/compareBids'
 import { HOUR } from 'scripts/utils/consts'
 
 interface Bid {
-  bidderID: number,
-  amount: BigNumber,
-  bumpAmount: BigNumber,
-  wallet: Wallet,
+  bidderID: number
+  amount: BigNumber
+  bumpAmount: BigNumber
+  wallet: Wallet
 }
 
 describe('AuctionRaffle - E2E', function () {
@@ -33,17 +33,23 @@ describe('AuctionRaffle - E2E', function () {
   this.timeout(60_000)
 
   before('prepare contracts', async function () {
-    ({ provider: provider as any, auctionRaffle, wallets, vrfCoordinator } = await loadFixture(auctionRaffleE2EFixture))
+    ;({
+      provider: provider as any,
+      auctionRaffle,
+      wallets,
+      vrfCoordinator,
+    } = await loadFixture(auctionRaffleE2EFixture))
     auctionRaffleAsOwner = auctionRaffle.connect(owner())
   })
 
   before('prepare bids', function () {
-    bids = randomBigNumbers(120).map((bn, index): Bid => ({
-      bidderID: index + 1,
-      amount: bn.shr(192).add(reservePrice),
-      bumpAmount: index % 2 === 0 ? bn.shr(240).add(minBidIncrement) : constants.Zero,
-      wallet: wallets[index],
-    }),
+    bids = randomBigNumbers(120).map(
+      (bn, index): Bid => ({
+        bidderID: index + 1,
+        amount: bn.shr(192).add(reservePrice),
+        bumpAmount: index % 2 === 0 ? bn.shr(240).add(minBidIncrement) : constants.Zero,
+        wallet: wallets[index],
+      })
     )
 
     // introduce some duplicate amounts
@@ -72,7 +78,7 @@ describe('AuctionRaffle - E2E', function () {
       }
     }
 
-    sortedBids = bids.map(bid => ({ ...bid, amount: bid.amount.add(bid.bumpAmount) })).sort(compareBids)
+    sortedBids = bids.map((bid) => ({ ...bid, amount: bid.amount.add(bid.bumpAmount) })).sort(compareBids)
   })
 
   it('lets the owner settle the auction', async function () {
@@ -81,7 +87,7 @@ describe('AuctionRaffle - E2E', function () {
 
     expect(await auctionRaffle.getHeap()).to.be.empty
 
-    const expectedAuctionWinners = sortedBids.slice(0, 20).map(bid => BigNumber.from(bid.bidderID))
+    const expectedAuctionWinners = sortedBids.slice(0, 20).map((bid) => BigNumber.from(bid.bidderID))
     expect(await auctionRaffle.getAuctionWinners()).to.deep.eq(expectedAuctionWinners)
     expect(await auctionRaffle.getRaffleParticipants()).to.have.lengthOf(100)
   })
@@ -96,8 +102,8 @@ describe('AuctionRaffle - E2E', function () {
     const raffleParticipants = await auctionRaffle.getRaffleParticipants()
     expect(raffleParticipants).to.have.lengthOf(100)
     const losers = setDifferenceOf(
-      new Set(raffleParticipants.map(bn => bn.toString())),
-      new Set(raffleWinners.map(bn => bn.toString()))
+      new Set(raffleParticipants.map((bn) => bn.toString())),
+      new Set(raffleWinners.map((bn) => bn.toString()))
     )
     expect(losers.size).to.eq(20)
   })
@@ -127,16 +133,13 @@ describe('AuctionRaffle - E2E', function () {
   })
 
   it('divides bidders into 2 disjoint sets', async function () {
-    const bidders = [
-      ...await auctionRaffle.getAuctionWinners(),
-      ...await auctionRaffle.getRaffleParticipants(),
-    ]
+    const bidders = [...(await auctionRaffle.getAuctionWinners()), ...(await auctionRaffle.getRaffleParticipants())]
 
     let bids = []
     for (const bidder of bidders) {
       bids.push(await auctionRaffle.getBidByID(bidder))
     }
-    bids = bids.sort(compareBids).map(bid => ({
+    bids = bids.sort(compareBids).map((bid) => ({
       bidderID: bid.bidderID.toNumber(),
       amount: bid.amount,
     }))
@@ -165,7 +168,7 @@ describe('AuctionRaffle - E2E', function () {
     await auctionRaffleAsOwner.settleRaffle()
     const requestId = await auctionRaffleAsOwner.requestId()
     return vrfCoordinator.fulfillRandomWords(requestId, auctionRaffleAsOwner.address, [randomNumber], {
-      gasLimit: 10_000_000
+      gasLimit: 2_500_000,
     })
   }
 
