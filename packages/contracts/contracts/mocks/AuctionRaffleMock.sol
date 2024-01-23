@@ -9,13 +9,7 @@ contract AuctionRaffleMock is AuctionRaffle {
         address initialOwner,
         ConfigParams memory configParams,
         VRFRequesterParams memory vrfRequesterParams
-    )
-        AuctionRaffle(
-            initialOwner,
-            configParams,
-            vrfRequesterParams
-        )
-    {}
+    ) AuctionRaffle(initialOwner, configParams, vrfRequesterParams) {}
 
     function getHeap() external view returns (uint256[] memory) {
         return _heap;

@@ -41,9 +41,7 @@ abstract contract VRFRequester is VRFConsumerBaseV2 {
     /// @notice Inflight requestId
     uint256 public requestId;
 
-    constructor(VRFRequesterParams memory params)
-        VRFConsumerBaseV2(params.vrfCoordinator)
-    {
+    constructor(VRFRequesterParams memory params) VRFConsumerBaseV2(params.vrfCoordinator) {
         vrfCoordinator = params.vrfCoordinator;
         linkToken = params.linkToken;
         juels = 10**LinkTokenInterface(params.linkToken).decimals();
@@ -64,14 +62,13 @@ abstract contract VRFRequester is VRFConsumerBaseV2 {
     /// @notice Request a random number
     function _getRandomNumber() internal returns (uint256) {
         require(requestId == 0, "Request already inflight");
-        uint256 requestId_ = VRFCoordinatorV2Interface(vrfCoordinator)
-            .requestRandomWords(
-                gasLaneKeyHash,
-                subId,
-                minConfirmations,
-                callbackGasLimit,
-                1
-            );
+        uint256 requestId_ = VRFCoordinatorV2Interface(vrfCoordinator).requestRandomWords(
+            gasLaneKeyHash,
+            subId,
+            minConfirmations,
+            callbackGasLimit,
+            1
+        );
         requestId = requestId_;
         return requestId_;
     }
@@ -83,10 +80,7 @@ abstract contract VRFRequester is VRFConsumerBaseV2 {
 
     /// @notice Callback function used by VRF Coordinator
     /// @dev DO NOT OVERRIDE!
-    function fulfillRandomWords(uint256 requestId_, uint256[] memory randomness)
-        internal
-        override
-    {
+    function fulfillRandomWords(uint256 requestId_, uint256[] memory randomness) internal override {
         require(requestId_ == requestId, "Unexpected requestId");
         require(randomness.length > 0, "Unexpected empty randomness");
         requestId = 0;

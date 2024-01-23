@@ -66,11 +66,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
         address initialOwner,
         ConfigParams memory configParams,
         VRFRequesterParams memory vrfRequesterParams
-    )
-        Config(configParams)
-        VRFRequester(vrfRequesterParams)
-        Ownable()
-    {
+    ) Config(configParams) VRFRequester(vrfRequesterParams) Ownable() {
         if (initialOwner != msg.sender) {
             Ownable.transferOwnership(initialOwner);
         }
@@ -414,11 +410,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
      * a golden ticket winner, a raffle winner, or a loser.
      * @param bidderID Monotonically-increasing unique bidder identifier
      */
-    function getBidWinType(uint256 bidderID)
-        public
-        view
-        returns (WinType)
-    {
+    function getBidWinType(uint256 bidderID) public view returns (WinType) {
         if (uint8(getState()) < uint8(State.AUCTION_SETTLED)) {
             return WinType.LOSS;
         }
@@ -433,12 +425,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
         uint256 raffleWinnersCount = _raffleWinnersCount;
         uint256 n = participantsCount < raffleWinnersCount ? participantsCount : raffleWinnersCount;
         // Map original index -> inverse `i`th place winner
-        uint256 place = FeistelShuffleOptimised.shuffle(
-            bid_.raffleParticipantIndex,
-            participantsCount,
-            _randomSeed,
-            4
-        );
+        uint256 place = FeistelShuffleOptimised.shuffle(bid_.raffleParticipantIndex, participantsCount, _randomSeed, 4);
         if (place == 0) {
             return WinType.GOLDEN_TICKET;
         } else if (place < n) {

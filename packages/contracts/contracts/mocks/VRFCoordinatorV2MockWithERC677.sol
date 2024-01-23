@@ -5,10 +5,7 @@ import {VRFCoordinatorV2Mock} from "./VRFCoordinatorV2Mock.sol";
 import {IERC677Receiver} from "@chainlink/contracts/src/v0.8/shared/interfaces/IERC677Receiver.sol";
 import {LinkTokenInterface} from "@chainlink/contracts/src/v0.8/shared/interfaces/LinkTokenInterface.sol";
 
-contract VRFCoordinatorV2MockWithERC677 is
-    VRFCoordinatorV2Mock,
-    IERC677Receiver
-{
+contract VRFCoordinatorV2MockWithERC677 is VRFCoordinatorV2Mock, IERC677Receiver {
     address public immutable LINK;
 
     bool internal __entered;
@@ -31,11 +28,7 @@ contract VRFCoordinatorV2MockWithERC677 is
         LINK = linkToken;
     }
 
-    function cancelSubscription(uint64 _subId, address _to)
-        external
-        override
-        onlySubOwner(_subId)
-    {
+    function cancelSubscription(uint64 _subId, address _to) external override onlySubOwner(_subId) {
         uint256 balance = s_subscriptions[_subId].balance;
         emit SubscriptionCanceled(_subId, _to, balance);
         delete (s_subscriptions[_subId]);

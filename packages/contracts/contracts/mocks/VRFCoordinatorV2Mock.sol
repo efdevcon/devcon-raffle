@@ -28,23 +28,10 @@ contract VRFCoordinatorV2Mock is VRFCoordinatorV2Interface {
         uint32 numWords,
         address indexed sender
     );
-    event RandomWordsFulfilled(
-        uint256 indexed requestId,
-        uint256 outputSeed,
-        uint96 payment,
-        bool success
-    );
+    event RandomWordsFulfilled(uint256 indexed requestId, uint256 outputSeed, uint96 payment, bool success);
     event SubscriptionCreated(uint64 indexed subId, address owner);
-    event SubscriptionFunded(
-        uint64 indexed subId,
-        uint256 oldBalance,
-        uint256 newBalance
-    );
-    event SubscriptionCanceled(
-        uint64 indexed subId,
-        address to,
-        uint256 amount
-    );
+    event SubscriptionFunded(uint64 indexed subId, uint256 oldBalance, uint256 newBalance);
+    event SubscriptionCanceled(uint64 indexed subId, address to, uint256 amount);
     event ConsumerAdded(uint64 indexed subId, address consumer);
     event ConsumerRemoved(uint64 indexed subId, address consumer);
 
@@ -70,11 +57,7 @@ contract VRFCoordinatorV2Mock is VRFCoordinatorV2Interface {
         GAS_PRICE_LINK = _gasPriceLink;
     }
 
-    function consumerIsAdded(uint64 _subId, address _consumer)
-        public
-        view
-        returns (bool)
-    {
+    function consumerIsAdded(uint64 _subId, address _consumer) public view returns (bool) {
         address[] memory consumers = s_consumers[_subId];
         for (uint256 i = 0; i < consumers.length; i++) {
             if (consumers[i] == _consumer) {
@@ -138,16 +121,10 @@ contract VRFCoordinatorV2Mock is VRFCoordinatorV2Interface {
         }
 
         VRFConsumerBaseV2 v;
-        bytes memory callReq = abi.encodeWithSelector(
-            v.rawFulfillRandomWords.selector,
-            _requestId,
-            _words
-        );
+        bytes memory callReq = abi.encodeWithSelector(v.rawFulfillRandomWords.selector, _requestId, _words);
         (bool success, ) = _consumer.call{gas: req.callbackGasLimit}(callReq);
 
-        uint96 payment = uint96(
-            BASE_FEE + ((startGas - gasleft()) * GAS_PRICE_LINK)
-        );
+        uint96 payment = uint96(BASE_FEE + ((startGas - gasleft()) * GAS_PRICE_LINK));
         if (s_subscriptions[req.subId].balance < payment) {
             revert InsufficientBalance();
         }
@@ -177,12 +154,7 @@ contract VRFCoordinatorV2Mock is VRFCoordinatorV2Interface {
         uint16 _minimumRequestConfirmations,
         uint32 _callbackGasLimit,
         uint32 _numWords
-    )
-        external
-        override
-        onlyValidConsumer(_subId, msg.sender)
-        returns (uint256)
-    {
+    ) external override onlyValidConsumer(_subId, msg.sender) returns (uint256) {
         if (s_subscriptions[_subId].owner == address(0)) {
             revert InvalidSubscription();
         }
@@ -190,11 +162,7 @@ contract VRFCoordinatorV2Mock is VRFCoordinatorV2Interface {
         uint256 requestId = s_nextRequestId++;
         uint256 preSeed = s_nextPreSeed++;
 
-        s_requests[requestId] = Request({
-            subId: _subId,
-            callbackGasLimit: _callbackGasLimit,
-            numWords: _numWords
-        });
+        s_requests[requestId] = Request({subId: _subId, callbackGasLimit: _callbackGasLimit, numWords: _numWords});
 
         emit RandomWordsRequested(
             _keyHash,
@@ -211,10 +179,7 @@ contract VRFCoordinatorV2Mock is VRFCoordinatorV2Interface {
 
     function createSubscription() external override returns (uint64 _subId) {
         s_currentSubId++;
-        s_subscriptions[s_currentSubId] = Subscription({
-            owner: msg.sender,
-            balance: 0
-        });
+        s_subscriptions[s_currentSubId] = Subscription({owner: msg.sender, balance: 0});
         emit SubscriptionCreated(s_currentSubId, msg.sender);
         return s_currentSubId;
     }
@@ -233,20 +198,10 @@ contract VRFCoordinatorV2Mock is VRFCoordinatorV2Interface {
         if (s_subscriptions[_subId].owner == address(0)) {
             revert InvalidSubscription();
         }
-        return (
-            s_subscriptions[_subId].balance,
-            0,
-            s_subscriptions[_subId].owner,
-            s_consumers[_subId]
-        );
+        return (s_subscriptions[_subId].balance, 0, s_subscriptions[_subId].owner, s_consumers[_subId]);
     }
 
-    function cancelSubscription(uint64 _subId, address _to)
-        external
-        virtual
-        override
-        onlySubOwner(_subId)
-    {
+    function cancelSubscription(uint64 _subId, address _to) external virtual override onlySubOwner(_subId) {
         emit SubscriptionCanceled(_subId, _to, s_subscriptions[_subId].balance);
         delete (s_subscriptions[_subId]);
     }
@@ -275,11 +230,7 @@ contract VRFCoordinatorV2Mock is VRFCoordinatorV2Interface {
         return (3, 2000000, new bytes32[](0));
     }
 
-    function addConsumer(uint64 _subId, address _consumer)
-        external
-        override
-        onlySubOwner(_subId)
-    {
+    function addConsumer(uint64 _subId, address _consumer) external override onlySubOwner(_subId) {
         if (s_consumers[_subId].length == MAX_CONSUMERS) {
             revert TooManyConsumers();
         }
@@ -356,28 +307,15 @@ contract VRFCoordinatorV2Mock is VRFCoordinatorV2Interface {
         return 4000000000000000; // 0.004 Ether
     }
 
-    function requestSubscriptionOwnerTransfer(uint64 _subId, address _newOwner)
-        external
-        pure
-        override
-    {
+    function requestSubscriptionOwnerTransfer(uint64 _subId, address _newOwner) external pure override {
         revert("not implemented");
     }
 
-    function acceptSubscriptionOwnerTransfer(uint64 _subId)
-        external
-        pure
-        override
-    {
+    function acceptSubscriptionOwnerTransfer(uint64 _subId) external pure override {
         revert("not implemented");
     }
 
-    function pendingRequestExists(uint64 subId)
-        public
-        view
-        override
-        returns (bool)
-    {
+    function pendingRequestExists(uint64 subId) public view override returns (bool) {
         revert("not implemented");
     }
 }
