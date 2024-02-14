@@ -15,6 +15,7 @@ abstract contract Config {
         uint256 raffleWinnersCount;
         uint256 reservePrice;
         uint256 minBidIncrement;
+        address bidVerifier;
     }
 
     // The use of _randomMask and _bidderMask introduces an assumption on max number of participants: 2^32.
@@ -34,6 +35,8 @@ abstract contract Config {
     uint256 immutable _reservePrice;
     uint256 immutable _minBidIncrement;
 
+    address immutable bidVerifier;
+
     constructor(ConfigParams memory params) {
         uint256 biddingStartTime_ = params.biddingStartTime;
         uint256 biddingEndTime_ = params.biddingEndTime;
@@ -42,6 +45,7 @@ abstract contract Config {
         uint256 raffleWinnersCount_ = params.raffleWinnersCount;
         uint256 reservePrice_ = params.reservePrice;
         uint256 minBidIncrement_ = params.minBidIncrement;
+        address bidVerifier_ = params.bidVerifier;
 
         require(auctionWinnersCount_ > 0, "Config: auction winners count must be greater than 0");
         require(raffleWinnersCount_ > 0, "Config: raffle winners count must be greater than 0");
@@ -66,6 +70,9 @@ abstract contract Config {
         _raffleWinnersCount = raffleWinnersCount_;
         _reservePrice = reservePrice_;
         _minBidIncrement = minBidIncrement_;
+
+        require(bidVerifier_ != address(0), "Config: invalid verifier");
+        bidVerifier = bidVerifier_;
     }
 
     function biddingStartTime() external view returns (uint256) {

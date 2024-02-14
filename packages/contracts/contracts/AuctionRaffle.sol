@@ -12,6 +12,7 @@ import "./models/StateModel.sol";
 import "./libs/MaxHeap.sol";
 import "./libs/FeistelShuffleOptimised.sol";
 import "./libs/VRFRequester.sol";
+import "./verifier/IVerifier.sol";
 
 /***
  * @title Auction & Raffle
@@ -81,7 +82,13 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
      * @notice Places a new bid or bumps an existing bid.
      * @dev Assigns a unique bidderID to the sender address.
      */
-    function bid() external payable onlyExternalTransactions onlyInState(State.BIDDING_OPEN) {
+    function bid(uint256 score, bytes memory attestation)
+        external
+        payable
+        onlyExternalTransactions
+        onlyInState(State.BIDDING_OPEN)
+    {
+        IVerifier(bidVerifier).verify(abi.encode(msg.sender, score), attestation);
         Bid storage bidder = _bids[msg.sender];
         if (bidder.amount == 0) {
             require(msg.value >= _reservePrice, "AuctionRaffle: bid amount is below reserve price");
