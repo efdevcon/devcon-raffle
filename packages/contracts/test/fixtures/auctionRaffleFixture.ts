@@ -2,13 +2,14 @@ import {
   AuctionRaffleMock__factory,
   ExampleToken__factory,
   MockLinkToken__factory,
+  ScoreAttestationVerifier__factory,
   VrfCoordinatorV2MockWithErc677__factory,
 } from 'contracts'
 import { BigNumberish, utils, Wallet } from 'ethers'
 import { MockProvider } from 'ethereum-waffle'
 import { getLatestBlockTimestamp } from 'utils/getLatestBlockTimestamp'
 import { WEEK } from 'scripts/utils/consts'
-import { parseEther, parseUnits } from 'ethers/lib/utils'
+import { parseEther, parseUnits, solidityKeccak256 } from 'ethers/lib/utils'
 
 export const auctionWinnersCount = 1
 export const raffleWinnersCount = 8
@@ -81,6 +82,14 @@ export function configuredAuctionRaffleFixture(configParams: auctionRaffleParams
       subId,
     }
 
+    // Deploy an attestation verifier
+    const attestor = Wallet.createRandom()
+    const scoreAttestationVerifier = await new ScoreAttestationVerifier__factory(deployer).deploy(
+      '1',
+      attestor.address,
+      10
+    )
+
     const auctionRaffle = await new AuctionRaffleMock__factory(deployer).deploy(
       configParams.initialOwner,
       {
@@ -91,6 +100,7 @@ export function configuredAuctionRaffleFixture(configParams: auctionRaffleParams
         raffleWinnersCount: configParams.raffleWinnersCount,
         reservePrice: configParams.reservePrice,
         minBidIncrement: configParams.minBidIncrement,
+        bidVerifier: scoreAttestationVerifier.address,
       },
       vrfRequesterParams
     )
@@ -104,6 +114,8 @@ export function configuredAuctionRaffleFixture(configParams: auctionRaffleParams
       vrfCoordinator,
       subId,
       linkToken,
+      attestor,
+      scoreAttestationVerifier,
     }
   }
 }

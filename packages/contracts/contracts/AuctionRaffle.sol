@@ -82,13 +82,11 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
      * @notice Places a new bid or bumps an existing bid.
      * @dev Assigns a unique bidderID to the sender address.
      */
-    function bid(uint256 score, bytes memory attestation)
-        external
-        payable
-        onlyExternalTransactions
-        onlyInState(State.BIDDING_OPEN)
-    {
-        IVerifier(bidVerifier).verify(abi.encode(msg.sender, score), attestation);
+    function bid(
+        uint256 score,
+        bytes calldata proof
+    ) external payable onlyExternalTransactions onlyInState(State.BIDDING_OPEN) {
+        IVerifier(bidVerifier).verify(abi.encode(msg.sender, score), proof);
         Bid storage bidder = _bids[msg.sender];
         if (bidder.amount == 0) {
             require(msg.value >= _reservePrice, "AuctionRaffle: bid amount is below reserve price");

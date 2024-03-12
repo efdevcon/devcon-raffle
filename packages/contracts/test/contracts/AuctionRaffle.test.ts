@@ -10,6 +10,7 @@ import {
 import {
   AuctionRaffleMock,
   ExampleToken,
+  ScoreAttestationVerifier,
   VrfCoordinatorV2MockWithErc677,
   VrfCoordinatorV2MockWithErc677__factory,
 } from 'contracts'
@@ -27,6 +28,7 @@ import { Bid } from './bid'
 import { parseEther } from 'ethers/lib/utils'
 import { randomBN } from 'scripts/utils/random'
 import { heapKey } from 'utils/heapKey'
+import { attestScore } from 'utils/attestScore'
 
 describe('AuctionRaffle', function () {
   const loadFixture = setupFixtureLoader()
@@ -37,9 +39,17 @@ describe('AuctionRaffle', function () {
   let vrfCoordinator: VrfCoordinatorV2MockWithErc677
   let bidderAddress: string
   let wallets: Wallet[]
+  let attestor: Wallet
+  let scoreAttestationVerifier: ScoreAttestationVerifier
 
   beforeEach(async function () {
-    ;({ provider: provider as any, auctionRaffle, wallets } = await loadFixture(auctionRaffleFixture))
+    ;({
+      provider: provider as any,
+      auctionRaffle,
+      wallets,
+      attestor,
+      scoreAttestationVerifier,
+    } = await loadFixture(auctionRaffleFixture))
     auctionRaffleAsOwner = auctionRaffle.connect(owner())
     vrfCoordinator = new VrfCoordinatorV2MockWithErc677__factory(owner()).attach(
       await auctionRaffleAsOwner.vrfCoordinator()
@@ -50,43 +60,43 @@ describe('AuctionRaffle', function () {
   describe('bid', function () {
     it('reverts if bidding is not opened yet', async function () {
       const currentTime = await getLatestBlockTimestamp(provider)
-      ;({ auctionRaffle } = await loadFixture(
+      ;({ auctionRaffle, attestor } = await loadFixture(
         configuredAuctionRaffleFixture({ biddingStartTime: currentTime + MINUTE })
       ))
 
-      await expect(auctionRaffle.bid()).to.be.revertedWith('AuctionRaffle: is in invalid state')
+      await expect(auctionRaffle.bid(10, '0x')).to.be.revertedWith('AuctionRaffle: is in invalid state')
     })
 
     it('reverts if bidding is already closed', async function () {
       const endTime = await auctionRaffle.biddingEndTime()
       await network.provider.send('evm_setNextBlockTimestamp', [endTime.add(HOUR).toNumber()])
 
-      await expect(auctionRaffle.bid()).to.be.revertedWith('AuctionRaffle: is in invalid state')
+      await expect(auctionRaffle.bid(10, '0x')).to.be.revertedWith('AuctionRaffle: is in invalid state')
     })
 
     it('reverts if bid increase is too low', async function () {
-      await auctionRaffle.bid({ value: reservePrice })
-      await expect(auctionRaffle.bid({ value: minBidIncrement.sub(100) })).to.be.revertedWith(
+      await bidAsEligibleWallet(reservePrice)
+      await expect(bidAsEligibleWallet(minBidIncrement.sub(100))).to.be.revertedWith(
         'AuctionRaffle: bid increment too low'
       )
     })
 
     it('increases bid amount', async function () {
-      await auctionRaffle.bid({ value: reservePrice })
-      await expect(auctionRaffle.bid({ value: minBidIncrement })).to.be.not.reverted
+      await bidAsEligibleWallet(reservePrice)
+      await expect(bidAsEligibleWallet(minBidIncrement)).to.be.not.reverted
 
       const bid = await auctionRaffle.getBid(bidderAddress)
       expect(bid.amount).to.be.equal(reservePrice.add(minBidIncrement))
     })
 
     it('reverts if bid amount is below reserve price', async function () {
-      await expect(auctionRaffle.bid({ value: reservePrice.sub(100) })).to.be.revertedWith(
+      await expect(bidAsEligibleWallet(reservePrice.sub(100))).to.be.revertedWith(
         'AuctionRaffle: bid amount is below reserve price'
       )
     })
 
     it('saves bid', async function () {
-      await expect(auctionRaffle.bid({ value: reservePrice })).to.be.not.reverted
+      await expect(bidAsEligibleWallet(reservePrice)).to.be.not.reverted
 
       const bid = await auctionRaffle.getBid(bidderAddress)
 
@@ -97,20 +107,20 @@ describe('AuctionRaffle', function () {
     })
 
     it('saves bidder address', async function () {
-      await auctionRaffle.bid({ value: reservePrice })
+      await bidAsEligibleWallet(reservePrice)
 
       const savedBidderAddress = await auctionRaffle.getBidderAddress(1)
       expect(savedBidderAddress).to.be.equal(bidderAddress)
     })
 
     it('saves bidder as raffle participant', async function () {
-      await auctionRaffle.bid({ value: reservePrice })
+      await bidAsEligibleWallet(reservePrice)
 
       expect(await auctionRaffle.getRaffleParticipants()).to.deep.eq([BigNumber.from(1)])
     })
 
     it('increases bidders count', async function () {
-      await auctionRaffle.bid({ value: reservePrice })
+      await bidAsEligibleWallet(reservePrice)
 
       expect(await auctionRaffle.getBiddersCount()).to.be.equal(1)
     })
@@ -118,11 +128,13 @@ describe('AuctionRaffle', function () {
     describe('when heap is full', function () {
       describe('when bid < min auction bid', function () {
         it('does not add bid to heap', async function () {
-          ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })))
+          ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+            configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
+          ))
 
-          await bidAsWallet(wallets[0], reservePrice.add(100))
-          await bidAsWallet(wallets[1], reservePrice.add(200))
-          await bidAsWallet(wallets[2], reservePrice.add(50))
+          await bidAsEligibleWallet(reservePrice.add(100), wallets[0])
+          await bidAsEligibleWallet(reservePrice.add(200), wallets[1])
+          await bidAsEligibleWallet(reservePrice.add(50), wallets[2])
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([
             heapKey(2, reservePrice.add(200)),
@@ -135,11 +147,13 @@ describe('AuctionRaffle', function () {
 
       describe('when bid > min auction bid', function () {
         it('replaces minimum auction bid', async function () {
-          ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })))
+          ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+            configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
+          ))
 
           await bid(2)
-          await bidAsWallet(wallets[2], reservePrice.add(100))
-          await bidAsWallet(wallets[3], reservePrice.add(120))
+          await bidAsEligibleWallet(reservePrice.add(100), wallets[2])
+          await bidAsEligibleWallet(reservePrice.add(120), wallets[3])
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([
             heapKey(4, reservePrice.add(120)),
@@ -152,13 +166,15 @@ describe('AuctionRaffle', function () {
 
       describe('when bumped bid < min auction bid', function () {
         it('does not add bid to heap', async function () {
-          ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })))
+          ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+            configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
+          ))
 
-          await bidAsWallet(wallets[0], reservePrice.add(minBidIncrement).add(100))
-          await bidAsWallet(wallets[1], reservePrice.add(minBidIncrement).add(200))
-          await bidAsWallet(wallets[2], reservePrice)
+          await bidAsEligibleWallet(reservePrice.add(minBidIncrement).add(100), wallets[0])
+          await bidAsEligibleWallet(reservePrice.add(minBidIncrement).add(200), wallets[1])
+          await bidAsEligibleWallet(reservePrice, wallets[2])
 
-          await bidAsWallet(wallets[2], minBidIncrement)
+          await bidAsEligibleWallet(minBidIncrement, wallets[2])
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([
             heapKey(2, reservePrice.add(minBidIncrement).add(200)),
@@ -172,13 +188,15 @@ describe('AuctionRaffle', function () {
       describe('when bumped bid > min auction bid', function () {
         describe('when old bid < min auction bid', function () {
           it('adds bid to heap', async function () {
-            ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })))
+            ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+              configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
+            ))
 
-            await bidAsWallet(wallets[0], reservePrice)
-            await bidAsWallet(wallets[1], reservePrice.add(minBidIncrement).add(200))
-            await bidAsWallet(wallets[2], reservePrice.add(minBidIncrement))
+            await bidAsEligibleWallet(reservePrice, wallets[0])
+            await bidAsEligibleWallet(reservePrice.add(minBidIncrement).add(200), wallets[1])
+            await bidAsEligibleWallet(reservePrice.add(minBidIncrement), wallets[2])
 
-            await bidAsWallet(wallets[0], minBidIncrement.add(100))
+            await bidAsEligibleWallet(minBidIncrement.add(100), wallets[0])
 
             expect(await auctionRaffle.getHeap()).to.deep.equal([
               heapKey(2, reservePrice.add(minBidIncrement).add(200)),
@@ -191,12 +209,14 @@ describe('AuctionRaffle', function () {
 
         describe('when old bid == min auction bid', function () {
           it('updates bid in heap', async function () {
-            ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })))
+            ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+              configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
+            ))
 
-            await bidAsWallet(wallets[0], reservePrice)
-            await bidAsWallet(wallets[1], reservePrice.add(minBidIncrement).add(200))
+            await bidAsEligibleWallet(reservePrice, wallets[0])
+            await bidAsEligibleWallet(reservePrice.add(minBidIncrement).add(200), wallets[1])
 
-            await bidAsWallet(wallets[0], minBidIncrement.add(100))
+            await bidAsEligibleWallet(minBidIncrement.add(100), wallets[0])
 
             expect(await auctionRaffle.getHeap()).to.deep.equal([
               heapKey(2, reservePrice.add(minBidIncrement).add(200)),
@@ -209,12 +229,14 @@ describe('AuctionRaffle', function () {
 
         describe('when old bid > min auction bid', function () {
           it('updates bid in heap', async function () {
-            ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })))
+            ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+              configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
+            ))
 
-            await bidAsWallet(wallets[0], reservePrice)
-            await bidAsWallet(wallets[1], reservePrice.add(200))
+            await bidAsEligibleWallet(reservePrice, wallets[0])
+            await bidAsEligibleWallet(reservePrice.add(200), wallets[1])
 
-            await bidAsWallet(wallets[1], minBidIncrement)
+            await bidAsEligibleWallet(minBidIncrement, wallets[1])
 
             expect(await auctionRaffle.getHeap()).to.deep.equal([
               heapKey(2, reservePrice.add(minBidIncrement).add(200)),
@@ -230,11 +252,13 @@ describe('AuctionRaffle', function () {
     describe('when heap is not full', function () {
       describe('when bid < min auction bid', function () {
         it('adds bid to heap', async function () {
-          ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })))
+          ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+            configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
+          ))
 
           const auctionWinnerBid = reservePrice.add(100)
-          await bidAsWallet(wallets[0], auctionWinnerBid)
-          await bidAsWallet(wallets[1], reservePrice)
+          await bidAsEligibleWallet(auctionWinnerBid, wallets[0])
+          await bidAsEligibleWallet(reservePrice, wallets[1])
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([heapKey(1, auctionWinnerBid), heapKey(2, reservePrice)])
           expect(await auctionRaffle.getMinKeyIndex()).to.eq(1)
@@ -244,11 +268,13 @@ describe('AuctionRaffle', function () {
 
       describe('when bid > min auction bid', function () {
         it('adds bid to heap', async function () {
-          ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })))
+          ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+            configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
+          ))
 
           const auctionWinnerBid = reservePrice.add(100)
-          await bidAsWallet(wallets[0], reservePrice)
-          await bidAsWallet(wallets[1], auctionWinnerBid)
+          await bidAsEligibleWallet(reservePrice, wallets[0])
+          await bidAsEligibleWallet(auctionWinnerBid, wallets[1])
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([heapKey(2, auctionWinnerBid), heapKey(1, reservePrice)])
           expect(await auctionRaffle.getMinKeyIndex()).to.eq(1)
@@ -258,13 +284,15 @@ describe('AuctionRaffle', function () {
 
       describe('when bumped bid == min auction bid', function () {
         it('updates old bid in heap', async function () {
-          ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 4 })))
+          ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+            configuredAuctionRaffleFixture({ auctionWinnersCount: 4 })
+          ))
 
-          await bidAsWallet(wallets[0], reservePrice.add(200))
-          await bidAsWallet(wallets[1], reservePrice.add(minBidIncrement))
-          await bidAsWallet(wallets[2], reservePrice.add(minBidIncrement).add(100))
+          await bidAsEligibleWallet(reservePrice.add(200), wallets[0])
+          await bidAsEligibleWallet(reservePrice.add(minBidIncrement), wallets[1])
+          await bidAsEligibleWallet(reservePrice.add(minBidIncrement).add(100), wallets[2])
 
-          await bidAsWallet(wallets[0], minBidIncrement)
+          await bidAsEligibleWallet(minBidIncrement, wallets[0])
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([
             heapKey(1, reservePrice.add(minBidIncrement).add(200)),
@@ -278,12 +306,14 @@ describe('AuctionRaffle', function () {
 
       describe('when bumped bid > min auction bid', function () {
         it('updates old bid in heap', async function () {
-          ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 3 })))
+          ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+            configuredAuctionRaffleFixture({ auctionWinnersCount: 3 })
+          ))
 
           let auctionWinnerBid = reservePrice.add(100)
-          await bidAsWallet(wallets[0], auctionWinnerBid)
-          await bidAsWallet(wallets[1], reservePrice)
-          await bidAsWallet(wallets[0], minBidIncrement)
+          await bidAsEligibleWallet(auctionWinnerBid, wallets[0])
+          await bidAsEligibleWallet(reservePrice, wallets[1])
+          await bidAsEligibleWallet(minBidIncrement, wallets[0])
           auctionWinnerBid = auctionWinnerBid.add(minBidIncrement)
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([heapKey(1, auctionWinnerBid), heapKey(2, reservePrice)])
@@ -294,15 +324,15 @@ describe('AuctionRaffle', function () {
     })
 
     it('emits event on bid increase', async function () {
-      await auctionRaffle.bid({ value: reservePrice })
+      await bidAsEligibleWallet(reservePrice)
 
-      await expect(auctionRaffle.bid({ value: minBidIncrement }))
+      await expect(bidAsEligibleWallet(minBidIncrement))
         .to.emit(auctionRaffle, 'NewBid')
         .withArgs(bidderAddress, 1, reservePrice.add(minBidIncrement))
     })
 
     it('emits event on bid', async function () {
-      await expect(auctionRaffle.bid({ value: reservePrice }))
+      await expect(bidAsEligibleWallet(reservePrice))
         .to.emit(auctionRaffle, 'NewBid')
         .withArgs(bidderAddress, 1, reservePrice)
     })
@@ -340,7 +370,9 @@ describe('AuctionRaffle', function () {
     })
 
     it('chooses auction winners when there are not enough participants for entire auction', async function () {
-      ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 5 })))
+      ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+        configuredAuctionRaffleFixture({ auctionWinnersCount: 5 })
+      ))
       auctionRaffleAsOwner = auctionRaffle.connect(owner())
 
       await bid(9)
@@ -369,7 +401,9 @@ describe('AuctionRaffle', function () {
     })
 
     it('deletes heap', async function () {
-      ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 5 })))
+      ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+        configuredAuctionRaffleFixture({ auctionWinnersCount: 5 })
+      ))
       auctionRaffleAsOwner = auctionRaffle.connect(owner())
 
       await bid(10)
@@ -380,7 +414,9 @@ describe('AuctionRaffle', function () {
     })
 
     it('removes winners from raffle participants', async function () {
-      ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })))
+      ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+        configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
+      ))
       auctionRaffleAsOwner = auctionRaffle.connect(owner())
 
       await bid(10)
@@ -392,7 +428,9 @@ describe('AuctionRaffle', function () {
     })
 
     it('emits events', async function () {
-      ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })))
+      ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+        configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
+      ))
       auctionRaffleAsOwner = auctionRaffle.connect(owner())
 
       await bid(10)
@@ -418,7 +456,9 @@ describe('AuctionRaffle', function () {
 
     describe('when bidders count is less than raffleWinnersCount', function () {
       it('picks all participants as winners', async function () {
-        ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ raffleWinnersCount: 16 })))
+        ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+          configuredAuctionRaffleFixture({ raffleWinnersCount: 16 })
+        ))
         auctionRaffleAsOwner = auctionRaffle.connect(owner())
 
         await bid(4)
@@ -485,7 +525,9 @@ describe('AuctionRaffle', function () {
     })
 
     it('selects random winners', async function () {
-      ;({ auctionRaffle } = await loadFixture(configuredAuctionRaffleFixture({ raffleWinnersCount: 16 })))
+      ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
+        configuredAuctionRaffleFixture({ raffleWinnersCount: 16 })
+      ))
       auctionRaffleAsOwner = auctionRaffle.connect(owner())
 
       await bid(20)
@@ -593,7 +635,7 @@ describe('AuctionRaffle', function () {
 
     it('transfers remaining funds for raffle winner', async function () {
       await bid(9) // place 9 bids = reservePrice
-      await bidAsWallet(owner(), reservePrice) // bumps owner bid to become auction winner
+      await bidAsEligibleWallet(reservePrice, owner()) // bumps owner bid to become auction winner
       await bidAndSettleRaffle(9) // bumps all 9 bids
       const raffleBid = await getBidByWinType(9, WinType.raffle) // get any raffle winner
       const bidderAddress = await auctionRaffleAsOwner.getBidderAddress(raffleBid.bidderID)
@@ -605,7 +647,7 @@ describe('AuctionRaffle', function () {
     })
 
     it('transfers bid funds for golden ticket winner', async function () {
-      await bidAsWallet(owner(), reservePrice)
+      await bidAsEligibleWallet(reservePrice, owner())
       await bidAndSettleRaffle(10)
 
       const goldenBid = await getBidByWinType(10, WinType.goldenTicket)
@@ -620,7 +662,7 @@ describe('AuctionRaffle', function () {
     })
 
     it('transfers bid funds for non-winning bidder', async function () {
-      await bidAsWallet(owner(), reservePrice)
+      await bidAsEligibleWallet(reservePrice, owner())
       await bidAndSettleRaffle(10)
 
       const lostBid = await getBidByWinType(10, WinType.loss)
@@ -657,7 +699,7 @@ describe('AuctionRaffle', function () {
     describe('when biddersCount > (auctionWinnersCount + raffleWinnersCount)', function () {
       it('transfers correct amount', async function () {
         const auctionBidAmount = reservePrice.add(100)
-        await bidAsWallet(wallets[10], auctionBidAmount)
+        await bidAsEligibleWallet(auctionBidAmount, wallets[10])
         await bidAndSettleRaffle(10)
 
         const claimAmount = auctionBidAmount.add(reservePrice.mul(7))
@@ -667,14 +709,14 @@ describe('AuctionRaffle', function () {
 
     describe('when biddersCount == (auctionWinnersCount + raffleWinnersCount)', function () {
       it('transfers correct amount', async function () {
-        ;({ auctionRaffle } = await loadFixture(
+        ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
           configuredAuctionRaffleFixture({ auctionWinnersCount: 2, raffleWinnersCount: 8 })
         ))
         auctionRaffleAsOwner = auctionRaffle.connect(owner())
 
         const auctionBidAmount = reservePrice.add(100)
-        await bidAsWallet(wallets[8], auctionBidAmount)
-        await bidAsWallet(wallets[9], auctionBidAmount)
+        await bidAsEligibleWallet(auctionBidAmount, wallets[8])
+        await bidAsEligibleWallet(auctionBidAmount, wallets[9])
         await bidAndSettleRaffle(8)
 
         const claimAmount = auctionBidAmount.mul(2).add(reservePrice.mul(7))
@@ -684,13 +726,13 @@ describe('AuctionRaffle', function () {
 
     describe('when raffleWinnersCount < biddersCount < (auctionWinnersCount + raffleWinnersCount)', function () {
       it('transfers correct amount', async function () {
-        ;({ auctionRaffle } = await loadFixture(
+        ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(
           configuredAuctionRaffleFixture({ auctionWinnersCount: 2, raffleWinnersCount: 8 })
         ))
         auctionRaffleAsOwner = auctionRaffle.connect(owner())
 
         const auctionBidAmount = reservePrice.add(100)
-        await bidAsWallet(wallets[8], auctionBidAmount)
+        await bidAsEligibleWallet(auctionBidAmount, wallets[8])
         await bidAndSettleRaffle(8)
 
         const claimAmount = auctionBidAmount.add(reservePrice.mul(7))
@@ -1010,12 +1052,22 @@ describe('AuctionRaffle', function () {
 
   async function bid(walletCount: number) {
     for (let i = 0; i < walletCount; i++) {
-      await bidAsWallet(wallets[i], reservePrice)
+      await bidAsEligibleWallet(reservePrice, wallets[i])
     }
   }
 
-  async function bidAsWallet(wallet: Wallet, value: BigNumberish) {
-    await auctionRaffle.connect(wallet).bid({ value })
+  async function bidAsEligibleWallet(value: BigNumberish, wallet?: Wallet) {
+    // Create attestation that this wallet is eligible
+    expect(await scoreAttestationVerifier.attestor()).to.eq(attestor.address, 'Unexpected attestor')
+    const score = 10
+    if (wallet) {
+      const { signature } = await attestScore(wallet.address, score, attestor, scoreAttestationVerifier.address)
+      return auctionRaffle.connect(wallet).bid(score, signature, { value })
+    } else {
+      const subject = await auctionRaffle.signer.getAddress()
+      const { signature } = await attestScore(subject, score, attestor, scoreAttestationVerifier.address)
+      return auctionRaffle.bid(score, signature, { value })
+    }
   }
 
   async function getBidByID(bidID: number): Promise<Bid> {
