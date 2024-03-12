@@ -36,7 +36,7 @@ describe('ScoreAttestationVerifier', function () {
   it('verifies a valid attestation', async () => {
     ;({ scoreAttestationVerifier, attestor } = await loadFixture(createScoreAttestationVerifierFixture()))
 
-    const subject = '0x0ce4a3b79c57f846cee2c191affda74a426686b6'
+    const subject = Wallet.createRandom().address
     const score = '2071087800' // 20.71
     const { digest, signature } = await attestScore(subject, score, attestor, scoreAttestationVerifier.address, {
       chainId: '31337',
@@ -50,7 +50,7 @@ describe('ScoreAttestationVerifier', function () {
   it('rejects an attestation from unauthorised attestor', async () => {
     ;({ scoreAttestationVerifier, attestor } = await loadFixture(createScoreAttestationVerifierFixture()))
 
-    const subject = '0x0ce4a3b79c57f846cee2c191affda74a426686b6'
+    const subject = Wallet.createRandom().address
     const score = '2000000000' // 20
     const wrongAttestor = Wallet.createRandom()
     const { digest, signature } = await attestScore(subject, score, wrongAttestor, scoreAttestationVerifier.address, {
@@ -65,7 +65,7 @@ describe('ScoreAttestationVerifier', function () {
   it('rejects if minimum score not met', async () => {
     ;({ scoreAttestationVerifier, attestor } = await loadFixture(createScoreAttestationVerifierFixture()))
 
-    const subject = '0x0ce4a3b79c57f846cee2c191affda74a426686b6'
+    const subject = Wallet.createRandom().address
     const score = '1999999999' // 19.99999999
     const { digest, signature } = await attestScore(subject, score, attestor, scoreAttestationVerifier.address, {
       chainId: '31337',

@@ -87,7 +87,7 @@ export function configuredAuctionRaffleFixture(configParams: auctionRaffleParams
     const scoreAttestationVerifier = await new ScoreAttestationVerifier__factory(deployer).deploy(
       '1',
       attestor.address,
-      10
+      20 * 10 ** 8 // 20.0
     )
 
     const auctionRaffle = await new AuctionRaffleMock__factory(deployer).deploy(

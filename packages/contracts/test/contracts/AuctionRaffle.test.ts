@@ -58,6 +58,29 @@ describe('AuctionRaffle', function () {
   })
 
   describe('bid', function () {
+    it('reverts when bidding with invalid attestation', async function () {
+      ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(auctionRaffleFixture))
+      const subject = await auctionRaffle.signer.getAddress()
+      const score = '2000000000' // 20.0
+      const wrongAttestor = Wallet.createRandom()
+      const { signature } = await attestScore(subject, score, wrongAttestor, scoreAttestationVerifier.address, {
+        chainId: '31337',
+        version: '1',
+      })
+      await expect(auctionRaffle.bid(score, signature)).to.be.revertedWith('Unauthorised attestor')
+    })
+
+    it('reverts when attested score is too low', async function () {
+      ;({ auctionRaffle, attestor, scoreAttestationVerifier } = await loadFixture(auctionRaffleFixture))
+      const subject = await auctionRaffle.signer.getAddress()
+      const score = '1900000000' // 19.0
+      const { signature } = await attestScore(subject, score, attestor, scoreAttestationVerifier.address, {
+        chainId: '31337',
+        version: '1',
+      })
+      await expect(auctionRaffle.bid(score, signature)).to.be.revertedWith('Score too low')
+    })
+
     it('reverts if bidding is not opened yet', async function () {
       const currentTime = await getLatestBlockTimestamp(provider)
       ;({ auctionRaffle, attestor } = await loadFixture(
@@ -1059,7 +1082,7 @@ describe('AuctionRaffle', function () {
   async function bidAsEligibleWallet(value: BigNumberish, wallet?: Wallet) {
     // Create attestation that this wallet is eligible
     expect(await scoreAttestationVerifier.attestor()).to.eq(attestor.address, 'Unexpected attestor')
-    const score = 10
+    const score = 21 * 10 ** 8 // 21.0
     if (wallet) {
       const { signature } = await attestScore(wallet.address, score, attestor, scoreAttestationVerifier.address)
       return auctionRaffle.connect(wallet).bid(score, signature, { value })
