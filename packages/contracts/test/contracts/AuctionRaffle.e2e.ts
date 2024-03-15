@@ -1,6 +1,6 @@
 import { setupFixtureLoader } from '../setup'
 import { auctionRaffleE2EFixture, minBidIncrement, reservePrice } from 'fixtures/auctionRaffleFixture'
-import { AuctionRaffleMock, VrfCoordinatorV2MockWithErc677 } from 'contracts'
+import { AuctionRaffleMock, ScoreAttestationVerifier, VrfCoordinatorV2MockWithErc677 } from 'contracts'
 import { Provider } from '@ethersproject/providers'
 import { BigNumber, BigNumberish, constants, Wallet } from 'ethers'
 import { randomBN, randomBigNumbers } from 'scripts/utils/random'
@@ -9,6 +9,7 @@ import { heapKey } from 'utils/heapKey'
 import { network } from 'hardhat'
 import { compareBids } from 'utils/compareBids'
 import { HOUR } from 'scripts/utils/consts'
+import { attestScore } from 'utils/attestScore'
 
 interface Bid {
   bidderID: number
@@ -25,6 +26,8 @@ describe('AuctionRaffle - E2E', function () {
   let auctionRaffleAsOwner: AuctionRaffleMock
   let wallets: Wallet[]
   let vrfCoordinator: VrfCoordinatorV2MockWithErc677
+  let scoreAttestationVerifier: ScoreAttestationVerifier
+  let attestor: Wallet
 
   let bids: Bid[]
   let sortedBids: Bid[]
@@ -38,6 +41,8 @@ describe('AuctionRaffle - E2E', function () {
       auctionRaffle,
       wallets,
       vrfCoordinator,
+      scoreAttestationVerifier,
+      attestor,
     } = await loadFixture(auctionRaffleE2EFixture))
     auctionRaffleAsOwner = auctionRaffle.connect(owner())
   })
@@ -62,7 +67,7 @@ describe('AuctionRaffle - E2E', function () {
 
   it('lets 120 participants place bids', async function () {
     for (const { wallet, amount } of bids) {
-      await auctionRaffle.connect(wallet).bid({ value: amount })
+      await bidAsEligibleWallet(amount, wallet)
     }
 
     expect(await auctionRaffle.getRaffleParticipants()).to.have.lengthOf(120)
@@ -74,7 +79,7 @@ describe('AuctionRaffle - E2E', function () {
   it('lets some participants bump bids', async function () {
     for (const { wallet, bumpAmount } of bids) {
       if (!bumpAmount.isZero()) {
-        await auctionRaffle.connect(wallet).bid({ value: bumpAmount })
+        await bidAsEligibleWallet(bumpAmount, wallet)
       }
     }
 
@@ -181,5 +186,19 @@ describe('AuctionRaffle - E2E', function () {
       result.delete(element)
     }
     return result
+  }
+
+  async function bidAsEligibleWallet(value: BigNumberish, wallet?: Wallet) {
+    // Create attestation that this wallet is eligible
+    expect(await scoreAttestationVerifier.attestor()).to.eq(attestor.address, 'Unexpected attestor')
+    const score = 21 * 10 ** 8 // 21.0
+    if (wallet) {
+      const { signature } = await attestScore(wallet.address, score, attestor, scoreAttestationVerifier.address)
+      return auctionRaffle.connect(wallet).bid(score, signature, { value })
+    } else {
+      const subject = await auctionRaffle.signer.getAddress()
+      const { signature } = await attestScore(subject, score, attestor, scoreAttestationVerifier.address)
+      return auctionRaffle.bid(score, signature, { value })
+    }
   }
 })
