@@ -1,15 +1,34 @@
 import { AddressLike, NumberLike } from 'ethereum-mars'
 import { utils } from 'ethers'
+import { parseEther } from 'ethers/lib/utils'
 
 interface DeploymentConfig {
-  initialOwner: AddressLike,
-  biddingStartTime: NumberLike,
-  biddingEndTime: NumberLike,
-  claimingEndTime: NumberLike,
-  auctionWinnersCount: NumberLike,
-  raffleWinnersCount: NumberLike,
-  reservePrice: NumberLike,
-  minBidIncrement: NumberLike,
+  initialOwner: AddressLike
+  biddingStartTime: NumberLike
+  biddingEndTime: NumberLike
+  claimingEndTime: NumberLike
+  auctionWinnersCount: NumberLike
+  raffleWinnersCount: NumberLike
+  reservePrice: NumberLike
+  minBidIncrement: NumberLike
+  bidVerifier: AddressLike
+}
+
+export const scoreAttestationVerifierConfig = {
+  version: '1',
+  initialAttestor: '0x0b657D6E696974a0DDfa6266d512A50339c2a968',
+  initialRequiredScore: 10,
+}
+
+export const vrfConfig = {
+  // arb sepolia
+  vrfCoordinator: '0x50d47e4142598E3411aA864e08a44284e471AC6f',
+  linkToken: '0xb1D4538B4571d411F07960EF2838Ce337FE1E80E',
+  linkPremium: parseEther('0.005'),
+  gasLaneKeyHash: ' 0x027f94ff1465b3525f9fc03e9ff7d6d2c0953482246dd6ae07570c45d6631414', // 50 gwei
+  callbackGasLimit: 2_500_000, // maximum
+  minConfirmations: 1, // minimum
+  subId: 235,
 }
 
 export const config: DeploymentConfig = {
@@ -21,4 +40,5 @@ export const config: DeploymentConfig = {
   raffleWinnersCount: 80,
   reservePrice: utils.parseEther('0.25'),
   minBidIncrement: utils.parseEther('0.01'),
+  bidVerifier: '0x0b657D6E696974a0DDfa6266d512A50339c2a968',
 }
