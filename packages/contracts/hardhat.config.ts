@@ -9,6 +9,7 @@ import 'scripts/tasks/auctionRaffle/hardhatTasks'
 import 'scripts/tasks/auctionRaffle/rinkebyTasks'
 import 'scripts/tasks/auctionRaffle/arbitrumTasks'
 import 'hardhat-tracer'
+import '@nomicfoundation/hardhat-verify'
 
 import mocharc from './.mocharc.json'
 import compiler from './.compiler.json'
@@ -59,5 +60,11 @@ module.exports = {
   mocha: {
     ...mocharc,
     timeout: 400000,
+  },
+  etherscan: {
+    apiKey: {
+      arbitrumSepolia: process.env.ARBISCAN_API_KEY,
+      arbitrumOne: process.env.ARBISCAN_API_KEY,
+    },
   },
 }
