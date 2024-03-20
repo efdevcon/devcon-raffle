@@ -88,7 +88,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
         uint256 score,
         bytes calldata proof
     ) external payable onlyExternalTransactions onlyInState(State.BIDDING_OPEN) {
-        IVerifier(bidVerifier).verify(abi.encode(msg.sender, score), proof);
+        IVerifier(_bidVerifier).verify(abi.encode(msg.sender, score), proof);
         Bid storage bidder = _bids[msg.sender];
         require(bidder.amount == 0, "AuctionRaffle: bid already exists");
         require(msg.value >= _reservePrice, "AuctionRaffle: bid amount is below reserve price");
@@ -373,11 +373,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
      * @param oldAmount Previous bid amount
      * @param newAmount New bid amount
      */
-    function updateHeapBid(
-        uint256 bidderID,
-        uint256 oldAmount,
-        uint256 newAmount
-    ) private {
+    function updateHeapBid(uint256 bidderID, uint256 oldAmount, uint256 newAmount) private {
         bool isHeapFull = getBiddersCount() >= _auctionWinnersCount;
         uint256 key = getKey(bidderID, newAmount);
         uint256 minKeyValue = _minKeyValue;
