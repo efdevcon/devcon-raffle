@@ -2,10 +2,10 @@
 set -eu
 
 # Setting Infura or Alchemy key to use for convenience here
-export ALCHEMY_KEY="j_dccrP25UjZv5uYxh1mcjEl5o8nWZaf"
+# export ALCHEMY_KEY="j_dccrP25UjZv5uYxh1mcjEl5o8nWZaf"
 
 # Setting Etherscan key to use for convenience here
-export ETHERSCAN_KEY="FJG9XKWZC5ECE6T86IGM8XI35DME5KYU1E"
+# export ETHERSCAN_KEY="FJG9XKWZC5ECE6T86IGM8XI35DME5KYU1E"
 
 # Consume the first argument as a path to the Mars deploy script.
 # All other command line arguments get forwarded to Mars.
