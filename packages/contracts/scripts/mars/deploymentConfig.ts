@@ -32,9 +32,9 @@ export const vrfConfig = {
 
 export const config: DeploymentConfig = {
   initialOwner: '0x511ECC4c955626DDaD88f20493E39E71be8133B6',
-  biddingStartTime: 1657008000, // Jul 05 2022 08:00:00 UTC
-  biddingEndTime: 1657785540, // Jul 14 2022 07:59:00 UTC
-  claimingEndTime: 1673683140, // Jan 14 2023 07:59:00 UTC
+  biddingStartTime: 1710956968, // 2024-03-20T17:49:28.000Z
+  biddingEndTime: 1711561768, // 2024-03-27T17:49:28.000Z
+  claimingEndTime: 1712166568, // 2024-04-03T17:49:28.000Z
   auctionWinnersCount: 20,
   raffleWinnersCount: 80,
   reservePrice: utils.parseEther('0.25'),
