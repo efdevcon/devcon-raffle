@@ -79,8 +79,10 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
     }
 
     /***
-     * @notice Places a new bid or bumps an existing bid.
+     * @notice Places a new bid.
      * @dev Assigns a unique bidderID to the sender address.
+     * @param score The user's sybil resistance score
+     * @param proof Attestation signature of the score
      */
     function bid(
         uint256 score,
@@ -88,22 +90,29 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
     ) external payable onlyExternalTransactions onlyInState(State.BIDDING_OPEN) {
         IVerifier(bidVerifier).verify(abi.encode(msg.sender, score), proof);
         Bid storage bidder = _bids[msg.sender];
-        if (bidder.amount == 0) {
-            require(msg.value >= _reservePrice, "AuctionRaffle: bid amount is below reserve price");
-            bidder.amount = msg.value;
-            bidder.bidderID = _nextBidderID++;
-            _bidders[bidder.bidderID] = payable(msg.sender);
-            bidder.raffleParticipantIndex = uint240(_raffleParticipants.length);
-            _raffleParticipants.push(bidder.bidderID);
+        require(bidder.amount == 0, "AuctionRaffle: bid already exists");
+        require(msg.value >= _reservePrice, "AuctionRaffle: bid amount is below reserve price");
+        bidder.amount = msg.value;
+        bidder.bidderID = _nextBidderID++;
+        _bidders[bidder.bidderID] = payable(msg.sender);
+        bidder.raffleParticipantIndex = uint240(_raffleParticipants.length);
+        _raffleParticipants.push(bidder.bidderID);
 
-            addBidToHeap(bidder.bidderID, bidder.amount);
-        } else {
-            require(msg.value >= _minBidIncrement, "AuctionRaffle: bid increment too low");
-            uint256 oldAmount = bidder.amount;
-            bidder.amount += msg.value;
+        addBidToHeap(bidder.bidderID, bidder.amount);
+        emit NewBid(msg.sender, bidder.bidderID, bidder.amount);
+    }
 
-            updateHeapBid(bidder.bidderID, oldAmount, bidder.amount);
-        }
+    /***
+     * @notice Bumps an existing bid.
+     */
+    function bump() external payable onlyExternalTransactions onlyInState(State.BIDDING_OPEN) {
+        Bid storage bidder = _bids[msg.sender];
+        require(bidder.amount != 0, "AuctionRaffle: bump nonexistent bid");
+        require(msg.value >= _minBidIncrement, "AuctionRaffle: bid increment too low");
+        uint256 oldAmount = bidder.amount;
+        bidder.amount += msg.value;
+
+        updateHeapBid(bidder.bidderID, oldAmount, bidder.amount);
         emit NewBid(msg.sender, bidder.bidderID, bidder.amount);
     }
 

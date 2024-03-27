@@ -81,6 +81,19 @@ describe('AuctionRaffle', function () {
       await expect(auctionRaffle.bid(score, signature)).to.be.revertedWith('Score too low')
     })
 
+    it('reverts if bidding on an existing bid', async function () {
+      await bidWithAttestation(reservePrice)
+      await expect(bidWithAttestation(minBidIncrement)).to.be.revertedWith('AuctionRaffle: bid already exists')
+      // bump should succeed
+      await auctionRaffle.bump({ value: minBidIncrement })
+    })
+
+    it('reverts if bumping a nonexistend bid', async function () {
+      await expect(auctionRaffle.bump({ value: minBidIncrement })).to.be.revertedWith(
+        'AuctionRaffle: bump nonexistent bid'
+      )
+    })
+
     it('reverts if bidding is not opened yet', async function () {
       const currentTime = await getLatestBlockTimestamp(provider)
       ;({ auctionRaffle, attestor } = await loadFixture(
@@ -98,28 +111,28 @@ describe('AuctionRaffle', function () {
     })
 
     it('reverts if bid increase is too low', async function () {
-      await bidAsEligibleWallet(reservePrice)
-      await expect(bidAsEligibleWallet(minBidIncrement.sub(100))).to.be.revertedWith(
+      await bidOrBumpWithAttestation(reservePrice)
+      await expect(auctionRaffle.bump({ value: minBidIncrement.sub(100) })).to.be.revertedWith(
         'AuctionRaffle: bid increment too low'
       )
     })
 
     it('increases bid amount', async function () {
-      await bidAsEligibleWallet(reservePrice)
-      await expect(bidAsEligibleWallet(minBidIncrement)).to.be.not.reverted
+      await bidOrBumpWithAttestation(reservePrice)
+      await expect(auctionRaffle.bump({ value: minBidIncrement })).to.be.not.reverted
 
       const bid = await auctionRaffle.getBid(bidderAddress)
       expect(bid.amount).to.be.equal(reservePrice.add(minBidIncrement))
     })
 
     it('reverts if bid amount is below reserve price', async function () {
-      await expect(bidAsEligibleWallet(reservePrice.sub(100))).to.be.revertedWith(
+      await expect(bidOrBumpWithAttestation(reservePrice.sub(100))).to.be.revertedWith(
         'AuctionRaffle: bid amount is below reserve price'
       )
     })
 
     it('saves bid', async function () {
-      await expect(bidAsEligibleWallet(reservePrice)).to.be.not.reverted
+      await expect(bidOrBumpWithAttestation(reservePrice)).to.be.not.reverted
 
       const bid = await auctionRaffle.getBid(bidderAddress)
 
@@ -130,20 +143,20 @@ describe('AuctionRaffle', function () {
     })
 
     it('saves bidder address', async function () {
-      await bidAsEligibleWallet(reservePrice)
+      await bidOrBumpWithAttestation(reservePrice)
 
       const savedBidderAddress = await auctionRaffle.getBidderAddress(1)
       expect(savedBidderAddress).to.be.equal(bidderAddress)
     })
 
     it('saves bidder as raffle participant', async function () {
-      await bidAsEligibleWallet(reservePrice)
+      await bidOrBumpWithAttestation(reservePrice)
 
       expect(await auctionRaffle.getRaffleParticipants()).to.deep.eq([BigNumber.from(1)])
     })
 
     it('increases bidders count', async function () {
-      await bidAsEligibleWallet(reservePrice)
+      await bidOrBumpWithAttestation(reservePrice)
 
       expect(await auctionRaffle.getBiddersCount()).to.be.equal(1)
     })
@@ -155,9 +168,9 @@ describe('AuctionRaffle', function () {
             configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
           ))
 
-          await bidAsEligibleWallet(reservePrice.add(100), wallets[0])
-          await bidAsEligibleWallet(reservePrice.add(200), wallets[1])
-          await bidAsEligibleWallet(reservePrice.add(50), wallets[2])
+          await bidOrBumpWithAttestation(reservePrice.add(100), wallets[0])
+          await bidOrBumpWithAttestation(reservePrice.add(200), wallets[1])
+          await bidOrBumpWithAttestation(reservePrice.add(50), wallets[2])
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([
             heapKey(2, reservePrice.add(200)),
@@ -175,8 +188,8 @@ describe('AuctionRaffle', function () {
           ))
 
           await bid(2)
-          await bidAsEligibleWallet(reservePrice.add(100), wallets[2])
-          await bidAsEligibleWallet(reservePrice.add(120), wallets[3])
+          await bidOrBumpWithAttestation(reservePrice.add(100), wallets[2])
+          await bidOrBumpWithAttestation(reservePrice.add(120), wallets[3])
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([
             heapKey(4, reservePrice.add(120)),
@@ -193,11 +206,11 @@ describe('AuctionRaffle', function () {
             configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
           ))
 
-          await bidAsEligibleWallet(reservePrice.add(minBidIncrement).add(100), wallets[0])
-          await bidAsEligibleWallet(reservePrice.add(minBidIncrement).add(200), wallets[1])
-          await bidAsEligibleWallet(reservePrice, wallets[2])
+          await bidOrBumpWithAttestation(reservePrice.add(minBidIncrement).add(100), wallets[0])
+          await bidOrBumpWithAttestation(reservePrice.add(minBidIncrement).add(200), wallets[1])
+          await bidOrBumpWithAttestation(reservePrice, wallets[2])
 
-          await bidAsEligibleWallet(minBidIncrement, wallets[2])
+          await auctionRaffle.connect(wallets[2]).bump({ value: minBidIncrement })
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([
             heapKey(2, reservePrice.add(minBidIncrement).add(200)),
@@ -215,11 +228,11 @@ describe('AuctionRaffle', function () {
               configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
             ))
 
-            await bidAsEligibleWallet(reservePrice, wallets[0])
-            await bidAsEligibleWallet(reservePrice.add(minBidIncrement).add(200), wallets[1])
-            await bidAsEligibleWallet(reservePrice.add(minBidIncrement), wallets[2])
+            await bidOrBumpWithAttestation(reservePrice, wallets[0])
+            await bidOrBumpWithAttestation(reservePrice.add(minBidIncrement).add(200), wallets[1])
+            await bidOrBumpWithAttestation(reservePrice.add(minBidIncrement), wallets[2])
 
-            await bidAsEligibleWallet(minBidIncrement.add(100), wallets[0])
+            await auctionRaffle.connect(wallets[0]).bump({ value: minBidIncrement.add(100) })
 
             expect(await auctionRaffle.getHeap()).to.deep.equal([
               heapKey(2, reservePrice.add(minBidIncrement).add(200)),
@@ -236,10 +249,10 @@ describe('AuctionRaffle', function () {
               configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
             ))
 
-            await bidAsEligibleWallet(reservePrice, wallets[0])
-            await bidAsEligibleWallet(reservePrice.add(minBidIncrement).add(200), wallets[1])
+            await bidOrBumpWithAttestation(reservePrice, wallets[0])
+            await bidOrBumpWithAttestation(reservePrice.add(minBidIncrement).add(200), wallets[1])
 
-            await bidAsEligibleWallet(minBidIncrement.add(100), wallets[0])
+            await auctionRaffle.connect(wallets[0]).bump({ value: minBidIncrement.add(100) })
 
             expect(await auctionRaffle.getHeap()).to.deep.equal([
               heapKey(2, reservePrice.add(minBidIncrement).add(200)),
@@ -256,10 +269,10 @@ describe('AuctionRaffle', function () {
               configuredAuctionRaffleFixture({ auctionWinnersCount: 2 })
             ))
 
-            await bidAsEligibleWallet(reservePrice, wallets[0])
-            await bidAsEligibleWallet(reservePrice.add(200), wallets[1])
+            await bidOrBumpWithAttestation(reservePrice, wallets[0])
+            await bidOrBumpWithAttestation(reservePrice.add(200), wallets[1])
 
-            await bidAsEligibleWallet(minBidIncrement, wallets[1])
+            await auctionRaffle.connect(wallets[1]).bump({ value: minBidIncrement })
 
             expect(await auctionRaffle.getHeap()).to.deep.equal([
               heapKey(2, reservePrice.add(minBidIncrement).add(200)),
@@ -280,8 +293,8 @@ describe('AuctionRaffle', function () {
           ))
 
           const auctionWinnerBid = reservePrice.add(100)
-          await bidAsEligibleWallet(auctionWinnerBid, wallets[0])
-          await bidAsEligibleWallet(reservePrice, wallets[1])
+          await bidOrBumpWithAttestation(auctionWinnerBid, wallets[0])
+          await bidOrBumpWithAttestation(reservePrice, wallets[1])
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([heapKey(1, auctionWinnerBid), heapKey(2, reservePrice)])
           expect(await auctionRaffle.getMinKeyIndex()).to.eq(1)
@@ -296,8 +309,8 @@ describe('AuctionRaffle', function () {
           ))
 
           const auctionWinnerBid = reservePrice.add(100)
-          await bidAsEligibleWallet(reservePrice, wallets[0])
-          await bidAsEligibleWallet(auctionWinnerBid, wallets[1])
+          await bidOrBumpWithAttestation(reservePrice, wallets[0])
+          await bidOrBumpWithAttestation(auctionWinnerBid, wallets[1])
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([heapKey(2, auctionWinnerBid), heapKey(1, reservePrice)])
           expect(await auctionRaffle.getMinKeyIndex()).to.eq(1)
@@ -311,11 +324,11 @@ describe('AuctionRaffle', function () {
             configuredAuctionRaffleFixture({ auctionWinnersCount: 4 })
           ))
 
-          await bidAsEligibleWallet(reservePrice.add(200), wallets[0])
-          await bidAsEligibleWallet(reservePrice.add(minBidIncrement), wallets[1])
-          await bidAsEligibleWallet(reservePrice.add(minBidIncrement).add(100), wallets[2])
+          await bidOrBumpWithAttestation(reservePrice.add(200), wallets[0])
+          await bidOrBumpWithAttestation(reservePrice.add(minBidIncrement), wallets[1])
+          await bidOrBumpWithAttestation(reservePrice.add(minBidIncrement).add(100), wallets[2])
 
-          await bidAsEligibleWallet(minBidIncrement, wallets[0])
+          await auctionRaffle.connect(wallets[0]).bump({ value: minBidIncrement })
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([
             heapKey(1, reservePrice.add(minBidIncrement).add(200)),
@@ -334,9 +347,9 @@ describe('AuctionRaffle', function () {
           ))
 
           let auctionWinnerBid = reservePrice.add(100)
-          await bidAsEligibleWallet(auctionWinnerBid, wallets[0])
-          await bidAsEligibleWallet(reservePrice, wallets[1])
-          await bidAsEligibleWallet(minBidIncrement, wallets[0])
+          await bidOrBumpWithAttestation(auctionWinnerBid, wallets[0])
+          await bidOrBumpWithAttestation(reservePrice, wallets[1])
+          await auctionRaffle.connect(wallets[0]).bump({ value: minBidIncrement })
           auctionWinnerBid = auctionWinnerBid.add(minBidIncrement)
 
           expect(await auctionRaffle.getHeap()).to.deep.equal([heapKey(1, auctionWinnerBid), heapKey(2, reservePrice)])
@@ -347,15 +360,15 @@ describe('AuctionRaffle', function () {
     })
 
     it('emits event on bid increase', async function () {
-      await bidAsEligibleWallet(reservePrice)
+      await bidOrBumpWithAttestation(reservePrice)
 
-      await expect(bidAsEligibleWallet(minBidIncrement))
+      await expect(auctionRaffle.bump({ value: minBidIncrement }))
         .to.emit(auctionRaffle, 'NewBid')
         .withArgs(bidderAddress, 1, reservePrice.add(minBidIncrement))
     })
 
     it('emits event on bid', async function () {
-      await expect(bidAsEligibleWallet(reservePrice))
+      await expect(bidOrBumpWithAttestation(reservePrice))
         .to.emit(auctionRaffle, 'NewBid')
         .withArgs(bidderAddress, 1, reservePrice)
     })
@@ -658,7 +671,7 @@ describe('AuctionRaffle', function () {
 
     it('transfers remaining funds for raffle winner', async function () {
       await bid(9) // place 9 bids = reservePrice
-      await bidAsEligibleWallet(reservePrice, owner()) // bumps owner bid to become auction winner
+      await bidOrBumpWithAttestation(reservePrice, owner()) // bumps owner bid to become auction winner
       await bidAndSettleRaffle(9) // bumps all 9 bids
       const raffleBid = await getBidByWinType(9, WinType.raffle) // get any raffle winner
       const bidderAddress = await auctionRaffleAsOwner.getBidderAddress(raffleBid.bidderID)
@@ -670,7 +683,7 @@ describe('AuctionRaffle', function () {
     })
 
     it('transfers bid funds for golden ticket winner', async function () {
-      await bidAsEligibleWallet(reservePrice, owner())
+      await bidOrBumpWithAttestation(reservePrice, owner())
       await bidAndSettleRaffle(10)
 
       const goldenBid = await getBidByWinType(10, WinType.goldenTicket)
@@ -685,7 +698,7 @@ describe('AuctionRaffle', function () {
     })
 
     it('transfers bid funds for non-winning bidder', async function () {
-      await bidAsEligibleWallet(reservePrice, owner())
+      await bidOrBumpWithAttestation(reservePrice, owner())
       await bidAndSettleRaffle(10)
 
       const lostBid = await getBidByWinType(10, WinType.loss)
@@ -722,7 +735,7 @@ describe('AuctionRaffle', function () {
     describe('when biddersCount > (auctionWinnersCount + raffleWinnersCount)', function () {
       it('transfers correct amount', async function () {
         const auctionBidAmount = reservePrice.add(100)
-        await bidAsEligibleWallet(auctionBidAmount, wallets[10])
+        await bidOrBumpWithAttestation(auctionBidAmount, wallets[10])
         await bidAndSettleRaffle(10)
 
         const claimAmount = auctionBidAmount.add(reservePrice.mul(7))
@@ -738,8 +751,8 @@ describe('AuctionRaffle', function () {
         auctionRaffleAsOwner = auctionRaffle.connect(owner())
 
         const auctionBidAmount = reservePrice.add(100)
-        await bidAsEligibleWallet(auctionBidAmount, wallets[8])
-        await bidAsEligibleWallet(auctionBidAmount, wallets[9])
+        await bidOrBumpWithAttestation(auctionBidAmount, wallets[8])
+        await bidOrBumpWithAttestation(auctionBidAmount, wallets[9])
         await bidAndSettleRaffle(8)
 
         const claimAmount = auctionBidAmount.mul(2).add(reservePrice.mul(7))
@@ -755,7 +768,7 @@ describe('AuctionRaffle', function () {
         auctionRaffleAsOwner = auctionRaffle.connect(owner())
 
         const auctionBidAmount = reservePrice.add(100)
-        await bidAsEligibleWallet(auctionBidAmount, wallets[8])
+        await bidOrBumpWithAttestation(auctionBidAmount, wallets[8])
         await bidAndSettleRaffle(8)
 
         const claimAmount = auctionBidAmount.add(reservePrice.mul(7))
@@ -1075,22 +1088,46 @@ describe('AuctionRaffle', function () {
 
   async function bid(walletCount: number) {
     for (let i = 0; i < walletCount; i++) {
-      await bidAsEligibleWallet(reservePrice, wallets[i])
+      await bidOrBumpWithAttestation(reservePrice, wallets[i])
     }
   }
 
-  async function bidAsEligibleWallet(value: BigNumberish, wallet?: Wallet) {
+  /**
+   * Bid or bump as an eligible wallet
+   * @param value Amount to bid or bump
+   * @param wallet Optional wallet to bid with
+   */
+  async function bidOrBumpWithAttestation(value: BigNumberish, wallet?: Wallet) {
     // Create attestation that this wallet is eligible
     expect(await scoreAttestationVerifier.attestor()).to.eq(attestor.address, 'Unexpected attestor')
     const score = 21 * 10 ** 8 // 21.0
-    if (wallet) {
-      const { signature } = await attestScore(wallet.address, score, attestor, scoreAttestationVerifier.address)
-      return auctionRaffle.connect(wallet).bid(score, signature, { value })
-    } else {
-      const subject = await auctionRaffle.signer.getAddress()
-      const { signature } = await attestScore(subject, score, attestor, scoreAttestationVerifier.address)
-      return auctionRaffle.bid(score, signature, { value })
+    const contract = wallet ? auctionRaffle.connect(wallet) : auctionRaffle
+    const subject = await contract.signer.getAddress()
+    const { signature } = await attestScore(subject, score, attestor, scoreAttestationVerifier.address)
+    try {
+      const { amount } = await contract.getBid(subject)
+      expect(amount.gt(0)).to.eq(true) // sanity
+      // existing bid -> bump
+      return contract.bump({ value })
+    } catch (err) {
+      // bid
+      return contract.bid(score, signature, { value })
     }
+  }
+
+  /**
+   * Bid as eligible wallet (will not try to bump)
+   * @param value Amount to bid or bump
+   * @param wallet Optional wallet to bid with
+   */
+  async function bidWithAttestation(value: BigNumberish, wallet?: Wallet) {
+    // Create attestation that this wallet is eligible
+    expect(await scoreAttestationVerifier.attestor()).to.eq(attestor.address, 'Unexpected attestor')
+    const score = 21 * 10 ** 8 // 21.0
+    const contract = wallet ? auctionRaffle.connect(wallet) : auctionRaffle
+    const subject = await contract.signer.getAddress()
+    const { signature } = await attestScore(subject, score, attestor, scoreAttestationVerifier.address)
+    return contract.bid(score, signature, { value })
   }
 
   async function getBidByID(bidID: number): Promise<Bid> {
