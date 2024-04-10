@@ -36,7 +36,7 @@ if [[ "$(git status --porcelain)" ]]; then
 fi
 
 if [[ "$(git log --pretty=format:'%H' -n 1)" != "$(cat ./build/canary.hash)" ]]; then
-    echo "Error: Build canary does not match current commit hash. Please run yarn build."
+    echo "Error: Build canary does not match current commit hash. Please run pnpm build."
     exit 1
 fi
 
@@ -59,7 +59,7 @@ target_file_name="$(basename -- ${DEPLOY_SCRIPT})"
 target_log="-${target_file_name%.*}"
 timestamp_log="-$(date +%s)"
 
-yarn mars
+pnpm mars
 ts-node ${DEPLOY_SCRIPT} \
   --waffle-config ./.waffle.json \
   ${args} \
