@@ -9,11 +9,6 @@
     "verify": "wsrun -m -c verify",
     "update": "git submodule update --remote"
   },
-  "workspaces": [
-    "packages/contracts",
-    "packages/frontend",
-    "packages/next-frontend"
-  ],
   "devDependencies": {
     "wsrun": "^5.2.4"
   }

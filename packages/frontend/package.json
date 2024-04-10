@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "start": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "yarn lint:prettier --check && yarn lint:eslint",
-    "lint:fix": "yarn lint:prettier --write --loglevel warn && yarn lint:eslint --fix",
+    "lint": "pnpm lint:prettier --check && pnpm lint:eslint",
+    "lint:fix": "pnpm lint:prettier --write --loglevel warn && pnpm lint:eslint --fix",
     "lint:eslint": "eslint './{src,test}/**/*.{ts,tsx}' --cache",
     "lint:prettier": "prettier './{src,test}/**/*.{ts,tsx}'",
     "test": "jest"
