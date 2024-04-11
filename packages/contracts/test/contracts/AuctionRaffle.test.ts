@@ -49,6 +49,7 @@ describe('AuctionRaffle', function () {
       wallets,
       attestor,
       scoreAttestationVerifier,
+      vrfCoordinator,
     } = await loadFixture(auctionRaffleFixture))
     auctionRaffleAsOwner = auctionRaffle.connect(owner())
     vrfCoordinator = new VrfCoordinatorV2MockWithErc677__factory(owner()).attach(

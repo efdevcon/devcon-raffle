@@ -8,17 +8,14 @@ import { randomBigNumbers } from 'scripts/utils/random'
 import { generateRandomAccounts } from 'scripts/utils/generateRandomAccounts'
 import { fundAccounts } from 'scripts/utils/fundAccounts'
 import { bidAsSigner } from 'scripts/utils/bid'
-import { minBidIncrement, reservePrice } from 'scripts/node/deploy'
+import { minBidIncrement, reservePrice } from 'scripts/node/config'
 
 const auctionRaffleAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
 
 task('bid', 'Places bid for given account with provided amount')
   .addParam('account', 'Hardhat account to use')
-  .addParam('amount', 'The bid\'s amount in ETH', undefined, types.string)
-  .setAction(async (
-    { account, amount }: { account: string, amount: string },
-    hre,
-  ) => {
+  .addParam('amount', "The bid's amount in ETH", undefined, types.string)
+  .setAction(async ({ account, amount }: { account: string; amount: string }, hre) => {
     const signer = await hre.ethers.getSigner(account)
     const auctionRaffle = await connectToAuctionRaffle(hre, auctionRaffleAddress)
     const auctionRaffleAsSigner = auctionRaffle.connect(signer)
@@ -31,10 +28,7 @@ task('bid', 'Places bid for given account with provided amount')
 task('bid-random', 'Bids X times using randomly generated accounts')
   .addParam('amount', 'Amount of bids', undefined, types.int, false)
   .addParam('account', 'Index of hardhat account to take funds from', 0, types.int)
-  .setAction(async (
-    { amount, account }: { amount: number, account: number },
-    hre,
-  ) => {
+  .setAction(async ({ amount, account }: { amount: number; account: number }, hre) => {
     const signers = await hre.ethers.getSigners()
     const auctionRaffle = await connectToAuctionRaffle(hre, auctionRaffleAddress)
 
@@ -51,24 +45,22 @@ task('bid-random', 'Bids X times using randomly generated accounts')
     }
   })
 
-task('settle-auction', 'Settles auction')
-  .setAction(async (taskArgs, hre) => {
-    const auctionRaffle = await auctionRaffleAsOwner(hre)
+task('settle-auction', 'Settles auction').setAction(async (taskArgs, hre) => {
+  const auctionRaffle = await auctionRaffleAsOwner(hre)
 
-    await auctionRaffle.settleAuction()
-    console.log('Auction settled!')
-  })
+  await auctionRaffle.settleAuction()
+  console.log('Auction settled!')
+})
 
-task('settle-raffle', 'Settles raffle')
-  .setAction(async (taskArgs, hre) => {
-    const auctionRaffle = await auctionRaffleAsOwner(hre)
+task('settle-raffle', 'Settles raffle').setAction(async (taskArgs, hre) => {
+  const auctionRaffle = await auctionRaffleAsOwner(hre)
 
-    const raffleWinnersCount = await auctionRaffle.raffleWinnersCount()
-    const randomNumbersCount = BigNumber.from(raffleWinnersCount).div(8).toNumber()
+  const raffleWinnersCount = await auctionRaffle.raffleWinnersCount()
+  const randomNumbersCount = BigNumber.from(raffleWinnersCount).div(8).toNumber()
 
-    await auctionRaffle.settleRaffle(randomBigNumbers(randomNumbersCount))
-    console.log('Raffle settled!')
-  })
+  await auctionRaffle.settleRaffle(randomBigNumbers(randomNumbersCount))
+  console.log('Raffle settled!')
+})
 
 function logBid(address: string, bidAmount: BigNumberish) {
   console.log(`Account ${address} bid ${formatEther(bidAmount)}`)

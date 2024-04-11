@@ -44,7 +44,7 @@ abstract contract VRFRequester is VRFConsumerBaseV2 {
     constructor(VRFRequesterParams memory params) VRFConsumerBaseV2(params.vrfCoordinator) {
         vrfCoordinator = params.vrfCoordinator;
         linkToken = params.linkToken;
-        juels = 10**LinkTokenInterface(params.linkToken).decimals();
+        juels = 10 ** LinkTokenInterface(params.linkToken).decimals();
         linkPremium = params.linkPremium;
         gasLaneKeyHash = params.gasLaneKeyHash;
         callbackGasLimit = params.callbackGasLimit;
