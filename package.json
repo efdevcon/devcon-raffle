@@ -7,8 +7,7 @@
     "lint": "turbo lint",
     "build": "turbo build",
     "test": "turbo test",
-    "verify": "turbo verify",
-    "update": "git submodule update --remote"
+    "verify": "turbo verify"
   },
   "devDependencies": {
     "turbo": "^1.13.2"
