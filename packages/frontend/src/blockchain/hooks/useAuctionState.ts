@@ -53,14 +53,12 @@ export function useAuctionState(): AuctionState | undefined {
 
 export const useContractState = () => {
   const chainId = useChainId()
-  const params = {
+  const {data, isLoading, error} = useReadContract({
     chainId,
     abi: AUCTION_ABI,
     address: AUCTION_ADDRESSES[chainId],
     functionName: 'getState'
-  } as const
-
-  const {data, isLoading, error} = useReadContract(params)
+  })
 
   return {state: data as ContractState, isLoading}
 }
