@@ -18,10 +18,12 @@ export const useReadAuctionParams = () => {
   })
 
   return useMemo(() => ({
-    biddingEndTime: data?.[0]
+    biddingStartTime: data?.[0],
+    biddingEndTime: data?.[1],
   }), [data])
 }
 
 const params = [
-  'biddingEndTime'
+  'biddingStartTime',
+  'biddingEndTime',
 ] as const

@@ -1,15 +1,13 @@
-import { useEffect, useState } from 'react'
-// import { useAuctionTime } from 'src/hooks'
+import {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import {BigNumber} from "@ethersproject/bignumber";
 import {formatTimeLeft} from "@/utils/formatters/formatTimeLeft";
 import {formatEndDate} from "@/utils/formatters/formatEndDate";
 import {setIntervalImmediately} from "@/utils/setIntervalImmediately";
 import {useAuctionState} from "@/blockchain/hooks/useAuctionState";
+import {useAuctionTime} from "@/blockchain/hooks/useAuctionTime";
 
 export const TimeLeft = () => {
-  // const timestamp = useAuctionTime()
-  const timestamp = BigNumber.from(1742987219)
+  const timestamp = useAuctionTime()
   const state = useAuctionState()
 
   const [timeLeft, setTimeLeft] = useState(formatTimeLeft(timestamp))

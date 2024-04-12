@@ -12,7 +12,7 @@ export type AuctionState =
   | 'ClaimingFlow'
   | 'ClaimingClosed'
 
-enum ContractState {
+export enum ContractState {
   AWAITING_BIDDING,
   BIDDING_OPEN,
   BIDDING_CLOSED,
