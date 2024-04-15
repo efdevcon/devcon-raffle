@@ -7,7 +7,11 @@
     "dev": "pnpm next dev",
     "build": "pnpm next build",
     "start": "pnpm next start",
-    "lint": "pnpm next lint"
+    "lint": "pnpm run lint:ts && pnpm run lint:prettier --check && next lint",
+    "lint:fix": "pnpm run lint:prettier --write && pnpm run lint:eslint --fix && pnpm run lint:ts",
+    "lint:ts": "tsc --noEmit",
+    "lint:prettier": "prettier './{src,__tests__}/**/*.{ts,tsx,graphql}' --cache",
+    "lint:eslint": "eslint './{src,__tests__}/**/*.{ts,tsx}' --cache"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.28.9",
@@ -27,6 +31,10 @@
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.47.0",
     "eslint-config-next": "14.1.4",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-turbo": "^1.13.2",
+    "eslint-plugin-react": "^7.34.1",
+    "prettier": "^2.4.1",
     "typescript": "^5"
   }
 }
