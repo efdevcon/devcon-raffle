@@ -1,18 +1,14 @@
 import * as Accordion from '@radix-ui/react-accordion'
-// import { useAuctionWinnersCount } from 'src/hooks/useAuctionWinnersCount'
-// import { useRaffleWinnersCount } from 'src/hooks/useRaffleWinnersCount'
 import styled from 'styled-components'
 import {ArrowDownIcon} from "../icons";
 import {Colors} from "@/styles/colors";
 import {Rule, RuleText} from "@/components/info/Rules";
 import {formatEndDate} from "@/utils/formatters/formatEndDate";
 import {useVoucherRedeemDeadline} from "@/blockchain/hooks/useVoucherRedeemDeadline";
+import {useReadAuctionParams} from "@/blockchain/hooks/useReadAuctionParams";
 
 export const InfoAccordion = () => {
-  // const auctionWinnersCount = useAuctionWinnersCount()
-  const auctionWinnersCount = 20
-  // const raffleWinnersCount = useRaffleWinnersCount()
-  const raffleWinnersCount = 80
+  const {auctionWinnersCount, raffleWinnersCount} = useReadAuctionParams()
   const redeemTimestamp = useVoucherRedeemDeadline()
   const totalCount = auctionWinnersCount && raffleWinnersCount && auctionWinnersCount + raffleWinnersCount
   const reservePrice = 0.25
@@ -61,7 +57,7 @@ export const InfoAccordion = () => {
           <StyledContent>
             Place a bid of at least {reservePrice} ETH for a chance to win a Devcon ticket. If your bid is in the
             top{' '}
-            {auctionWinnersCount}, you will win a Devcon ticket in exchange for the amount you paid in your bid. At any
+            {Number(auctionWinnersCount)}, you will win a Devcon ticket in exchange for the amount you paid in your bid. At any
             point, you can top up your bid if you want. If your bid is not in the top {auctionWinnersCount}, you will be
             entered into a raffle and may be randomly chosen to win a Devcon ticket — if you were randomly selected in
             the Raffle & bid more than the reserve price, you can withdraw the difference. If you do not win, you can

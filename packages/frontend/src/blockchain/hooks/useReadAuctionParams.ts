@@ -20,10 +20,14 @@ export const useReadAuctionParams = () => {
   return useMemo(() => ({
     biddingStartTime: data?.[0],
     biddingEndTime: data?.[1],
+    auctionWinnersCount: data ? Number(data[2]) : undefined,
+    raffleWinnersCount: data ? Number(data[3]) : undefined,
   }), [data])
 }
 
 const params = [
   'biddingStartTime',
   'biddingEndTime',
+  'auctionWinnersCount',
+  'raffleWinnersCount'
 ] as const
