@@ -1,6 +1,6 @@
-import {IconBase, IconProps} from '@/components/icons/IconBase'
+import { IconBase, IconProps } from '@/components/icons/IconBase'
 
-export const RedirectIcon = ({color, size, className}: IconProps) => {
+export const RedirectIcon = ({ color, size, className }: IconProps) => {
   return (
     <IconBase color={color} size={size} className={className}>
       <path

@@ -1,5 +1,5 @@
 import moment from 'moment'
-import {padZeroes} from './padZeroes'
+import { padZeroes } from './padZeroes'
 
 export function formatTimeLeft(timestamp: bigint | undefined, now = Date.now()) {
   if (!timestamp) {

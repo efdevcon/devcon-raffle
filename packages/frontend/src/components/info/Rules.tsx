@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import styled from 'styled-components'
-import {Colors} from "@/styles/colors";
+import { Colors } from '@/styles/colors'
 
 interface RuleProps {
   heading: string

@@ -1,14 +1,14 @@
 import * as Accordion from '@radix-ui/react-accordion'
 import styled from 'styled-components'
-import {ArrowDownIcon} from "../icons";
-import {Colors} from "@/styles/colors";
-import {Rule, RuleText} from "@/components/info/Rules";
-import {formatEndDate} from "@/utils/formatters/formatEndDate";
-import {useVoucherRedeemDeadline} from "@/blockchain/hooks/useVoucherRedeemDeadline";
-import {useReadAuctionParams} from "@/blockchain/hooks/useReadAuctionParams";
+import { ArrowDownIcon } from '../icons'
+import { Colors } from '@/styles/colors'
+import { Rule, RuleText } from '@/components/info/Rules'
+import { formatEndDate } from '@/utils/formatters/formatEndDate'
+import { useVoucherRedeemDeadline } from '@/blockchain/hooks/useVoucherRedeemDeadline'
+import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 
 export const InfoAccordion = () => {
-  const {auctionWinnersCount, raffleWinnersCount} = useReadAuctionParams()
+  const { auctionWinnersCount, raffleWinnersCount } = useReadAuctionParams()
   const redeemTimestamp = useVoucherRedeemDeadline()
   const totalCount = auctionWinnersCount && raffleWinnersCount && auctionWinnersCount + raffleWinnersCount
   const reservePrice = 0.25
@@ -19,18 +19,17 @@ export const InfoAccordion = () => {
       <Accordion.Root type="single" defaultValue="item-1" collapsible>
         <Accordion.Item value="item-1">
           <StyledHeader>
-            <AccordionStyledTrigger heading="What is this?"/>
+            <AccordionStyledTrigger heading="What is this?" />
           </StyledHeader>
           <StyledContent>
             In an effort to make our ticket distribution more efficient and fair, we are selling a{' '}
             <Italic>portion</Italic> of this year’s tickets via an on-chain Auction & Raffle. Typically we sell tickets
-            in waves; attendees need to wait for a specific release time and refresh the ticket shop rapidly in order
-            to{' '}
+            in waves; attendees need to wait for a specific release time and refresh the ticket shop rapidly in order to{' '}
             <Italic>hope</Italic> to claim & checkout with a ticket. Not to mention the need for a speedy internet
             connection and crossing your fingers that you’re close enough to our ticketing servers to be one of the
             first to secure a ticket.
-            <br/>
-            <br/>
+            <br />
+            <br />
             This year, we wanted to try something different, so we are experimenting with an on-chain Auction & Raffle
             to sell a <Italic>portion</Italic> of Devcon tickets.
           </StyledContent>
@@ -38,7 +37,7 @@ export const InfoAccordion = () => {
 
         <Accordion.Item value="item-2">
           <StyledHeader>
-            <AccordionStyledTrigger heading="How to participate in the Auction & Raffle?"/>
+            <AccordionStyledTrigger heading="How to participate in the Auction & Raffle?" />
           </StyledHeader>
           <StyledContent>
             Join the contest by submitting a bid for the ticket based on the amount you would value having a Devcon
@@ -52,22 +51,21 @@ export const InfoAccordion = () => {
 
         <Accordion.Item value="item-3">
           <StyledHeader>
-            <AccordionStyledTrigger heading="ELI5 plz?"/>
+            <AccordionStyledTrigger heading="ELI5 plz?" />
           </StyledHeader>
           <StyledContent>
-            Place a bid of at least {reservePrice} ETH for a chance to win a Devcon ticket. If your bid is in the
-            top{' '}
-            {Number(auctionWinnersCount)}, you will win a Devcon ticket in exchange for the amount you paid in your bid. At any
-            point, you can top up your bid if you want. If your bid is not in the top {auctionWinnersCount}, you will be
-            entered into a raffle and may be randomly chosen to win a Devcon ticket — if you were randomly selected in
-            the Raffle & bid more than the reserve price, you can withdraw the difference. If you do not win, you can
-            withdraw your entire bid, minus a 2% sybil-resistance fee.
+            Place a bid of at least {reservePrice} ETH for a chance to win a Devcon ticket. If your bid is in the top{' '}
+            {Number(auctionWinnersCount)}, you will win a Devcon ticket in exchange for the amount you paid in your bid.
+            At any point, you can top up your bid if you want. If your bid is not in the top {auctionWinnersCount}, you
+            will be entered into a raffle and may be randomly chosen to win a Devcon ticket — if you were randomly
+            selected in the Raffle & bid more than the reserve price, you can withdraw the difference. If you do not
+            win, you can withdraw your entire bid, minus a 2% sybil-resistance fee.
           </StyledContent>
         </Accordion.Item>
 
         <Accordion.Item value="item-4">
           <StyledHeader>
-            <AccordionStyledTrigger heading="Contest rules"/>
+            <AccordionStyledTrigger heading="Contest rules" />
           </StyledHeader>
           <StyledContent>
             <RuleText>
@@ -138,8 +136,7 @@ export const InfoAccordion = () => {
                   Bidder A places their first bid of {exampleBid} ETH which puts them in the 1st place. Later Bidder B
                   places their first bid of the same amount which puts them in 2nd place. Next, Bidder B bumps their bid
                   to {exampleBid + 0.1} ETH which puts them in 1st place. Bidder A notices that they lost the first
-                  place and decides to bump their bid as well. Bidder A bumps their bid to {exampleBid + 0.1} ETH
-                  which{' '}
+                  place and decides to bump their bid as well. Bidder A bumps their bid to {exampleBid + 0.1} ETH which{' '}
                   <Bold>puts them in the 1st place</Bold>, because they placed their first bid before Bidder B.
                 </>
               }
@@ -149,7 +146,7 @@ export const InfoAccordion = () => {
 
         <Accordion.Item value="item-5">
           <StyledHeader>
-            <AccordionStyledTrigger heading="In what form will I get the ticket?"/>
+            <AccordionStyledTrigger heading="In what form will I get the ticket?" />
           </StyledHeader>
           <StyledContent>
             After the raffle is settled, you will have 48 hours (<Bold>until {formatEndDate(redeemTimestamp)}</Bold>) to
@@ -161,7 +158,7 @@ export const InfoAccordion = () => {
 
         <Accordion.Item value="item-6">
           <StyledHeader>
-            <AccordionStyledTrigger heading="Okay, I got a voucher code. What do I do now?"/>
+            <AccordionStyledTrigger heading="Okay, I got a voucher code. What do I do now?" />
           </StyledHeader>
           <StyledContent>
             <span>
@@ -176,13 +173,12 @@ export const InfoAccordion = () => {
 
         <Accordion.Item value="item-7">
           <StyledHeader>
-            <AccordionStyledTrigger heading="Other FAQ"/>
+            <AccordionStyledTrigger heading="Other FAQ" />
           </StyledHeader>
           <StyledContent>
             <span>
               Please read our Terms & Conditions{' '}
-              <Link
-                href="https://docs.google.com/document/d/1pVU-G8mpPD33EwOwE96MTB_4AZrYa2TNWXLSfkOPCJQ/edit?usp=sharing">
+              <Link href="https://docs.google.com/document/d/1pVU-G8mpPD33EwOwE96MTB_4AZrYa2TNWXLSfkOPCJQ/edit?usp=sharing">
                 here
               </Link>{' '}
               as well as our full Auction & Raffle FAQ on our website{' '}
@@ -199,11 +195,11 @@ interface AccordionTriggerProps {
   heading: string
 }
 
-const AccordionStyledTrigger = ({heading}: AccordionTriggerProps) => {
+const AccordionStyledTrigger = ({ heading }: AccordionTriggerProps) => {
   return (
     <StyledTrigger>
       <span>{heading}</span>
-      <AccordionArrow color={Colors.Black} size={22}/>
+      <AccordionArrow color={Colors.Black} size={22} />
     </StyledTrigger>
   )
 }

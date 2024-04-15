@@ -1,10 +1,10 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import {formatTimeLeft} from "@/utils/formatters/formatTimeLeft";
-import {formatEndDate} from "@/utils/formatters/formatEndDate";
-import {setIntervalImmediately} from "@/utils/setIntervalImmediately";
-import {useAuctionState} from "@/blockchain/hooks/useAuctionState";
-import {useAuctionTime} from "@/blockchain/hooks/useAuctionTime";
+import { formatTimeLeft } from '@/utils/formatters/formatTimeLeft'
+import { formatEndDate } from '@/utils/formatters/formatEndDate'
+import { setIntervalImmediately } from '@/utils/setIntervalImmediately'
+import { useAuctionState } from '@/blockchain/hooks/useAuctionState'
+import { useAuctionTime } from '@/blockchain/hooks/useAuctionTime'
 
 export const TimeLeft = () => {
   const timestamp = useAuctionTime()
