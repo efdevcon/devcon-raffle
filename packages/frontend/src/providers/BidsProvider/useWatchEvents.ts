@@ -16,7 +16,7 @@ export const useWatchEvents = (onEvents: (events: BidEvent[]) => void) => {
   const { data: blockNumber, isLoading: isBlockLoading } = useBlockNumber()
 
   const { isLoading } = useQuery({
-    queryKey: ['bids'],
+    queryKey: ['bids', chainId],
     queryFn: async () => {
       const logs = await getLogs(client, {
         address: AUCTION_ADDRESSES[chainId],
@@ -24,7 +24,6 @@ export const useWatchEvents = (onEvents: (events: BidEvent[]) => void) => {
         fromBlock: DEPLOYMENT_BLOCK[chainId],
         toBlock: blockNumber,
       })
-      console.log('logs: ', logs)
       onEvents(logs)
       return logs
     },
@@ -37,10 +36,7 @@ export const useWatchEvents = (onEvents: (events: BidEvent[]) => void) => {
     address: AUCTION_ADDRESSES[chainId],
     fromBlock: DEPLOYMENT_BLOCK[chainId],
     eventName: 'NewBid',
-    onLogs: (logs) => {
-      console.log('logs in watch: ', logs)
-      onEvents(logs)
-    },
+    onLogs: (logs) => onEvents(logs),
     enabled: !isBlockLoading && !isLoading,
   })
 }
