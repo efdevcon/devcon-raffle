@@ -11,7 +11,6 @@ import {
   VrfCoordinatorV2MockWithErc677__factory,
 } from 'build/types'
 import { minStateDuration, reservePrice, minBidIncrement, initialRequiredScore } from './config'
-import { attestScore } from 'utils/attestScore'
 
 const SECOND = 1000
 
@@ -68,14 +67,14 @@ async function bid(auctionRaffle: AuctionRaffle, signers: SignerWithAddress[], a
   const scoreAttestationVerifier = ScoreAttestationVerifier__factory.connect(scoreVerifier, attestor)
   const score = 21 * 10 ** 8 // 21.0
   for (let i = 0; i < signers.length; i++) {
-    const subject = signers[i].address
-    const { signature } = await attestScore(
-      subject,
+    await bidAsSigner(
+      auctionRaffle,
+      signers[i],
+      initialBidAmount.add(minBidIncrement.mul(i)),
       score,
-      attestor as unknown as Wallet,
-      scoreAttestationVerifier.address
+      attestor,
+      scoreAttestationVerifier
     )
-    await bidAsSigner(auctionRaffle, signers[i], initialBidAmount.add(minBidIncrement.mul(i)), score, signature)
   }
 }
 

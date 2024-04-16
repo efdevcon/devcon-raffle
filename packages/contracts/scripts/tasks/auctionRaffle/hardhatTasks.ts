@@ -8,9 +8,11 @@ import { randomBigNumbers } from 'scripts/utils/random'
 import { generateRandomAccounts } from 'scripts/utils/generateRandomAccounts'
 import { fundAccounts } from 'scripts/utils/fundAccounts'
 import { bidAsSigner } from 'scripts/utils/bid'
-import { minBidIncrement, reservePrice } from 'scripts/node/config'
+import { initialRequiredScore, minBidIncrement, reservePrice } from 'scripts/node/config'
+import { connectToScoreAttestationVerifier } from 'scripts/utils/scoreAttestationVerifier'
 
-const auctionRaffleAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+const scoreAttestationVerifierAddress = '0x0165878a594ca255338adfa4d48449f69242eb8f'
+const auctionRaffleAddress = '0xa513e6e4b8f2a923d98304ec87f64353c4d5c853'
 
 task('bid', 'Places bid for given account with provided amount')
   .addParam('account', 'Hardhat account to use')
@@ -19,9 +21,11 @@ task('bid', 'Places bid for given account with provided amount')
     const signer = await hre.ethers.getSigner(account)
     const auctionRaffle = await connectToAuctionRaffle(hre, auctionRaffleAddress)
     const auctionRaffleAsSigner = auctionRaffle.connect(signer)
+    const [attestor] = await hre.ethers.getSigners()
+    const scoreAttestationVerifier = await connectToScoreAttestationVerifier(hre, scoreAttestationVerifierAddress)
 
     const ethAmount = parseEther(amount)
-    await auctionRaffleAsSigner.bid({ value: ethAmount })
+    await bidAsSigner(auctionRaffle, signer, ethAmount, initialRequiredScore, attestor, scoreAttestationVerifier)
     logBid(account, ethAmount)
   })
 
@@ -31,6 +35,8 @@ task('bid-random', 'Bids X times using randomly generated accounts')
   .setAction(async ({ amount, account }: { amount: number; account: number }, hre) => {
     const signers = await hre.ethers.getSigners()
     const auctionRaffle = await connectToAuctionRaffle(hre, auctionRaffleAddress)
+    const attestor = signers[0]
+    const scoreAttestationVerifier = await connectToScoreAttestationVerifier(hre, scoreAttestationVerifierAddress)
 
     console.log('Generating accounts...')
     const randomAccounts = generateRandomAccounts(amount, hre.ethers.provider)
@@ -41,7 +47,14 @@ task('bid-random', 'Bids X times using randomly generated accounts')
     console.log('Starting bidding...')
     for (let i = 0; i < randomAccounts.length; i++) {
       console.log(`Bidding with random account #${i + 1} out of ${randomAccounts.length}`)
-      await bidAsSigner(auctionRaffle, randomAccounts[i], reservePrice.add(minBidIncrement.mul(i)))
+      await bidAsSigner(
+        auctionRaffle,
+        randomAccounts[i],
+        reservePrice.add(minBidIncrement.mul(i)),
+        initialRequiredScore,
+        attestor,
+        scoreAttestationVerifier
+      )
     }
   })
 
