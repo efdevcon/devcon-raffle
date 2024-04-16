@@ -1,10 +1,10 @@
-import {IconContainer, IconProps} from "@/components/icons/IconBase";
+import { IconContainer, IconProps } from '@/components/icons/IconBase'
 
-export const LoadingIcon = ({color, size = 32, className}: IconProps) => {
+export const LoadingIcon = ({ color, size = 32, className }: IconProps) => {
   return (
     <IconContainer color={color} size={size} className={className}>
-      <svg width={size} height={size} viewBox={`0 0 32 32`} fill="none" color="currentColor">
-        <circle cx="16" cy="16" r="6.5" strokeWidth="1.5" stroke="currentColor" opacity="0.25"/>
+      <svg width={size} height={size} viewBox="0 0 32 32" fill="none" color="currentColor">
+        <circle cx="16" cy="16" r="6.5" strokeWidth="1.5" stroke="currentColor" opacity="0.25" />
         <circle
           cx="16"
           cy="16"

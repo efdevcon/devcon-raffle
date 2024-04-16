@@ -2,10 +2,10 @@ import styled from 'styled-components'
 
 import { TimeLeft } from './TimeLeft'
 import { VoucherTimeLeft } from './VoucherTimeLeft'
-import {Colors} from "@/styles/colors";
-import {KeyIcon} from "@/components/icons";
-import {HeaderBar} from "@/components/common/Header";
-import {AuctionState, useAuctionState} from "@/blockchain/hooks/useAuctionState";
+import { Colors } from '@/styles/colors'
+import { KeyIcon } from '@/components/icons'
+import { HeaderBar } from '@/components/common/Header'
+import { AuctionState, useAuctionState } from '@/blockchain/hooks/useAuctionState'
 
 export const Header = () => {
   const state = useAuctionState()
