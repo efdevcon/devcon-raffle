@@ -1,14 +1,27 @@
-import { BidsState } from "@/providers/BidsProvider/types";
+import { Bid } from "@/providers/BidsProvider/types";
 import { Hex } from "viem";
-import { Bid } from "@/providers/BidsProvider/provider";
 import { SupportedChainId } from "@/blockchain/chain";
 
-export interface BidEvent {
+interface BidEvent {
   args: {
     bidder?: Hex,
     bidderID?: bigint
     bidAmount?: bigint,
   }
+}
+
+interface BidsState {
+  bids: Map<Hex, Bid>
+  bidList: Bid[]
+  startBlock: bigint | undefined
+  chainId: SupportedChainId | undefined
+}
+
+export const defaultBidsState: BidsState = {
+  bids: new Map<Hex, Bid>(),
+  bidList: [],
+  startBlock: undefined,
+  chainId: undefined
 }
 
 export interface BidEventsState {
@@ -27,7 +40,6 @@ export const reduceBids = (previousState: BidsState, state: BidEventsState): Bid
     bidList: Array.from(bids.values()).sort(biggerFirst),
     startBlock: startBlock,
     chainId: chainId,
-    isLoading: previousState.isLoading,
   }
 }
 
@@ -55,7 +67,7 @@ const handleBid = (bids: Map<Hex, Bid>, eventArgs: BidEvent['args']) => {
   })
 }
 
-export function biggerFirst(a: Bid, b: Bid) {
+const biggerFirst = (a: Bid, b: Bid) => {
   if (a.amount === b.amount) {
     return 0
   }

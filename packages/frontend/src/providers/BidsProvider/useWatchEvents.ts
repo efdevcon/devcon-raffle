@@ -15,7 +15,7 @@ export const useWatchEvents = (onEvents: (eventsState: BidEventsState) => void) 
 
   const { data: blockNumber, isLoading: isBlockLoading } = useBlockNumber()
 
-  const { isLoading } = useQuery({
+  const { isLoading: areInitialBidsLoading } = useQuery({
     queryKey: ['bids', chainId],
     queryFn: async () => {
       const logs = await getLogs(client, {
@@ -39,6 +39,8 @@ export const useWatchEvents = (onEvents: (eventsState: BidEventsState) => void) 
     fromBlock: blockNumber,
     eventName: 'NewBid',
     onLogs: (logs) => onEvents({ events: logs, chainId, startBlock: blockNumber }),
-    enabled: !isBlockLoading && !isLoading,
+    enabled: !isBlockLoading && !areInitialBidsLoading,
   })
+
+  return {isLoading: isBlockLoading || areInitialBidsLoading}
 }
