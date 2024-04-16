@@ -71,8 +71,5 @@ const biggerFirst = (a: Bid, b: Bid) => {
   if (a.amount === b.amount) {
     return 0
   }
-  if (a.amount > b.amount) {
-    return -1
-  }
-  return 1
+  return a.amount > b.amount ? -1 : 1
 }
