@@ -1,4 +1,4 @@
-import { createConfig, http } from "wagmi";
+import { createConfig, http, webSocket } from "wagmi";
 import { arbitrum, arbitrumSepolia, hardhat } from "wagmi/chains";
 
 export const wagmiConfig = createConfig({
