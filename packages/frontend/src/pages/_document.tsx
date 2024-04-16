@@ -1,5 +1,5 @@
-import Document, {Html, Head, Main, NextScript, DocumentContext, DocumentInitialProps} from "next/document";
-import {ServerStyleSheet} from "styled-components";
+import Document, { Html, Head, Main, NextScript, DocumentContext, DocumentInitialProps } from 'next/document'
+import { ServerStyleSheet } from 'styled-components'
 
 export default function AppDocument() {
   return (
@@ -10,7 +10,7 @@ export default function AppDocument() {
         <NextScript />
       </body>
     </Html>
-  );
+  )
 }
 
 AppDocument.getInitialProps = async (ctx: DocumentContext): Promise<DocumentInitialProps> => {

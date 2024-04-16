@@ -9,7 +9,7 @@ interface ProviderProps {
 
 const queryClient = new QueryClient()
 
-export const BlockchainProviders = ({children}: ProviderProps) => {
+export const BlockchainProviders = ({ children }: ProviderProps) => {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>

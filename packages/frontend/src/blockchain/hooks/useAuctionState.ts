@@ -1,7 +1,7 @@
-import {useAccount, useChainId, useReadContract} from "wagmi";
-import {AUCTION_ABI} from "@/blockchain/abi/auction";
-import {AUCTION_ADDRESSES} from "@/blockchain/auctionAddresses";
-import {Hex} from "viem";
+import { useAccount, useChainId, useReadContract } from 'wagmi'
+import { AUCTION_ABI } from '@/blockchain/abi/auction'
+import { AUCTION_ADDRESSES } from '@/blockchain/auctionAddresses'
+import { Hex } from 'viem'
 
 export type AuctionState =
   | 'AwaitingBidding'
@@ -22,8 +22,8 @@ export enum ContractState {
 }
 
 export function useAuctionState(): AuctionState | undefined {
-  const {address, chainId} = useAccount()
-  const {state, isLoading} = useContractState()
+  const { address, chainId } = useAccount()
+  const { state, isLoading } = useContractState()
   if (isLoading) {
     return undefined
   }
@@ -53,21 +53,17 @@ export function useAuctionState(): AuctionState | undefined {
 
 export const useContractState = () => {
   const chainId = useChainId()
-  const {data, isLoading, error} = useReadContract({
+  const { data, isLoading } = useReadContract({
     chainId,
     abi: AUCTION_ABI,
     address: AUCTION_ADDRESSES[chainId],
-    functionName: 'getState'
+    functionName: 'getState',
   })
 
-  return {state: data as ContractState, isLoading}
+  return { state: data as ContractState, isLoading }
 }
 
-function getStateUsingWallet(
-  account: Hex | undefined,
-  chainId: number | undefined,
-  state: AuctionState
-) {
+function getStateUsingWallet(account: Hex | undefined, chainId: number | undefined, state: AuctionState) {
   if (!account) {
     return 'WalletNotConnected'
   }
