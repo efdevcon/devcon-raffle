@@ -1,7 +1,7 @@
-import { Hex } from "viem";
+import { Hex } from 'viem'
 
 export interface Bid {
-  address: Hex,
-  amount: bigint,
+  address: Hex
+  amount: bigint
   bidderId: bigint
 }

@@ -1,5 +1,5 @@
-import { createConfig, webSocket } from "wagmi";
-import { arbitrum, arbitrumSepolia, hardhat } from "wagmi/chains";
+import { createConfig, webSocket } from 'wagmi'
+import { arbitrum, arbitrumSepolia, hardhat } from 'wagmi/chains'
 
 export const wagmiConfig = createConfig({
   chains: [arbitrum, arbitrumSepolia, hardhat],

@@ -1,12 +1,12 @@
-import { Bid } from "@/providers/BidsProvider/types";
-import { Hex } from "viem";
-import { SupportedChainId } from "@/blockchain/chain";
+import { Bid } from '@/providers/BidsProvider/types'
+import { Hex } from 'viem'
+import { SupportedChainId } from '@/blockchain/chain'
 
 interface BidEvent {
   args: {
-    bidder?: Hex,
+    bidder?: Hex
     bidderID?: bigint
-    bidAmount?: bigint,
+    bidAmount?: bigint
   }
 }
 
@@ -21,7 +21,7 @@ export const defaultBidsState: BidsState = {
   bids: new Map<Hex, Bid>(),
   bidList: [],
   startBlock: undefined,
-  chainId: undefined
+  chainId: undefined,
 }
 
 export interface BidEventsState {

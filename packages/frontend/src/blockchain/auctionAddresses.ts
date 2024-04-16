@@ -1,6 +1,6 @@
-import { SupportedChainId } from "@/blockchain/chain";
-import { Hex } from "viem";
-import { arbitrum, arbitrumSepolia, hardhat } from "wagmi/chains";
+import { SupportedChainId } from '@/blockchain/chain'
+import { Hex } from 'viem'
+import { arbitrum, arbitrumSepolia, hardhat } from 'wagmi/chains'
 
 export const AUCTION_ADDRESSES: Record<SupportedChainId, Hex> = {
   [arbitrum.id]: '0xF53d383525117d1f51BF234966E39bD1508a5948',

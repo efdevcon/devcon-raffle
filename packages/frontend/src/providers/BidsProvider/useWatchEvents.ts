@@ -1,10 +1,10 @@
-import { parseAbiItem } from "viem";
-import { BidEventsState } from "@/providers/BidsProvider/reduceBids";
-import { useBlockNumber, useChainId, useConfig, useWatchContractEvent } from "wagmi";
-import { useQuery } from "@tanstack/react-query";
-import { getLogs } from "viem/actions";
-import { AUCTION_ADDRESSES, DEPLOYMENT_BLOCK } from "@/blockchain/auctionAddresses";
-import { AUCTION_ABI } from "@/blockchain/abi/auction";
+import { parseAbiItem } from 'viem'
+import { BidEventsState } from '@/providers/BidsProvider/reduceBids'
+import { useBlockNumber, useChainId, useConfig, useWatchContractEvent } from 'wagmi'
+import { useQuery } from '@tanstack/react-query'
+import { getLogs } from 'viem/actions'
+import { AUCTION_ADDRESSES, DEPLOYMENT_BLOCK } from '@/blockchain/auctionAddresses'
+import { AUCTION_ABI } from '@/blockchain/abi/auction'
 
 const newBidEvent = parseAbiItem('event NewBid(address bidder, uint256 bidderID, uint256 bidAmount)')
 
@@ -42,5 +42,5 @@ export const useWatchEvents = (onEvents: (eventsState: BidEventsState) => void) 
     enabled: !isBlockLoading && !areInitialBidsLoading,
   })
 
-  return {isLoading: isBlockLoading || areInitialBidsLoading}
+  return { isLoading: isBlockLoading || areInitialBidsLoading }
 }
