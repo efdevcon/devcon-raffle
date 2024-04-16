@@ -13,6 +13,8 @@ export interface Bid {
 const defaultBidsState: BidsState = {
   bids: new Map<Hex, Bid>(),
   bidList: [],
+  chainId: undefined,
+  startBlock: undefined,
   isLoading: false,
 }
 
@@ -25,11 +27,7 @@ export const BidsProvider = ({ children }: { children: ReactNode }) => {
   useWatchEvents(updateBids)
 
   return (
-    <BidsContext.Provider value={{
-      bids: bidsState.bids,
-      bidList: bidsState.bidList,
-      isLoading: bidsState.isLoading
-    }}>
+    <BidsContext.Provider value={bidsState}>
       {children}
     </BidsContext.Provider>
   )

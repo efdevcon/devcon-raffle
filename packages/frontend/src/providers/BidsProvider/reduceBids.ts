@@ -1,6 +1,7 @@
 import { BidsState } from "@/providers/BidsProvider/types";
 import { Hex } from "viem";
 import { Bid } from "@/providers/BidsProvider/provider";
+import { SupportedChainId } from "@/blockchain/chain";
 
 export interface BidEvent {
   args: {
@@ -10,16 +11,31 @@ export interface BidEvent {
   }
 }
 
-export const reduceBids = (previousState: BidsState, events: BidEvent[]): BidsState => {
-  events.forEach((event) => handleBid(previousState.bids, event.args))
-  previousState.bids.values()
-  const bidList = Array.from(previousState.bids.values()).sort(biggerFirst)
+export interface BidEventsState {
+  events: BidEvent[]
+  startBlock: bigint | undefined
+  chainId: SupportedChainId
+}
+
+export const reduceBids = (previousState: BidsState, state: BidEventsState): BidsState => {
+  const { events, startBlock, chainId } = state
+  const bids = getInitialBids(previousState, state)
+  events.forEach((event) => handleBid(bids, event.args))
 
   return {
-    bids: previousState.bids,
-    bidList,
+    bids,
+    bidList: Array.from(bids.values()).sort(biggerFirst),
+    startBlock: startBlock,
+    chainId: chainId,
     isLoading: previousState.isLoading,
   }
+}
+
+const getInitialBids = (previousState: BidsState, { startBlock, chainId }: BidEventsState) => {
+  if (startBlock !== previousState.startBlock || chainId !== previousState.chainId) {
+    return new Map<Hex, Bid>()
+  }
+  return previousState.bids
 }
 
 const handleBid = (bids: Map<Hex, Bid>, eventArgs: BidEvent['args']) => {

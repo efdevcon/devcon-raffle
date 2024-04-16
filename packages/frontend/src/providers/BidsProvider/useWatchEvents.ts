@@ -1,5 +1,5 @@
 import { parseAbiItem } from "viem";
-import { BidEvent } from "@/providers/BidsProvider/reduceBids";
+import { BidEventsState } from "@/providers/BidsProvider/reduceBids";
 import { useBlockNumber, useChainId, useConfig, useWatchContractEvent } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 import { getLogs } from "viem/actions";
@@ -8,7 +8,7 @@ import { AUCTION_ABI } from "@/blockchain/abi/auction";
 
 const newBidEvent = parseAbiItem('event NewBid(address bidder, uint256 bidderID, uint256 bidAmount)')
 
-export const useWatchEvents = (onEvents: (events: BidEvent[]) => void) => {
+export const useWatchEvents = (onEvents: (eventsState: BidEventsState) => void) => {
   const chainId = useChainId()
   const config = useConfig()
   const client = config.getClient({ chainId })
@@ -24,10 +24,12 @@ export const useWatchEvents = (onEvents: (events: BidEvent[]) => void) => {
         fromBlock: DEPLOYMENT_BLOCK[chainId],
         toBlock: blockNumber,
       })
-      onEvents(logs)
+      onEvents({ events: logs, chainId, startBlock: blockNumber })
       return logs
     },
     enabled: !isBlockLoading,
+    staleTime: Infinity,
+    gcTime: Infinity,
   })
 
   useWatchContractEvent({
@@ -36,7 +38,7 @@ export const useWatchEvents = (onEvents: (events: BidEvent[]) => void) => {
     address: AUCTION_ADDRESSES[chainId],
     fromBlock: blockNumber,
     eventName: 'NewBid',
-    onLogs: (logs) => onEvents(logs),
+    onLogs: (logs) => onEvents({ events: logs, chainId, startBlock: blockNumber }),
     enabled: !isBlockLoading && !isLoading,
   })
 }
