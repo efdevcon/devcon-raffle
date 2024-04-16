@@ -2,7 +2,7 @@ import { BidsState } from "@/providers/BidsProvider/types";
 import { Hex } from "viem";
 import { Bid } from "@/providers/BidsProvider/provider";
 
-interface BidEvent {
+export interface BidEvent {
   args: {
     bidder?: Hex,
     bidderID?: bigint

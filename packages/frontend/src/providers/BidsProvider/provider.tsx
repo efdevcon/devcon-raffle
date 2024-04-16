@@ -1,12 +1,8 @@
 import { createContext, ReactNode, useContext, useReducer } from "react";
 import { Hex } from "viem";
-import { useChainId, useWatchContractEvent } from "wagmi";
-import { AUCTION_ABI } from "@/blockchain/abi/auction";
-import { AUCTION_ADDRESSES } from "@/blockchain/auctionAddresses";
 import { reduceBids } from "@/providers/BidsProvider/reduceBids";
 import { BidsState } from "@/providers/BidsProvider/types";
-
-const deploymentBlock = BigInt(16977962)
+import { useWatchEvents } from "@/providers/BidsProvider/useWatchEvents";
 
 export interface Bid {
   address: Hex,
@@ -25,20 +21,8 @@ export const BidsContext = createContext(defaultBidsState)
 export const useBids = () => useContext(BidsContext)
 
 export const BidsProvider = ({ children }: { children: ReactNode }) => {
-  const chainId = useChainId()
   const [bidsState, updateBids] = useReducer(reduceBids, defaultBidsState)
-
-  useWatchContractEvent({
-    chainId,
-    abi: AUCTION_ABI,
-    address: AUCTION_ADDRESSES[chainId],
-    fromBlock: deploymentBlock,
-    eventName: 'NewBid',
-    onLogs: (logs) => {
-      console.log('logs: ', logs)
-      updateBids(logs)
-    },
-  })
+  useWatchEvents(updateBids)
 
   return (
     <BidsContext.Provider value={{
