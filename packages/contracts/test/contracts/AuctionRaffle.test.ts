@@ -1067,7 +1067,8 @@ describe('AuctionRaffle', function () {
   }
 
   async function settleAndFulfillRaffle(randomNumber: BigNumberish) {
-    await auctionRaffleAsOwner.settleRaffle().then((tx) => tx.wait(1))
+    const settleTx = await auctionRaffleAsOwner.settleRaffle()
+    expect(settleTx).to.emit(auctionRaffleAsOwner, 'RandomnessRequested')
     const requestId = await auctionRaffleAsOwner.requestId()
     expect(requestId).to.not.eq(0)
     const tx = await vrfCoordinator.fulfillRandomWords(requestId, auctionRaffleAsOwner.address, [randomNumber], {

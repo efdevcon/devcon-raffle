@@ -47,6 +47,9 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
     /// @dev A bidder has been drawn as auction winner
     event NewAuctionWinner(uint256 bidderID);
 
+    /// @dev Random number has been requested for the raffle
+    event RandomNumberRequested(uint256 requestId);
+
     /// @dev Raffle winners have been drawn
     event RaffleWinnersDrawn(uint256 randomSeed);
 
@@ -151,8 +154,10 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
     /**
      * @notice Initiate raffle draw by requesting a random number from Chainlink VRF.
      */
-    function settleRaffle() external onlyOwner onlyInState(State.AUCTION_SETTLED) returns (uint256 requestId) {
-        return _getRandomNumber();
+    function settleRaffle() external onlyOwner onlyInState(State.AUCTION_SETTLED) returns (uint256) {
+        uint256 reqId = _getRandomNumber();
+        emit RandomNumberRequested(reqId);
+        return reqId;
     }
 
     /**
