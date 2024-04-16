@@ -1,0 +1,37 @@
+name: Install Node and package dependencies
+description: "Install Node dependencies with pnpm"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Use Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - uses: pnpm/action-setup@v3
+      with:
+        version: 8.3.1
+        run_install: false
+
+    - name: Get pnpm cache directory
+      id: pnpm-cache-dir
+      shell: bash
+      run: echo "dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+    - name: Cache PNPM
+      uses: actions/cache@v4
+      id: pnpm-cache
+      with:
+        path: |
+          ${{ steps.pnpm-cache-dir.outputs.dir }}
+        key: ${{ runner.os }}-node-${{ hashFiles('pnpm-lock.yaml') }}
+        restore-keys: ${{ runner.os }}-node-
+
+    - name: Install packages
+      shell: bash
+      run: pnpm install --frozen-lockfile
+
+    - name: Build everything in the monorepo
+      shell: bash
+      run: pnpm build
