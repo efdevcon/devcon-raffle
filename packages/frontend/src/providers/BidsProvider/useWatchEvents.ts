@@ -34,7 +34,7 @@ export const useWatchEvents = (onEvents: (events: BidEvent[]) => void) => {
     chainId,
     abi: AUCTION_ABI,
     address: AUCTION_ADDRESSES[chainId],
-    fromBlock: DEPLOYMENT_BLOCK[chainId],
+    fromBlock: blockNumber,
     eventName: 'NewBid',
     onLogs: (logs) => onEvents(logs),
     enabled: !isBlockLoading && !isLoading,
