@@ -1,16 +1,18 @@
 import { task, types } from 'hardhat/config'
 import { connectToAuctionRaffle } from 'scripts/utils/auctionRaffle'
-import { BigNumber, BigNumberish, constants, Contract, utils } from 'ethers'
+import { BigNumberish, constants, Contract, utils } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
-import { randomBigNumbers } from 'scripts/utils/random'
+import { randomBN } from 'scripts/utils/random'
 import { generateRandomAccounts } from 'scripts/utils/generateRandomAccounts'
 import { fundAccounts } from 'scripts/utils/fundAccounts'
 import { bidAsSigner } from 'scripts/utils/bid'
 import { initialRequiredScore, minBidIncrement, reservePrice } from 'scripts/node/config'
 import { connectToScoreAttestationVerifier } from 'scripts/utils/scoreAttestationVerifier'
+import { connectToMockVrfCoordinator } from 'scripts/utils/mockVrfCoordinator'
 
+const mockVrfCoordinatorAddress = '0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9'
 const scoreAttestationVerifierAddress = '0x0165878a594ca255338adfa4d48449f69242eb8f'
 const auctionRaffleAddress = '0xa513e6e4b8f2a923d98304ec87f64353c4d5c853'
 
@@ -20,7 +22,6 @@ task('bid', 'Places bid for given account with provided amount')
   .setAction(async ({ account, amount }: { account: string; amount: string }, hre) => {
     const signer = await hre.ethers.getSigner(account)
     const auctionRaffle = await connectToAuctionRaffle(hre, auctionRaffleAddress)
-    const auctionRaffleAsSigner = auctionRaffle.connect(signer)
     const [attestor] = await hre.ethers.getSigners()
     const scoreAttestationVerifier = await connectToScoreAttestationVerifier(hre, scoreAttestationVerifierAddress)
 
@@ -68,11 +69,17 @@ task('settle-auction', 'Settles auction').setAction(async (taskArgs, hre) => {
 task('settle-raffle', 'Settles raffle').setAction(async (taskArgs, hre) => {
   const auctionRaffle = await auctionRaffleAsOwner(hre)
 
-  const raffleWinnersCount = await auctionRaffle.raffleWinnersCount()
-  const randomNumbersCount = BigNumber.from(raffleWinnersCount).div(8).toNumber()
-
-  await auctionRaffle.settleRaffle(randomBigNumbers(randomNumbersCount))
+  await auctionRaffle.settleRaffle()
   console.log('Raffle settled!')
+})
+
+task('fulfill-vrf', 'Fulfill VRF request').setAction(async (taskArgs, hre) => {
+  const auctionRaffle = await auctionRaffleAsOwner(hre)
+  const requestId = await auctionRaffle.requestId()
+  const mockVrfCoordinator = await connectToMockVrfCoordinator(hre, mockVrfCoordinatorAddress)
+  const randomWords = [randomBN()]
+  await mockVrfCoordinator.fulfillRandomWords(requestId, auctionRaffle.address, randomWords)
+  console.log(`Fulfilled VRF request with: ${randomWords}`)
 })
 
 function logBid(address: string, bidAmount: BigNumberish) {

@@ -2,7 +2,7 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { bidAsSigner } from 'scripts/utils/bid'
 import * as hre from 'hardhat'
 import { parseEther, parseUnits } from 'ethers/lib/utils'
-import { Contract, Wallet, utils } from 'ethers'
+import { utils } from 'ethers'
 import { deployAuctionRaffle } from '../deployAuctionRaffle'
 import {
   AuctionRaffle,
@@ -25,7 +25,7 @@ async function run() {
   const deployer = signers[0]
 
   // Mock VRF
-  const { vrfRequesterParams } = await setupMockVrf(deployer)
+  const { vrfCoordinator, vrfRequesterParams } = await setupMockVrf(deployer)
 
   const now = Math.floor(new Date().valueOf() / SECOND)
   await hre.network.provider.send('evm_setNextBlockTimestamp', [now])
@@ -53,6 +53,7 @@ async function run() {
     },
     vrfConfig: vrfRequesterParams,
   })
+  await vrfCoordinator.addConsumer(vrfRequesterParams.subId, auctionRaffle.address)
   console.log('Contracts deployed\n')
 
   await bid(auctionRaffle, signers.slice(0, 20), deployer)
