@@ -1,14 +1,8 @@
 import Head from "next/head";
 import { Info } from "@/components/info/Info"
 import styled from "styled-components"
-import { useBids } from "@/providers/BidsProvider/provider";
 
 export default function Home() {
-  const {bids, bidList} = useBids()
-  console.log('bidList[0]: ', bidList[0])
-  // console.log('bids: ', bids)
-  // console.log('bidList: ', bidList)
-
   return (
     <>
       <Head>
