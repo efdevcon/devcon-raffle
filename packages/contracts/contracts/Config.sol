@@ -35,7 +35,7 @@ abstract contract Config {
     uint256 immutable _reservePrice;
     uint256 immutable _minBidIncrement;
 
-    address immutable bidVerifier;
+    address immutable _bidVerifier;
 
     constructor(ConfigParams memory params) {
         uint256 biddingStartTime_ = params.biddingStartTime;
@@ -72,7 +72,7 @@ abstract contract Config {
         _minBidIncrement = minBidIncrement_;
 
         require(bidVerifier_ != address(0), "Config: invalid verifier");
-        bidVerifier = bidVerifier_;
+        _bidVerifier = bidVerifier_;
     }
 
     function biddingStartTime() external view returns (uint256) {
@@ -101,5 +101,9 @@ abstract contract Config {
 
     function minBidIncrement() external view returns (uint256) {
         return _minBidIncrement;
+    }
+
+    function bidVerifier() external view returns (address) {
+        return _bidVerifier;
     }
 }

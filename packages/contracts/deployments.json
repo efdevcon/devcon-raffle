@@ -1,4 +1,7 @@
 {
+  "421614": {
+    "address": "0x347Aa06Fd1a911078D858d87c4D1AE59Be818538"
+  },
   "arbitrum_rinkeby": {
     "auctionRaffle": {
       "txHash": "0xcf8d36d310dab30aae2d8502d9a29c4239015138986a54b92c82b29dc58b41e6",
