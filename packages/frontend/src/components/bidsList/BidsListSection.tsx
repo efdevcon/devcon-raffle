@@ -4,7 +4,6 @@ import { useAuctionState } from '@/blockchain/hooks/useAuctionState'
 import { useBids } from '@/providers/BidsProvider'
 import { Button } from '@/components/buttons/Button'
 import { useRouter } from 'next/navigation'
-import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 import { Colors } from '@/styles/colors'
 import { ShortBidsList } from '@/components/bidsList/ShortBidsList'
 import { BidsListHeaders } from '@/components/bidsList/BidsListHeaders'
@@ -12,10 +11,9 @@ import { BidsListHeaders } from '@/components/bidsList/BidsListHeaders'
 export const BidsListSection = () => {
   const state = useAuctionState()
   const { bidList, isLoading: areBidsLoading } = useBids()
-  const { auctionWinnersCount, isLoading: areParamsLoading } = useReadAuctionParams()
   const router = useRouter()
 
-  if (areBidsLoading || areParamsLoading) {
+  if (areBidsLoading) {
     return (
       <EmptyList>
         <ColoredText>Loading...</ColoredText>

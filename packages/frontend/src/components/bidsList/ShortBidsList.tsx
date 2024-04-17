@@ -25,11 +25,7 @@ export const ShortBidsList = () => {
     [auctionWinnersCount, allBids, userBid],
   )
 
-  const isRaffleParticipant = useMemo(() => {
-    return !!auctionWinnersCount && !!userBid && userBid.place > auctionWinnersCount
-  }, [userBid, auctionWinnersCount])
-
-  const isAuctionWinner = useMemo(() => {
+  const participatesInAuction = useMemo(() => {
     return isAuctionParticipant(userBid, auctionWinnersCount, raffleWinnersCount, allBids.length)
   }, [auctionWinnersCount, allBids.length, raffleWinnersCount, userBid])
 
@@ -37,17 +33,17 @@ export const ShortBidsList = () => {
     <>
       <BidList>
         {bidsShortlist.map((bid) => (
-          <BidListEntry key={bid.address} bid={bid} isUser={userBid && userBid.address === bid.address} view="short"/>
+          <BidListEntry key={bid.address} bid={bid} isUser={userBid && userBid.address === bid.address} view="short" />
         ))}
-        {isRaffleParticipant && userBid && (
+        {!participatesInAuction && userBid && (
           <>
-            <Separator color={Colors.Grey}/>
-            <BidListEntry bid={userBid} isUser view="short"/>
+            <Separator color={Colors.Grey} />
+            <BidListEntry bid={userBid} isUser view="short" />
           </>
         )}
       </BidList>
       {userBid && !isAuctionSettled(state) && (
-        <BidListText>You’re taking part in the {isAuctionWinner ? 'auction' : 'raffle'}!</BidListText>
+        <BidListText>You’re taking part in the {participatesInAuction ? 'auction' : 'raffle'}!</BidListText>
       )}
     </>
   )
@@ -66,7 +62,11 @@ function isAuctionParticipant(
   return userBid.place <= firstRaffleBidIndex
 }
 
-function selectBids(auctionWinnersCount: number | undefined, bidList: Bid[], userBid: BidWithPlace | undefined): BidWithPlace[] {
+function selectBids(
+  auctionWinnersCount: number | undefined,
+  bidList: Bid[],
+  userBid: BidWithPlace | undefined,
+): BidWithPlace[] {
   if (auctionWinnersCount === undefined) {
     return []
   }
