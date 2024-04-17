@@ -15,7 +15,7 @@ export const useReadAuctionParams = () => {
       } as const),
   )
 
-  const { data } = useReadContracts({
+  const { data, isLoading } = useReadContracts({
     contracts: calls,
     allowFailure: false,
   })
@@ -26,8 +26,9 @@ export const useReadAuctionParams = () => {
       biddingEndTime: data?.[1],
       auctionWinnersCount: data ? Number(data[2]) : undefined,
       raffleWinnersCount: data ? Number(data[3]) : undefined,
+      isLoading,
     }),
-    [data],
+    [data, isLoading],
   )
 }
 

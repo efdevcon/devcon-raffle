@@ -8,18 +8,13 @@ import { useBids } from '@/providers/BidsProvider'
 import { useContractState } from '@/blockchain/hooks/useAuctionState'
 import { Separator } from '@/components/common/Separator'
 import { BidListEntry } from '@/components/bidsList/BidListEntry'
-import { EmptyBidsList } from '@/components/bidsList/EmptyBidsList'
 import { isAuctionSettled } from '@/utils/isAuctionSettled'
 import { getFirstRaffleBidIndex } from '@/utils/getFirstRaffleBidIndex'
 
 const topAuctionBidsCount = 3
 const bidsMaxCount = topAuctionBidsCount + 1
 
-interface Props {
-  isLoadingParams?: boolean
-}
-
-export const ShortBidsList = ({ isLoadingParams }: Props) => {
+export const ShortBidsList = () => {
   const userBid = useUserBid()
   const { auctionWinnersCount, raffleWinnersCount } = useReadAuctionParams()
   const { state } = useContractState()
@@ -37,10 +32,6 @@ export const ShortBidsList = ({ isLoadingParams }: Props) => {
   const isAuctionWinner = useMemo(() => {
     return isAuctionParticipant(userBid, auctionWinnersCount, raffleWinnersCount, allBids.length)
   }, [auctionWinnersCount, allBids.length, raffleWinnersCount, userBid])
-
-  if (isLoadingParams) {
-    return <EmptyBidsList/>
-  }
 
   return (
     <>

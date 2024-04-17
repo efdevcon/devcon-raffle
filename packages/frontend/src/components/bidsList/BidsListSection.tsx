@@ -11,15 +11,21 @@ import { BidsListHeaders } from '@/components/bidsList/BidsListHeaders'
 
 export const BidsListSection = () => {
   const state = useAuctionState()
-  const { bidList } = useBids()
-  const { auctionWinnersCount } = useReadAuctionParams()
+  const { bidList, isLoading: areBidsLoading } = useBids()
+  const { auctionWinnersCount, isLoading: areParamsLoading } = useReadAuctionParams()
   const router = useRouter()
 
-  const isLoadingParams = auctionWinnersCount === undefined
+  if (areBidsLoading || areParamsLoading) {
+    return (
+      <EmptyList>
+        <ColoredText>Loading...</ColoredText>
+      </EmptyList>
+    )
+  }
 
   return (
     <BidsListContainer>
-      {!isLoadingParams && bidList.length === 0 ? (
+      {bidList.length === 0 ? (
         <EmptyList>
           <ColoredText>
             {state === 'AwaitingBidding' ? 'Bids will show up here' : `No bidders yet. Be the first one!`}
@@ -29,13 +35,13 @@ export const BidsListSection = () => {
         <>
           <ListHeader>
             <h3>Number of participants:</h3>
-            <ColoredText>{isLoadingParams ? 0 : bidList.length}</ColoredText>
+            <ColoredText>{bidList.length}</ColoredText>
           </ListHeader>
           <BidsListHeaders />
-          <ShortBidsList isLoadingParams={isLoadingParams} />
+          <ShortBidsList />
         </>
       )}
-      {!isLoadingParams && bidList.length !== 0 && (
+      {bidList.length !== 0 && (
         <Button view="secondary" onClick={() => router.push('/bids')}>
           Show all
         </Button>
@@ -61,6 +67,9 @@ const ListHeader = styled.div`
 `
 
 const EmptyList = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 48px 0;
 `
 const ColoredText = styled.h3`
