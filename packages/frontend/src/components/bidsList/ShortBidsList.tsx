@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { Bid, UserBid } from '@/types/bid'
+import { Bid, BidWithPlace } from '@/types/bid'
 import { useUserBid } from '@/blockchain/hooks/useUserBid'
 import { Colors } from '@/styles/colors'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
@@ -12,20 +12,26 @@ import { EmptyBidsList } from '@/components/bidsList/EmptyBidsList'
 import { isAuctionSettled } from '@/utils/isAuctionSettled'
 import { getFirstRaffleBidIndex } from '@/utils/getFirstRaffleBidIndex'
 
+const topAuctionBidsCount = 3
+const bidsMaxCount = topAuctionBidsCount + 1
+
 interface Props {
-  bids: Bid[]
-  view?: 'short' | 'full'
   isLoadingParams?: boolean
 }
 
-export const BidsList = ({ bids, view = 'full', isLoadingParams }: Props) => {
+export const ShortBidsList = ({ isLoadingParams }: Props) => {
   const userBid = useUserBid()
   const { auctionWinnersCount, raffleWinnersCount } = useReadAuctionParams()
   const { state } = useContractState()
   const { bidList: allBids } = useBids()
 
-  const userRaffleBid = useMemo(() => {
-    return auctionWinnersCount && userBid && userBid.place > auctionWinnersCount ? userBid : undefined
+  const bidsShortlist = useMemo(
+    () => selectBids(auctionWinnersCount, allBids, userBid),
+    [auctionWinnersCount, allBids, userBid],
+  )
+
+  const isRaffleParticipant = useMemo(() => {
+    return !!auctionWinnersCount && !!userBid && userBid.place > auctionWinnersCount
   }, [userBid, auctionWinnersCount])
 
   const isAuctionWinner = useMemo(() => {
@@ -33,23 +39,23 @@ export const BidsList = ({ bids, view = 'full', isLoadingParams }: Props) => {
   }, [auctionWinnersCount, allBids.length, raffleWinnersCount, userBid])
 
   if (isLoadingParams) {
-    return <EmptyBidsList />
+    return <EmptyBidsList/>
   }
 
   return (
     <>
       <BidList>
-        {bids.map((bid) => (
-          <BidListEntry key={bid.address} bid={bid} isUser={userBid && userBid.address === bid.address} view={view} />
+        {bidsShortlist.map((bid) => (
+          <BidListEntry key={bid.address} bid={bid} isUser={userBid && userBid.address === bid.address} view="short"/>
         ))}
-        {userRaffleBid && view === 'short' && (
+        {isRaffleParticipant && userBid && (
           <>
-            <Separator color={Colors.Grey} />
-            <BidListEntry bid={userRaffleBid} isUser view={view} />
+            <Separator color={Colors.Grey}/>
+            <BidListEntry bid={userBid} isUser view="short"/>
           </>
         )}
       </BidList>
-      {view === 'short' && userBid && !isAuctionSettled(state) && (
+      {userBid && !isAuctionSettled(state) && (
         <BidListText>You’re taking part in the {isAuctionWinner ? 'auction' : 'raffle'}!</BidListText>
       )}
     </>
@@ -57,7 +63,7 @@ export const BidsList = ({ bids, view = 'full', isLoadingParams }: Props) => {
 }
 
 function isAuctionParticipant(
-  userBid: UserBid | undefined,
+  userBid: BidWithPlace | undefined,
   auctionWinnersCount: number | undefined,
   raffleWinnersCount: number | undefined,
   bidsLength: number,
@@ -68,6 +74,33 @@ function isAuctionParticipant(
   const firstRaffleBidIndex = getFirstRaffleBidIndex(bidsLength, auctionWinnersCount, raffleWinnersCount)
   return userBid.place <= firstRaffleBidIndex
 }
+
+function selectBids(auctionWinnersCount: number | undefined, bidList: Bid[], userBid: BidWithPlace | undefined): BidWithPlace[] {
+  if (auctionWinnersCount === undefined) {
+    return []
+  }
+
+  if (bidList.length <= bidsMaxCount) {
+    return bidList.map(toBidWithPlace)
+  }
+
+  const topAuctionBids = bidList.slice(0, topAuctionBidsCount).map(toBidWithPlace)
+
+  const lastAuctionBidIndex = bidList.length > auctionWinnersCount ? auctionWinnersCount - 1 : bidList.length - 1
+  const lastAuctionBid = toBidWithPlace(bidList[lastAuctionBidIndex], lastAuctionBidIndex)
+
+  return userBid && shouldUserBidBeDisplayed(userBid, lastAuctionBid, auctionWinnersCount)
+    ? topAuctionBids.concat([userBid, lastAuctionBid])
+    : topAuctionBids.concat([lastAuctionBid])
+}
+
+const shouldUserBidBeDisplayed = (userBid: BidWithPlace, lastAuctionBid: Bid, auctionWinnersCount: number) => {
+  return !(userBid.address === lastAuctionBid.address) && within(bidsMaxCount, auctionWinnersCount - 1, userBid.place)
+}
+
+const within = (...[lower, higher, value]: number[]) => value >= lower && value <= higher
+
+const toBidWithPlace = (bid: Bid, arrayIndex: number): BidWithPlace => ({ ...bid, place: arrayIndex + 1 })
 
 export const BidList = styled.div`
   display: flex;

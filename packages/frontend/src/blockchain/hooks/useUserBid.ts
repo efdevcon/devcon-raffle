@@ -1,9 +1,9 @@
 import { useAccount } from 'wagmi'
 import { useBids } from '@/providers/BidsProvider'
 import { useMemo } from 'react'
-import { UserBid } from '@/types/bid'
+import { BidWithPlace } from '@/types/bid'
 
-export const useUserBid = (): UserBid | undefined => {
+export const useUserBid = (): BidWithPlace | undefined => {
   const { address } = useAccount()
   const { bidList } = useBids()
 

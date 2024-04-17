@@ -1,5 +1,5 @@
 import { EmptyBidListEntry } from './BidListEntry'
-import { BidList } from './BidsList'
+import { BidList } from './ShortBidsList'
 
 const emptyBids: number[] = [1, 2, 3, 20]
 

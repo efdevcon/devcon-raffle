@@ -1,12 +1,12 @@
 import { AddressColumn, BidColumn, PlaceColumn } from '@/components/bidsList/BidsColumns'
 import styled, { css } from 'styled-components'
 import { useChainId, useChains } from 'wagmi'
-import { Bid } from '@/types/bid'
+import { BidWithPlace } from '@/types/bid'
 import { Colors } from '@/styles/colors'
 import { formatEther, Hex } from 'viem'
 
 interface Props {
-  bid: Bid
+  bid: BidWithPlace
   isUser?: boolean
   view?: 'short' | 'full'
 }
@@ -16,8 +16,7 @@ export const BidListEntry = ({ bid, isUser, view = 'full' }: Props) => {
 
   return (
     <BidsEntryRow isUser={isUser}>
-      {/*<PlaceColumn>{bid.place}.</PlaceColumn>*/}
-      <PlaceColumn>{1}.</PlaceColumn>
+      <PlaceColumn>{bid.place}.</PlaceColumn>
       <BidColumn>
         {formatEther(bid.amount)} <span>ETH</span>
       </BidColumn>

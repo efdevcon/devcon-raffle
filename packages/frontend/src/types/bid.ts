@@ -6,6 +6,6 @@ export interface Bid {
   bidderId: bigint
 }
 
-export interface UserBid extends Bid {
+export interface BidWithPlace extends Bid {
   place: number
 }
