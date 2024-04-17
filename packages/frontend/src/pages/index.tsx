@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { Info } from '@/components/info/Info'
 import styled from 'styled-components'
+import { Auction } from '@/components/auction/Auction'
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       </Head>
       <PageContainer>
         <Info />
+        <Auction />
       </PageContainer>
     </>
   )
