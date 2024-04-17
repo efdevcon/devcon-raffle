@@ -20,7 +20,7 @@ export const BidsShortList = () => {
   const { state } = useContractState()
   const { bidList: allBids } = useBids()
 
-  const bidsShortlist = useMemo(
+  const bidsShortList = useMemo(
     () => selectBids(auctionWinnersCount, allBids, userBid),
     [auctionWinnersCount, allBids, userBid],
   )
@@ -32,7 +32,7 @@ export const BidsShortList = () => {
   return (
     <>
       <BidList>
-        {bidsShortlist.map((bid) => (
+        {bidsShortList.map((bid) => (
           <BidListEntry key={bid.address} bid={bid} isUser={userBid && userBid.address === bid.address} view="short" />
         ))}
         {!participatesInAuction && userBid && (
