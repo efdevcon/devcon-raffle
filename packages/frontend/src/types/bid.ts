@@ -5,3 +5,7 @@ export interface Bid {
   amount: bigint
   bidderId: bigint
 }
+
+export interface UserBid extends Bid {
+  place: number
+}
