@@ -50,7 +50,7 @@ const useExplorerAddressLink = (address: Hex): string | undefined => {
   return `${currentChain.blockExplorers.default.url}/address/${address}`
 }
 
-const shortenEthAddress = (address: Hex) => `${address.substring(0, 6)}......${address.substring(42 - 4)}`
+const shortenEthAddress = (address: Hex) => `${address.substring(0, 6)}......${address.substring(address.length - 4)}`
 
 const BidsEntryRow = styled.div<{ isUser?: boolean }>`
   display: grid;
