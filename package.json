@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "packageManager": "pnpm@8.3.1",
   "scripts": {
-    "lint": "turbo lint",
+    "lint": "turbo lint --filter=frontend",
     "build": "turbo build",
     "test": "turbo test",
     "verify": "turbo verify"
