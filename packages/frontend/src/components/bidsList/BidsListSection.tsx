@@ -5,7 +5,7 @@ import { useBids } from '@/providers/BidsProvider'
 import { Button } from '@/components/buttons/Button'
 import { useRouter } from 'next/navigation'
 import { Colors } from '@/styles/colors'
-import { ShortBidsList } from '@/components/bidsList/ShortBidsList'
+import { BidsShortList } from '@/components/bidsList/BidsShortList'
 import { BidsListHeaders } from '@/components/bidsList/BidsListHeaders'
 
 export const BidsListSection = () => {
@@ -36,7 +36,7 @@ export const BidsListSection = () => {
             <ColoredText>{bidList.length}</ColoredText>
           </ListHeader>
           <BidsListHeaders />
-          <ShortBidsList />
+          <BidsShortList />
         </>
       )}
       {bidList.length !== 0 && (

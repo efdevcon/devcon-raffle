@@ -14,7 +14,7 @@ import { getFirstRaffleBidIndex } from '@/utils/getFirstRaffleBidIndex'
 const topAuctionBidsCount = 3
 const bidsMaxCount = topAuctionBidsCount + 1
 
-export const ShortBidsList = () => {
+export const BidsShortList = () => {
   const userBid = useUserBid()
   const { auctionWinnersCount, raffleWinnersCount } = useReadAuctionParams()
   const { state } = useContractState()
