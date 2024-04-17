@@ -1,6 +1,4 @@
 name: CI
-env:
-  NEXT_VOUCHER_REDEEM_DEADLINE: 1713259853
 on:
   pull_request:
   push:
