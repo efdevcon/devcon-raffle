@@ -1,4 +1,4 @@
-import { Bid } from '@/providers/BidsProvider/types'
+import { Bid } from '@/types/bid'
 import { Hex } from 'viem'
 import { SupportedChainId } from '@/blockchain/chain'
 

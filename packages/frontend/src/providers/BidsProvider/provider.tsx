@@ -2,7 +2,7 @@ import { createContext, ReactNode, useContext, useReducer } from 'react'
 import { Hex } from 'viem'
 import { defaultBidsState, reduceBids } from '@/providers/BidsProvider/reduceBids'
 import { useWatchEvents } from '@/providers/BidsProvider/useWatchEvents'
-import { Bid } from '@/providers/BidsProvider/types'
+import { Bid } from '@/types/bid'
 
 const BidsContext = createContext({
   bids: new Map<Hex, Bid>(),
