@@ -1,9 +1,5 @@
 import { ContractState } from '@/blockchain/hooks/useAuctionState'
 
 export function isAuctionSettled(state: ContractState) {
-  return (
-    state === ContractState.AUCTION_SETTLED ||
-    state === ContractState.RAFFLE_SETTLED ||
-    state === ContractState.CLAIMING_CLOSED
-  )
+  return [ContractState.AUCTION_SETTLED, ContractState.RAFFLE_SETTLED, ContractState.CLAIMING_CLOSED].includes(state)
 }
