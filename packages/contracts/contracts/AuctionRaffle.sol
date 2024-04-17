@@ -47,6 +47,9 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
     /// @dev A bidder has been drawn as auction winner
     event NewAuctionWinner(uint256 bidderID);
 
+    /// @dev Random number has been requested for the raffle
+    event RandomNumberRequested(uint256 requestId);
+
     /// @dev Raffle winners have been drawn
     event RaffleWinnersDrawn(uint256 randomSeed);
 
@@ -88,7 +91,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
         uint256 score,
         bytes calldata proof
     ) external payable onlyExternalTransactions onlyInState(State.BIDDING_OPEN) {
-        IVerifier(bidVerifier).verify(abi.encode(msg.sender, score), proof);
+        IVerifier(_bidVerifier).verify(abi.encode(msg.sender, score), proof);
         Bid storage bidder = _bids[msg.sender];
         require(bidder.amount == 0, "AuctionRaffle: bid already exists");
         require(msg.value >= _reservePrice, "AuctionRaffle: bid amount is below reserve price");
@@ -151,8 +154,10 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
     /**
      * @notice Initiate raffle draw by requesting a random number from Chainlink VRF.
      */
-    function settleRaffle() external onlyOwner onlyInState(State.AUCTION_SETTLED) returns (uint256 requestId) {
-        return _getRandomNumber();
+    function settleRaffle() external onlyOwner onlyInState(State.AUCTION_SETTLED) returns (uint256) {
+        uint256 reqId = _getRandomNumber();
+        emit RandomNumberRequested(reqId);
+        return reqId;
     }
 
     /**
@@ -373,11 +378,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
      * @param oldAmount Previous bid amount
      * @param newAmount New bid amount
      */
-    function updateHeapBid(
-        uint256 bidderID,
-        uint256 oldAmount,
-        uint256 newAmount
-    ) private {
+    function updateHeapBid(uint256 bidderID, uint256 oldAmount, uint256 newAmount) private {
         bool isHeapFull = getBiddersCount() >= _auctionWinnersCount;
         uint256 key = getKey(bidderID, newAmount);
         uint256 minKeyValue = _minKeyValue;

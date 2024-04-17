@@ -30,16 +30,18 @@
     "hardhat:bid-random": "hardhat --network localhost bid-random",
     "hardhat:settle-auction": "hardhat --network localhost settle-auction",
     "hardhat:settle-raffle": "hardhat --network localhost settle-raffle",
-    "hardhat:settle": "pnpm node:increase-time && pnpm hardhat:settle-auction && pnpm hardhat:settle-raffle",
+    "hardhat:fulfill-vrf": "hardhat --network localhost fulfill-vrf",
+    "hardhat:settle": "pnpm node:increase-time && pnpm hardhat:settle-auction && pnpm hardhat:settle-raffle && pnpm hardhat:fulfill-vrf",
     "rinkeby:generate-dotenv": "hardhat generate-dotenv",
     "rinkeby:transfer-ether": "hardhat --network rinkeby transfer-ether",
     "rinkeby:init-bids": "hardhat --network rinkeby init-bids",
     "ethereum:generate-random-numbers": "hardhat --network ethereum generate-random-numbers",
     "arbitrum:withdrawals-stats": "hardhat --network arbitrum withdrawals-stats",
-    "mars:deploy": "bash scripts/mars/marsDeploy.sh scripts/mars/deploy.ts -n arbitrum"
+    "deploy:arb-sepolia": "hardhat run scripts/deploy.ts --network arbSepolia"
   },
   "devDependencies": {
     "@ethereum-waffle/chai": "^3.4.3",
+    "@nomicfoundation/hardhat-verify": "^2.0.5",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@openzeppelin/contracts": "^4.4.0",
