@@ -7,11 +7,13 @@ import { useAccount } from 'wagmi'
 
 interface Props {
   bids: Bid[]
+  placeOffset: number
   title: string
 }
 
-export const BidsSubList = ({ bids, title }: Props) => {
+export const BidsSubList = ({ bids, placeOffset, title }: Props) => {
   const { address } = useAccount()
+
   return (
     <>
       <TitleBanner>
@@ -21,7 +23,7 @@ export const BidsSubList = ({ bids, title }: Props) => {
         {bids.map((bid, index) => (
           <BidListEntry
             key={bid.bidderId}
-            bid={bidToBidWithPlace(bid, index)}
+            bid={bidToBidWithPlace(bid, placeOffset + index)}
             isUser={address === bid.address}
             view="full"
           />

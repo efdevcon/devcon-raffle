@@ -32,12 +32,12 @@ export const AllBidsList = ({ search, auctionWinnersCount, raffleWinnersCount }:
   return (
     <>
       {nothingFound ? (
-        <NothingFound search={search} />
+        <NothingFound search={search}/>
       ) : (
         <>
-          <BidsListHeaders />
-          {auctionBids.length !== 0 && <BidsSubList bids={auctionBids} title="AUCTION" />}
-          {raffleBids.length !== 0 && <BidsSubList bids={raffleBids} title="RAFFLE" />}
+          <BidsListHeaders/>
+          {auctionBids.length !== 0 && <BidsSubList bids={auctionBids} placeOffset={0} title="AUCTION"/>}
+          {raffleBids.length !== 0 && <BidsSubList bids={raffleBids} placeOffset={auctionBids.length} title="RAFFLE"/>}
         </>
       )}
     </>
