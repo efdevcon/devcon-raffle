@@ -6,6 +6,9 @@ import { NothingFound } from '@/components/bids/allBids/NothingFound'
 import { LoadingBids } from '@/components/bids/allBids/LoadingBids'
 import { AllBidsList } from '@/components/bids/allBids/AllBidsList'
 import { SearchInput } from '@/components/form/SearchInput'
+import { useContractState } from '@/blockchain/hooks/useAuctionState'
+import { isAuctionSettled } from '@/utils/isAuctionSettled'
+import { SettledBidsList } from '@/components/allBids/SettledBidsList'
 
 export const AllBids = () => {
   const [search, setSearch] = useState('')
@@ -21,6 +24,7 @@ export const AllBids = () => {
 const AllBidsContent = ({ search }: { search: string }) => {
   const { auctionWinnersCount, raffleWinnersCount, isLoading: areParamsLoading } = useReadAuctionParams()
   const { bidList, isLoading: areBidsLoading } = useBids()
+  const { state } = useContractState()
 
   if (areParamsLoading || areBidsLoading || !auctionWinnersCount || !raffleWinnersCount) {
     return <LoadingBids />
@@ -31,7 +35,17 @@ const AllBidsContent = ({ search }: { search: string }) => {
   }
 
   return (
-    <AllBidsList search={search} auctionWinnersCount={auctionWinnersCount} raffleWinnersCount={raffleWinnersCount} />
+    <>
+      {isAuctionSettled(state) ? (
+        <SettledBidsList search={search} />
+      ) : (
+        <AllBidsList
+          search={search}
+          auctionWinnersCount={auctionWinnersCount}
+          raffleWinnersCount={raffleWinnersCount}
+        />
+      )}
+    </>
   )
 }
 
