@@ -7,9 +7,10 @@ import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 import { useBids } from '@/providers/BidsProvider'
 import { useContractState } from '@/blockchain/hooks/useAuctionState'
 import { Separator } from '@/components/common/Separator'
-import { BidListEntry } from '@/components/bidsList/BidListEntry'
+import { BidListEntry } from '@/components/common/BidListEntry'
 import { isAuctionSettled } from '@/utils/isAuctionSettled'
 import { getFirstRaffleBidIndex } from '@/utils/getFirstRaffleBidIndex'
+import { BidListContainer } from "@/components/common/BidListContainer";
 
 const topAuctionBidsCount = 3
 const bidsMaxCount = topAuctionBidsCount + 1
@@ -31,17 +32,17 @@ export const BidsShortList = () => {
 
   return (
     <>
-      <BidList>
+      <BidListContainer>
         {bidsShortList.map((bid) => (
-          <BidListEntry key={bid.address} bid={bid} isUser={userBid && userBid.address === bid.address} view="short" />
+          <BidListEntry key={bid.address} bid={bid} isUser={userBid && userBid.address === bid.address} view="short"/>
         ))}
         {!participatesInAuction && userBid && (
           <>
-            <Separator color={Colors.Grey} />
-            <BidListEntry bid={userBid} isUser view="short" />
+            <Separator color={Colors.Grey}/>
+            <BidListEntry bid={userBid} isUser view="short"/>
           </>
         )}
-      </BidList>
+      </BidListContainer>
       {userBid && !isAuctionSettled(state) && (
         <BidListText>You’re taking part in the {participatesInAuction ? 'auction' : 'raffle'}!</BidListText>
       )}
@@ -93,14 +94,6 @@ const within = (...[lower, higher, value]: number[]) => value >= lower && value 
 
 const toBidWithPlace = (bid: Bid, arrayIndex: number): BidWithPlace => ({ ...bid, place: arrayIndex + 1 })
 
-export const BidList = styled.div`
-  display: flex;
-  flex-direction: column;
-  row-gap: 32px;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-`
 const BidListText = styled.div`
   width: 100%;
   text-align: center;
