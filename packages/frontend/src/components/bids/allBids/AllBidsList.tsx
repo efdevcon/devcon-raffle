@@ -3,7 +3,7 @@ import { getFirstRaffleBidIndex } from '@/utils/getFirstRaffleBidIndex'
 import { useBids } from '@/providers/BidsProvider'
 import { NothingFound } from '@/components/bids/allBids/NothingFound'
 import { BidsListHeaders } from '@/components/bids/BidsListHeaders'
-import { useMatchBid } from '@/components/bids/allBids/useMatchBid'
+import { matchesBidFn } from '@/components/bids/allBids/matchesBidFn'
 import { BidsSubList } from '@/components/bids/allBids/BidsSubList'
 
 interface AllBidsListProps {
@@ -14,8 +14,8 @@ interface AllBidsListProps {
 
 export const AllBidsList = ({ search, auctionWinnersCount, raffleWinnersCount }: AllBidsListProps) => {
   const { bidList } = useBids()
-  const matchesSearch = useMatchBid(search)
 
+  const matchesSearch = matchesBidFn(search)
   const firstRaffleBidIndex = getFirstRaffleBidIndex(bidList.length, auctionWinnersCount, raffleWinnersCount)
 
   const bids = useMemo(() => {
