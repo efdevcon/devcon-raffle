@@ -18,16 +18,16 @@ export const AllBidsList = ({ search, auctionWinnersCount, raffleWinnersCount }:
 
   const firstRaffleBidIndex = getFirstRaffleBidIndex(bidList.length, auctionWinnersCount, raffleWinnersCount)
 
-  const auctionBids = useMemo(() => {
-    const sectionBids = bidList.slice(0, firstRaffleBidIndex)
-    return sectionBids.filter(matchesSearch)
-  }, [bidList, firstRaffleBidIndex, matchesSearch])
-  const raffleBids = useMemo(() => {
-    const sectionBids = bidList.slice(firstRaffleBidIndex)
-    return sectionBids.filter(matchesSearch)
+  const bids = useMemo(() => {
+    const auctionBids = bidList.slice(0, firstRaffleBidIndex)
+    const raffleBids = bidList.slice(firstRaffleBidIndex)
+    return {
+      auction: auctionBids.filter(matchesSearch),
+      raffle: raffleBids.filter(matchesSearch),
+    }
   }, [bidList, firstRaffleBidIndex, matchesSearch])
 
-  const nothingFound = search && auctionBids.length === 0 && raffleBids.length === 0
+  const nothingFound = search && bids.auction.length === 0 && bids.raffle.length === 0
 
   return (
     <>
@@ -36,8 +36,10 @@ export const AllBidsList = ({ search, auctionWinnersCount, raffleWinnersCount }:
       ) : (
         <>
           <BidsListHeaders />
-          {auctionBids.length !== 0 && <BidsSubList bids={auctionBids} placeOffset={0} title="AUCTION" />}
-          {raffleBids.length !== 0 && <BidsSubList bids={raffleBids} placeOffset={auctionBids.length} title="RAFFLE" />}
+          {bids.auction.length !== 0 && <BidsSubList bids={bids.auction} placeOffset={0} title="AUCTION" />}
+          {bids.raffle.length !== 0 && (
+            <BidsSubList bids={bids.raffle} placeOffset={bids.auction.length} title="RAFFLE" />
+          )}
         </>
       )}
     </>
