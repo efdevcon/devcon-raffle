@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { Bid, BidWithPlace } from '@/types/bid'
+import { Bid, bidToBidWithPlace, BidWithPlace } from '@/types/bid'
 import { useUserBid } from '@/blockchain/hooks/useUserBid'
 import { Colors } from '@/styles/colors'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
@@ -73,13 +73,13 @@ function selectBids(
   }
 
   if (bidList.length <= bidsMaxCount) {
-    return bidList.map(toBidWithPlace)
+    return bidList.map(bidToBidWithPlace)
   }
 
-  const topAuctionBids = bidList.slice(0, topAuctionBidsCount).map(toBidWithPlace)
+  const topAuctionBids = bidList.slice(0, topAuctionBidsCount).map(bidToBidWithPlace)
 
   const lastAuctionBidIndex = bidList.length > auctionWinnersCount ? auctionWinnersCount - 1 : bidList.length - 1
-  const lastAuctionBid = toBidWithPlace(bidList[lastAuctionBidIndex], lastAuctionBidIndex)
+  const lastAuctionBid = bidToBidWithPlace(bidList[lastAuctionBidIndex], lastAuctionBidIndex)
 
   return userBid && shouldUserBidBeDisplayed(userBid, lastAuctionBid, auctionWinnersCount)
     ? topAuctionBids.concat([userBid, lastAuctionBid])
@@ -91,8 +91,6 @@ const shouldUserBidBeDisplayed = (userBid: BidWithPlace, lastAuctionBid: Bid, au
 }
 
 const within = (...[lower, higher, value]: number[]) => value >= lower && value <= higher
-
-const toBidWithPlace = (bid: Bid, arrayIndex: number): BidWithPlace => ({ ...bid, place: arrayIndex + 1 })
 
 const BidListText = styled.div`
   width: 100%;
