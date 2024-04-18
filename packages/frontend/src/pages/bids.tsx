@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 import { Colors } from '@/styles/colors'
 import { Header } from '@/components/allBids/Header'
+import { AllBids } from "@/components/allBids/AllBids";
 
 export default function Bids() {
   return (
     <Body>
       <Header />
+      <AllBids />
     </Body>
   )
 }
