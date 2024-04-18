@@ -21,11 +21,11 @@ export const AllBidsList = ({ search, auctionWinnersCount, raffleWinnersCount }:
   const auctionBids = useMemo(() => {
     const sectionBids = bidList.slice(0, firstRaffleBidIndex)
     return sectionBids.filter(matchesSearch)
-  }, [bidList, matchesSearch]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [bidList, firstRaffleBidIndex, matchesSearch])
   const raffleBids = useMemo(() => {
     const sectionBids = bidList.slice(firstRaffleBidIndex)
     return sectionBids.filter(matchesSearch)
-  }, [bidList, matchesSearch]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [bidList, firstRaffleBidIndex, matchesSearch])
 
   const nothingFound = search && auctionBids.length === 0 && raffleBids.length === 0
 
