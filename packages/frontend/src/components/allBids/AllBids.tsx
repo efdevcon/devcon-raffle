@@ -3,17 +3,17 @@ import styled from 'styled-components'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 import { useBids } from '@/providers/BidsProvider'
 import { NothingFound } from '@/components/allBids/NothingFound'
-import { LoadingBids } from "@/components/allBids/LoadingBids";
-import { AllBidsList } from "@/components/allBids/AllBidsList";
-import { SearchInput } from "@/components/form/SearchInput";
+import { LoadingBids } from '@/components/allBids/LoadingBids'
+import { AllBidsList } from '@/components/allBids/AllBidsList'
+import { SearchInput } from '@/components/form/SearchInput'
 
 export const AllBids = () => {
   const [search, setSearch] = useState('')
 
   return (
     <PageContainer>
-      <SearchInput setSearch={setSearch}/>
-      <AllBidsContent search={search}/>
+      <SearchInput setSearch={setSearch} />
+      <AllBidsContent search={search} />
     </PageContainer>
   )
 }
@@ -23,19 +23,15 @@ const AllBidsContent = ({ search }: { search: string }) => {
   const { bidList, isLoading: areBidsLoading } = useBids()
 
   if (areParamsLoading || areBidsLoading || !auctionWinnersCount || !raffleWinnersCount) {
-    return <LoadingBids/>
+    return <LoadingBids />
   }
 
   if (bidList.length === 0) {
-    return <NothingFound/>
+    return <NothingFound />
   }
 
   return (
-      <AllBidsList
-        search={search}
-        auctionWinnersCount={auctionWinnersCount}
-        raffleWinnersCount={raffleWinnersCount}
-      />
+    <AllBidsList search={search} auctionWinnersCount={auctionWinnersCount} raffleWinnersCount={raffleWinnersCount} />
   )
 }
 

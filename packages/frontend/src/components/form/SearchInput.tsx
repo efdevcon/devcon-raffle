@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { SearchIcon } from "@/components/icons";
-import { Colors } from "@/styles/colors";
-import { CloseButton } from "@/components/buttons/CloseButton";
-import { useDebounceValue } from "@/hooks/useDebounce";
+import { SearchIcon } from '@/components/icons'
+import { Colors } from '@/styles/colors'
+import { CloseButton } from '@/components/buttons/CloseButton'
+import { useDebounceValue } from '@/hooks/useDebounce'
 
 interface Props {
   setSearch: (search: string) => void

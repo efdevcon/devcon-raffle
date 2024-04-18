@@ -4,7 +4,7 @@ import { useBids } from '@/providers/BidsProvider'
 import { NothingFound } from '@/components/allBids/NothingFound'
 import { BidsListHeaders } from '@/components/bidsList/BidsListHeaders'
 import { useMatchBid } from '@/components/allBids/useMatchBid'
-import { BidsSubList } from "@/components/allBids/BidsSubList";
+import { BidsSubList } from '@/components/allBids/BidsSubList'
 
 interface AllBidsListProps {
   search: string
@@ -32,12 +32,12 @@ export const AllBidsList = ({ search, auctionWinnersCount, raffleWinnersCount }:
   return (
     <>
       {nothingFound ? (
-        <NothingFound search={search}/>
+        <NothingFound search={search} />
       ) : (
         <>
-          <BidsListHeaders/>
-          {auctionBids.length !== 0 && <BidsSubList bids={auctionBids} placeOffset={0} title="AUCTION"/>}
-          {raffleBids.length !== 0 && <BidsSubList bids={raffleBids} placeOffset={auctionBids.length} title="RAFFLE"/>}
+          <BidsListHeaders />
+          {auctionBids.length !== 0 && <BidsSubList bids={auctionBids} placeOffset={0} title="AUCTION" />}
+          {raffleBids.length !== 0 && <BidsSubList bids={raffleBids} placeOffset={auctionBids.length} title="RAFFLE" />}
         </>
       )}
     </>

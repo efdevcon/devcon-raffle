@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { CloseIcon } from "@/components/icons";
-import { Colors } from "@/styles/colors";
+import { CloseIcon } from '@/components/icons'
+import { Colors } from '@/styles/colors'
 
 interface CloseButtonProps {
   color?: string
