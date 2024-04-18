@@ -1,16 +1,16 @@
 import styled from 'styled-components'
-import { KeyIcon } from "@/components/icons";
-import { Colors } from "@/styles/colors";
-import { useBids } from "@/providers/BidsProvider";
-import { HeaderBar } from "@/components/common/Header";
-import { BackButton } from "@/components/buttons/BackButton";
+import { KeyIcon } from '@/components/icons'
+import { Colors } from '@/styles/colors'
+import { useBids } from '@/providers/BidsProvider'
+import { HeaderBar } from '@/components/common/Header'
+import { BackButton } from '@/components/buttons/BackButton'
 
 export const Header = () => {
   const { bidList } = useBids()
 
   return (
     <StyledHeader>
-      <BackButton url="/"/>
+      <BackButton url="/" />
       <Wrapper>
         <Title>
           <h2>Number of participants:</h2>
@@ -18,7 +18,7 @@ export const Header = () => {
         </Title>
       </Wrapper>
       <Key>
-        <KeyIcon/>
+        <KeyIcon />
       </Key>
     </StyledHeader>
   )

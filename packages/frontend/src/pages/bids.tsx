@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { Colors } from "@/styles/colors";
-import { Header } from "@/components/allBids/Header";
+import styled from 'styled-components'
+import { Colors } from '@/styles/colors'
+import { Header } from '@/components/allBids/Header'
 
 export default function Bids() {
   return (

@@ -10,7 +10,7 @@ import { Separator } from '@/components/common/Separator'
 import { BidListEntry } from '@/components/common/BidListEntry'
 import { isAuctionSettled } from '@/utils/isAuctionSettled'
 import { getFirstRaffleBidIndex } from '@/utils/getFirstRaffleBidIndex'
-import { BidListContainer } from "@/components/common/BidListContainer";
+import { BidListContainer } from '@/components/common/BidListContainer'
 
 const topAuctionBidsCount = 3
 const bidsMaxCount = topAuctionBidsCount + 1
@@ -34,12 +34,12 @@ export const BidsShortList = () => {
     <>
       <BidListContainer>
         {bidsShortList.map((bid) => (
-          <BidListEntry key={bid.address} bid={bid} isUser={userBid && userBid.address === bid.address} view="short"/>
+          <BidListEntry key={bid.address} bid={bid} isUser={userBid && userBid.address === bid.address} view="short" />
         ))}
         {!participatesInAuction && userBid && (
           <>
-            <Separator color={Colors.Grey}/>
-            <BidListEntry bid={userBid} isUser view="short"/>
+            <Separator color={Colors.Grey} />
+            <BidListEntry bid={userBid} isUser view="short" />
           </>
         )}
       </BidListContainer>

@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
 import styled from 'styled-components'
-import { ArrowLeftIcon } from "@/components/icons";
-import { Colors } from "@/styles/colors";
-import { useRouter } from "next/navigation";
+import { ArrowLeftIcon } from '@/components/icons'
+import { Colors } from '@/styles/colors'
+import { useRouter } from 'next/navigation'
 
 interface BackButtonProps {
   view?: number
@@ -28,7 +28,7 @@ export function BackButton({ view, setView, url, resetState }: BackButtonProps) 
 
   return (
     <BackBtn onClick={goBack}>
-      <ArrowLeftIcon/>
+      <ArrowLeftIcon />
       Back
     </BackBtn>
   )
