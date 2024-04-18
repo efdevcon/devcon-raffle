@@ -2,9 +2,9 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 import { useBids } from '@/providers/BidsProvider'
-import { NothingFound } from '@/components/allBids/NothingFound'
-import { LoadingBids } from '@/components/allBids/LoadingBids'
-import { AllBidsList } from '@/components/allBids/AllBidsList'
+import { NothingFound } from '@/components/bids/allBids/NothingFound'
+import { LoadingBids } from '@/components/bids/allBids/LoadingBids'
+import { AllBidsList } from '@/components/bids/allBids/AllBidsList'
 import { SearchInput } from '@/components/form/SearchInput'
 
 export const AllBids = () => {

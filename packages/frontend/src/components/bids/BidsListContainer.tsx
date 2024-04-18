@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const BidListContainer = styled.div`
+export const BidsListContainer = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 32px;

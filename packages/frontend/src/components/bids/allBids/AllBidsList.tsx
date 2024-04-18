@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { getFirstRaffleBidIndex } from '@/utils/getFirstRaffleBidIndex'
 import { useBids } from '@/providers/BidsProvider'
-import { NothingFound } from '@/components/allBids/NothingFound'
-import { BidsListHeaders } from '@/components/bidsList/BidsListHeaders'
-import { useMatchBid } from '@/components/allBids/useMatchBid'
-import { BidsSubList } from '@/components/allBids/BidsSubList'
+import { NothingFound } from '@/components/bids/allBids/NothingFound'
+import { BidsListHeaders } from '@/components/bids/BidsListHeaders'
+import { useMatchBid } from '@/components/bids/allBids/useMatchBid'
+import { BidsSubList } from '@/components/bids/allBids/BidsSubList'
 
 interface AllBidsListProps {
   search: string

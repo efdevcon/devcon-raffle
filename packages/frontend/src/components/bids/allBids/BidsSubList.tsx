@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { Bid, bidToBidWithPlace } from '@/types/bid'
 import { Colors } from '@/styles/colors'
-import { BidListContainer } from '@/components/common/BidListContainer'
-import { BidListEntry } from '@/components/common/BidListEntry'
+import { BidsListContainer } from '@/components/bids/BidsListContainer'
+import { BidsListEntry } from '@/components/bids/BidsListEntry'
 import { useAccount } from 'wagmi'
 
 interface Props {
@@ -19,16 +19,16 @@ export const BidsSubList = ({ bids, placeOffset, title }: Props) => {
       <TitleBanner>
         <SubListHeader>{title}</SubListHeader>
       </TitleBanner>
-      <BidListContainer>
+      <BidsListContainer>
         {bids.map((bid, index) => (
-          <BidListEntry
+          <BidsListEntry
             key={bid.bidderId}
             bid={bidToBidWithPlace(bid, placeOffset + index)}
             isUser={address === bid.address}
             view="full"
           />
         ))}
-      </BidListContainer>
+      </BidsListContainer>
     </>
   )
 }
