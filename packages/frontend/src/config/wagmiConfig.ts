@@ -1,6 +1,7 @@
 import { createConfig, webSocket } from 'wagmi'
 import { arbitrum, arbitrumSepolia, hardhat } from 'wagmi/chains'
 import { coinbaseWallet, walletConnect } from 'wagmi/connectors'
+import { environment } from '@/config/environment'
 
 export const wagmiConfig = createConfig({
   chains: [arbitrum, arbitrumSepolia, hardhat],
@@ -11,7 +12,7 @@ export const wagmiConfig = createConfig({
     [hardhat.id]: webSocket('ws://127.0.0.1:8545'),
   },
   connectors: [
-    walletConnect({ projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? '' }),
+    walletConnect({ projectId: environment.walletConnectProjectId }),
     coinbaseWallet({ appName: 'Devcon Auction/Raffle' }),
   ],
 })

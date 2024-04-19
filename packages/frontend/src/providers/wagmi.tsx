@@ -3,6 +3,7 @@ import { ReactNode } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { wagmiConfig } from '@/config/wagmiConfig'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
+import { environment } from '@/config/environment'
 
 interface ProviderProps {
   children: ReactNode
@@ -11,7 +12,7 @@ interface ProviderProps {
 const queryClient = new QueryClient()
 
 createWeb3Modal({
-  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? '',
+  projectId: environment.walletConnectProjectId,
   wagmiConfig,
 })
 
