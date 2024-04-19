@@ -3,7 +3,7 @@
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
     "build": {
-      "env": ["NEXT_VOUCHER_REDEEM_DEADLINE", "NEXT_PUBLIC_INFURA_KEY"],
+      "env": ["NEXT_PUBLIC_VOUCHER_REDEEM_DEADLINE", "NEXT_PUBLIC_INFURA_KEY"],
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "build/**", "cache"]
     },
