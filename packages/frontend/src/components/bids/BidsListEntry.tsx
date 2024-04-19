@@ -1,9 +1,9 @@
 import { AddressColumn, BidColumn, PlaceColumn } from '@/components/bids/BidsColumns'
 import styled, { css } from 'styled-components'
-import { useChainId, useChains } from 'wagmi'
 import { BidWithPlace } from '@/types/bid'
 import { Colors } from '@/styles/colors'
 import { formatEther, Hex } from 'viem'
+import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerAddressLink'
 
 interface Props {
   bid: BidWithPlace
@@ -27,17 +27,6 @@ export const BidsListEntry = ({ bid, isUser, view = 'full' }: Props) => {
       </AddressColumn>
     </BidsEntryRow>
   )
-}
-
-const useExplorerAddressLink = (address: Hex): string | undefined => {
-  const chains = useChains()
-  const chainId = useChainId()
-  const currentChain = chains.find((chain) => chain.id === chainId)
-
-  if (!currentChain || !currentChain.blockExplorers?.default) {
-    return undefined
-  }
-  return `${currentChain.blockExplorers.default.url}/address/${address}`
 }
 
 const shortenEthAddress = (address: Hex) => `${address.substring(0, 6)}......${address.substring(address.length - 4)}`
