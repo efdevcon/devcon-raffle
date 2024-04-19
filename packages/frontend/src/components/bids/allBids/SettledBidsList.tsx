@@ -6,7 +6,7 @@ import { GoldenTicketWinner } from '@/components/bids/allBids/GoldenTicketWinner
 import { NothingFound } from '@/components/bids/allBids/NothingFound'
 import { BidsListHeaders } from '@/components/bids/BidsListHeaders'
 import { BidsSubList } from '@/components/bids/allBids/BidsSubList'
-import { matchesBidFn } from '@/components/bids/allBids/matchesBidFn'
+import { bidMatchesSearch } from '@/components/bids/allBids/bidMatchesSearch'
 
 interface Bids {
   auction: Bid[]
@@ -21,7 +21,7 @@ interface SettledBidsListProps {
 
 export const SettledBidsList = ({ search }: SettledBidsListProps) => {
   const { bidList } = useBids()
-  const matchesSearch = matchesBidFn(search)
+  const matchesSearch = bidMatchesSearch(search)
   const { auctionWinners, raffleWinners } = useAuctionWinners()
 
   const settledBids = useMemo(

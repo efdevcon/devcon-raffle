@@ -8,7 +8,7 @@ import { AllBidsList } from '@/components/bids/allBids/AllBidsList'
 import { SearchInput } from '@/components/form/SearchInput'
 import { useContractState } from '@/blockchain/hooks/useAuctionState'
 import { isAuctionSettled } from '@/utils/isAuctionSettled'
-import { SettledBidsList } from '@/components/allBids/SettledBidsList'
+import { SettledBidsList } from '@/components/bids/allBids/SettledBidsList'
 
 export const AllBids = () => {
   const [search, setSearch] = useState('')
