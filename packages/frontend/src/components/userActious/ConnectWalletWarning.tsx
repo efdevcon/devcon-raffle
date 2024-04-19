@@ -1,6 +1,6 @@
 import { useContractState } from '@/blockchain/hooks/useAuctionState'
 import styled from 'styled-components'
-import { FormHeading, FormRow, FormWrapper } from '../Form'
+import { FormHeading, FormRow, FormWrapper } from '../form'
 import { ConnectWalletButton } from '../buttons'
 import { getWarningText } from './getWarningText'
 

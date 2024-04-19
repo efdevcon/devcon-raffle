@@ -5,10 +5,10 @@ import { useBids } from '@/providers/BidsProvider'
 import { Button } from '@/components/buttons/Button'
 import { useRouter } from 'next/navigation'
 import { Colors } from '@/styles/colors'
-import { BidsShortList } from '@/components/bidsList/BidsShortList'
-import { BidsListHeaders } from '@/components/bidsList/BidsListHeaders'
+import { BidsShortList } from '@/components/bids/bidsShortList/BidsShortList'
+import { BidsListHeaders } from '@/components/bids/BidsListHeaders'
 
-export const BidsListSection = () => {
+export const BidsShortListSection = () => {
   const state = useAuctionState()
   const { bidList, isLoading: areBidsLoading } = useBids()
   const router = useRouter()
