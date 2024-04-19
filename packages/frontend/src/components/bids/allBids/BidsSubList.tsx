@@ -7,11 +7,10 @@ import { useAccount } from 'wagmi'
 
 interface Props {
   bids: Bid[]
-  placeOffset: number
   title: string
 }
 
-export const BidsSubList = ({ bids, placeOffset, title }: Props) => {
+export const BidsSubList = ({ bids, title }: Props) => {
   const { address } = useAccount()
 
   return (

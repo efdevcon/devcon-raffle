@@ -36,10 +36,8 @@ export const AllBidsList = ({ search, auctionWinnersCount, raffleWinnersCount }:
       ) : (
         <>
           <BidsListHeaders />
-          {bids.auction.length !== 0 && <BidsSubList bids={bids.auction} placeOffset={0} title="AUCTION" />}
-          {bids.raffle.length !== 0 && (
-            <BidsSubList bids={bids.raffle} placeOffset={bids.auction.length} title="RAFFLE" />
-          )}
+          {bids.auction.length !== 0 && <BidsSubList bids={bids.auction} title="AUCTION" />}
+          {bids.raffle.length !== 0 && <BidsSubList bids={bids.raffle} title="RAFFLE" />}
         </>
       )}
     </>
