@@ -1,6 +1,5 @@
 import { Bid } from '@/types/bid'
 import { Hex } from 'viem'
-import { SupportedChainId } from '@/blockchain/chain'
 
 interface BidEvent {
   args: {
@@ -13,41 +12,76 @@ interface BidEvent {
 interface BidsState {
   bids: Map<Hex, Bid>
   bidList: Bid[]
-  startBlock: bigint | undefined
-  chainId: SupportedChainId | undefined
 }
 
 export const defaultBidsState: BidsState = {
   bids: new Map<Hex, Bid>(),
   bidList: [],
-  startBlock: undefined,
-  chainId: undefined,
 }
 
-export interface BidEventsState {
+interface BidWithAddressPayload {
+  bidder: Hex
+  bid: {
+    bidderID: bigint
+    amount: bigint
+  }
+}
+
+interface InitialBidsAction {
+  type: 'InitialBids'
+  bids: readonly BidWithAddressPayload[]
+}
+
+interface NewBidsAction {
+  type: 'NewBids'
   events: BidEvent[]
-  startBlock: bigint | undefined
-  chainId: SupportedChainId
 }
 
-export const reduceBids = (previousState: BidsState, state: BidEventsState): BidsState => {
-  const { events, startBlock, chainId } = state
-  const bids = getInitialBids(previousState, state)
-  events.forEach((event) => handleBid(bids, event.args))
+export type ReduceBidsAction = InitialBidsAction | NewBidsAction
+
+export const reduceBids = (previousState: BidsState, action: ReduceBidsAction) => {
+  switch (action.type) {
+    case 'InitialBids':
+      return addInitialBids(action.bids)
+    case 'NewBids':
+      return addNewBids(previousState, action.events)
+  }
+}
+
+const addInitialBids = (bidsPayload: readonly BidWithAddressPayload[]): BidsState => {
+  const bids = new Map<Hex, Bid>()
+  bidsPayload.forEach((bidPayload) =>
+    bids.set(bidPayload.bidder, {
+      address: bidPayload.bidder,
+      bidderId: bidPayload.bid.bidderID,
+      amount: bidPayload.bid.amount,
+    }),
+  )
 
   return {
     bids,
     bidList: Array.from(bids.values()).sort(biggerFirst),
-    startBlock: startBlock,
-    chainId: chainId,
   }
 }
 
-const getInitialBids = (previousState: BidsState, { startBlock, chainId }: BidEventsState) => {
-  if (startBlock !== previousState.startBlock || chainId !== previousState.chainId) {
-    return new Map<Hex, Bid>()
+const addNewBids = (previousState: BidsState, events: BidEvent[]): BidsState => {
+  const bids = new Map(previousState.bids)
+
+  events.forEach(({ args }) => {
+    if (!args.bidder || !args.bidAmount || !args.bidderID) {
+      return
+    }
+    bids.set(args.bidder, {
+      address: args.bidder,
+      bidderId: args.bidderID,
+      amount: args.bidAmount,
+    })
+  })
+
+  return {
+    bids,
+    bidList: Array.from(bids.values()).sort(biggerFirst),
   }
-  return previousState.bids
 }
 
 const handleBid = (bids: Map<Hex, Bid>, eventArgs: BidEvent['args']) => {
