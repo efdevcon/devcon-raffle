@@ -1,11 +1,9 @@
 import { createContext, ReactNode, useContext, useReducer } from 'react'
-import { Hex } from 'viem'
-import { defaultBidsState, RawBid, reduceBids } from '@/providers/BidsProvider/reduceBids'
+import { defaultBidsState, reduceBids } from '@/providers/BidsProvider/reduceBids'
 import { useWatchEvents } from '@/providers/BidsProvider/useWatchEvents'
 import { Bid } from '@/types/bid'
 
 const BidsContext = createContext({
-  bids: new Map<Hex, RawBid>(),
   bidList: new Array<Bid>(),
   isLoading: true,
 })
@@ -16,5 +14,5 @@ export const BidsProvider = ({ children }: { children: ReactNode }) => {
   const [bidsState, updateBids] = useReducer(reduceBids, defaultBidsState)
   const { isLoading } = useWatchEvents(updateBids)
 
-  return <BidsContext.Provider value={{ ...bidsState, isLoading }}>{children}</BidsContext.Provider>
+  return <BidsContext.Provider value={{ bidList: bidsState.bidList, isLoading }}>{children}</BidsContext.Provider>
 }
