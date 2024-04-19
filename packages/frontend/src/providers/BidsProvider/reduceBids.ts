@@ -67,16 +67,7 @@ const addInitialBids = (bidsPayload: readonly BidWithAddressPayload[]): BidsStat
 const addNewBids = (previousState: BidsState, events: BidEvent[]): BidsState => {
   const bids = new Map(previousState.bids)
 
-  events.forEach(({ args }) => {
-    if (!args.bidder || !args.bidAmount || !args.bidderID) {
-      return
-    }
-    bids.set(args.bidder, {
-      address: args.bidder,
-      bidderId: args.bidderID,
-      amount: args.bidAmount,
-    })
-  })
+  events.forEach((event) => handleBid(bids, event.args))
 
   return {
     bids,
