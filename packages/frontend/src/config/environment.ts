@@ -1,6 +1,7 @@
 export const environment = {
   voucherRedeemDeadline: getDateEnv(process.env.NEXT_PUBLIC_VOUCHER_REDEEM_DEADLINE),
   walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? '',
+  infuraKey: process.env.NEXT_PUBLIC_INFURA_KEY,
 }
 
 function getDateEnv(envValue: string | undefined): number | undefined {
