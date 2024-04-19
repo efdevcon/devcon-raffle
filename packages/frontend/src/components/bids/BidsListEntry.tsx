@@ -1,12 +1,12 @@
 import { AddressColumn, BidColumn, PlaceColumn } from '@/components/bids/BidsColumns'
 import styled, { css } from 'styled-components'
-import { BidWithPlace } from '@/types/bid'
+import { Bid } from '@/types/bid'
 import { Colors } from '@/styles/colors'
 import { formatEther, Hex } from 'viem'
 import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerAddressLink'
 
 interface Props {
-  bid: BidWithPlace
+  bid: Bid
   isUser?: boolean
   view?: 'short' | 'full'
 }

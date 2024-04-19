@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Bid, bidToBidWithPlace } from '@/types/bid'
+import { Bid } from '@/types/bid'
 import { useBids } from '@/providers/BidsProvider'
 import { useAuctionWinners } from '@/blockchain/hooks/useAuctionWinners'
 import { GoldenTicketWinner } from '@/components/bids/allBids/GoldenTicketWinner'
@@ -39,19 +39,9 @@ export const SettledBidsList = ({ search }: SettledBidsListProps) => {
         <>
           {filteredBids.goldenTicket && <GoldenTicketWinner bidderAddress={filteredBids.goldenTicket.address} />}
           <BidsListHeaders />
-          {filteredBids.auction.length !== 0 && (
-            <BidsSubList bids={filteredBids.auction} placeOffset={0} title="AUCTION" />
-          )}
-          {filteredBids.raffle.length !== 0 && (
-            <BidsSubList bids={filteredBids.raffle} placeOffset={filteredBids.auction.length} title="RAFFLE" />
-          )}
-          {filteredBids.others.length !== 0 && (
-            <BidsSubList
-              bids={filteredBids.others}
-              placeOffset={filteredBids.raffle.length + filteredBids.auction.length}
-              title="OTHERS"
-            />
-          )}
+          {filteredBids.auction.length !== 0 && <BidsSubList bids={filteredBids.auction} title="AUCTION" />}
+          {filteredBids.raffle.length !== 0 && <BidsSubList bids={filteredBids.raffle} title="RAFFLE" />}
+          {filteredBids.others.length !== 0 && <BidsSubList bids={filteredBids.others} title="OTHERS" />}
         </>
       )}
     </>
@@ -75,20 +65,19 @@ function divideBids(
 
   bids.forEach((bid, index) => {
     const bidderID = bid.bidderId
-    const bidWithPlace = bidToBidWithPlace(bid, index)
     if (auctionWinners.find((winnerId) => bid.bidderId === winnerId)) {
-      settledBids.auction.push(bidWithPlace)
+      settledBids.auction.push(bid)
       return
     }
     if (bidderID === raffleWinners[0]) {
-      settledBids.goldenTicket = bidWithPlace
+      settledBids.goldenTicket = bid
       return
     }
     if (raffleWinners.find((winnerId) => bid.bidderId === winnerId)) {
-      settledBids.raffle.push(bidWithPlace)
+      settledBids.raffle.push(bid)
       return
     }
-    settledBids.others.push(bidWithPlace)
+    settledBids.others.push(bid)
   })
   return settledBids
 }
