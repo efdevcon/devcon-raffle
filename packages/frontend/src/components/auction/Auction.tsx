@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import { Colors } from '@/styles/colors'
-import { BidsListSection } from '@/components/bidsList/BidsListSection'
+import { BidsShortListSection } from '@/components/bids/bidsShortList/BidsShortListSection'
 
 export const Auction = () => {
   return (
     <Wrapper>
-      <BidsListSection />
+      <BidsShortListSection />
     </Wrapper>
   )
 }

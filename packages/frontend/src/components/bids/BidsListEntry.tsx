@@ -1,4 +1,4 @@
-import { AddressColumn, BidColumn, PlaceColumn } from '@/components/bidsList/BidsColumns'
+import { AddressColumn, BidColumn, PlaceColumn } from '@/components/bids/BidsColumns'
 import styled, { css } from 'styled-components'
 import { useChainId, useChains } from 'wagmi'
 import { BidWithPlace } from '@/types/bid'
@@ -11,7 +11,7 @@ interface Props {
   view?: 'short' | 'full'
 }
 
-export const BidListEntry = ({ bid, isUser, view = 'full' }: Props) => {
+export const BidsListEntry = ({ bid, isUser, view = 'full' }: Props) => {
   const explorerAddressLink = useExplorerAddressLink(bid.address)
 
   return (
@@ -25,16 +25,6 @@ export const BidListEntry = ({ bid, isUser, view = 'full' }: Props) => {
           {view === 'short' ? shortenEthAddress(bid.address) : bid.address}
         </AddressLink>
       </AddressColumn>
-    </BidsEntryRow>
-  )
-}
-
-export const EmptyBidListEntry = ({ place }: { place: number }) => {
-  return (
-    <BidsEntryRow>
-      <PlaceColumn>{place}.</PlaceColumn>
-      <BidColumn>-</BidColumn>
-      <AddressColumn>-</AddressColumn>
     </BidsEntryRow>
   )
 }

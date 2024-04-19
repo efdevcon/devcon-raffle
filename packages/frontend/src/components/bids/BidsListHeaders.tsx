@@ -1,4 +1,4 @@
-import { AddressColumn, BidColumn, BidsColumns, PlaceColumn } from '@/components/bidsList/BidsColumns'
+import { AddressColumn, BidColumn, BidsColumns, PlaceColumn } from '@/components/bids/BidsColumns'
 
 export const BidsListHeaders = () => {
   return (

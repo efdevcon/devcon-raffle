@@ -9,3 +9,5 @@ export interface Bid {
 export interface BidWithPlace extends Bid {
   place: number
 }
+
+export const bidToBidWithPlace = (bid: Bid, arrayIndex: number): BidWithPlace => ({ ...bid, place: arrayIndex + 1 })
