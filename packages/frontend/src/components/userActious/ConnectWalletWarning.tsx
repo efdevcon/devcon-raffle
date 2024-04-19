@@ -12,7 +12,9 @@ export const ConnectWalletWarning = () => {
     <ConnectFormWrapper>
       <FormHeading>{text.heading}</FormHeading>
       <FormRow>
-        <span>To {text.action} connect your wallet</span>
+        <span>
+          To {text.action} please connect your wallet to the <strong>Arbitrum</strong> network.
+        </span>
       </FormRow>
       <ConnectWalletButton />
     </ConnectFormWrapper>
