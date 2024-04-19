@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Bid, bidToBidWithPlace } from '@/types/bid'
+import { Bid } from '@/types/bid'
 import { useBids } from '@/providers/BidsProvider'
 import { useAuctionWinners } from '@/blockchain/hooks/useAuctionWinners'
 import { GoldenTicketWinner } from '@/components/bids/allBids/GoldenTicketWinner'
@@ -75,20 +75,19 @@ function divideBids(
 
   bids.forEach((bid, index) => {
     const bidderID = bid.bidderId
-    const bidWithPlace = bidToBidWithPlace(bid, index)
     if (auctionWinners.find((winnerId) => bid.bidderId === winnerId)) {
-      settledBids.auction.push(bidWithPlace)
+      settledBids.auction.push(bid)
       return
     }
     if (bidderID === raffleWinners[0]) {
-      settledBids.goldenTicket = bidWithPlace
+      settledBids.goldenTicket = bid
       return
     }
     if (raffleWinners.find((winnerId) => bid.bidderId === winnerId)) {
-      settledBids.raffle.push(bidWithPlace)
+      settledBids.raffle.push(bid)
       return
     }
-    settledBids.others.push(bidWithPlace)
+    settledBids.others.push(bid)
   })
   return settledBids
 }

@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { Bid, bidToBidWithPlace } from '@/types/bid'
+import { Bid } from '@/types/bid'
 import { useUserBid } from '@/blockchain/hooks/useUserBid'
 import { Colors } from '@/styles/colors'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
@@ -69,13 +69,13 @@ function selectBids(auctionWinnersCount: number | undefined, bidList: Bid[], use
   }
 
   if (bidList.length <= bidsMaxCount) {
-    return bidList.map(bidToBidWithPlace)
+    return bidList
   }
 
-  const topAuctionBids = bidList.slice(0, topAuctionBidsCount).map(bidToBidWithPlace)
+  const topAuctionBids = bidList.slice(0, topAuctionBidsCount)
 
   const lastAuctionBidIndex = bidList.length > auctionWinnersCount ? auctionWinnersCount - 1 : bidList.length - 1
-  const lastAuctionBid = bidToBidWithPlace(bidList[lastAuctionBidIndex], lastAuctionBidIndex)
+  const lastAuctionBid = bidList[lastAuctionBidIndex]
 
   return userBid && shouldUserBidBeDisplayed(userBid, lastAuctionBid, auctionWinnersCount)
     ? topAuctionBids.concat([userBid, lastAuctionBid])

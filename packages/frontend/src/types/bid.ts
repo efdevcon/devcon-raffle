@@ -6,5 +6,3 @@ export interface Bid {
   bidderId: bigint
   place: number
 }
-
-export const bidToBidWithPlace = (bid: Bid, arrayIndex: number): Bid => ({ ...bid, place: arrayIndex + 1 })

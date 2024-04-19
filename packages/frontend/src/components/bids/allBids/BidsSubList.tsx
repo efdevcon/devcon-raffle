@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Bid, bidToBidWithPlace } from '@/types/bid'
+import { Bid } from '@/types/bid'
 import { Colors } from '@/styles/colors'
 import { BidsListContainer } from '@/components/bids/BidsListContainer'
 import { BidsListEntry } from '@/components/bids/BidsListEntry'
@@ -21,12 +21,7 @@ export const BidsSubList = ({ bids, placeOffset, title }: Props) => {
       </TitleBanner>
       <BidsListContainer>
         {bids.map((bid, index) => (
-          <BidsListEntry
-            key={bid.bidderId}
-            bid={bidToBidWithPlace(bid, placeOffset + index)}
-            isUser={address === bid.address}
-            view="full"
-          />
+          <BidsListEntry key={bid.bidderId} bid={bid} isUser={address === bid.address} view="full" />
         ))}
       </BidsListContainer>
     </>
