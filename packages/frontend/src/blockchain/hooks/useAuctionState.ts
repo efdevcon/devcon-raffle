@@ -11,6 +11,7 @@ export type AuctionState =
   | 'AwaitingResults'
   | 'ClaimingFlow'
   | 'ClaimingClosed'
+  | 'GitcoinFlow'
 
 export enum ContractState {
   AWAITING_BIDDING,

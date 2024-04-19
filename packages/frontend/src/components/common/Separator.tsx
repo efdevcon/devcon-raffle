@@ -24,3 +24,21 @@ const SeparatorElement = styled(SeparatorPrimitive.Root)<SeparatorElementProps>`
     width: 1px;
   }
 `
+
+export const SeparatorWithText = ({ text }: { text: string }) => {
+  return (
+    <SeparatorWrapper>
+      <Separator color={Colors.Mystic} />
+      {text}
+      <Separator color={Colors.Mystic} />
+    </SeparatorWrapper>
+  )
+}
+
+const SeparatorWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  color: White;
+`
