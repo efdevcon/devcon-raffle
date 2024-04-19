@@ -12,10 +12,6 @@ export const useWatchEvents = (dispatch: (eventsState: ReduceBidsAction) => void
     abi: AUCTION_ABI,
     address: AUCTION_ADDRESSES[chainId],
     functionName: 'getBidsWithAddresses',
-    query: {
-      gcTime: Infinity,
-      staleTime: Infinity,
-    },
   })
 
   useEffect(() => {
