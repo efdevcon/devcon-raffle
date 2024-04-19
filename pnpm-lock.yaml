@@ -122,6 +122,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.28.9
         version: 5.29.2(react@18.2.0)
+      '@web3modal/wagmi':
+        specifier: ^4.1.9
+        version: 4.1.9(@types/react@18.2.74)(react-dom@18.2.0)(react@18.2.0)(viem@2.9.16)
       moment:
         specifier: ^2.29.1
         version: 2.30.1
@@ -1021,6 +1024,12 @@ packages:
 
   /@lit/reactive-element@1.6.3:
     resolution: {integrity: sha512-QuTgnG52Poic7uM1AN5yJ09QMe0O28e10XzSvWDz02TJiiKee4stsiownEIadWm8nYzyDAyT+gKzUoZmiWQtsQ==}
+    dependencies:
+      '@lit-labs/ssr-dom-shim': 1.2.0
+    dev: false
+
+  /@lit/reactive-element@2.0.4:
+    resolution: {integrity: sha512-GFn91inaUa2oHLak8awSIigYz0cU0Payr1rcFsrkf5OJ5eSPxElyZfKh0f2p9FsTiZWXQdWGJeXZICEfXXYSXQ==}
     dependencies:
       '@lit-labs/ssr-dom-shim': 1.2.0
     dev: false
@@ -3561,6 +3570,143 @@ packages:
       tslib: 1.14.1
     dev: false
 
+  /@web3modal/common@4.1.9:
+    resolution: {integrity: sha512-UZ6dDQ5t6q+oUFMI2ONg3a8gctpNJTFj2qTdPic4/xHuktLf5nHm8LK9NGhMpUqjm7VRN95xpnTeM0gSSmcF6w==}
+    dependencies:
+      bignumber.js: 9.1.2
+      dayjs: 1.11.10
+    dev: false
+
+  /@web3modal/core@4.1.9(@types/react@18.2.74)(react@18.2.0):
+    resolution: {integrity: sha512-qe+w8LzbZBehcpBSTYgWFVK4jmpKwnRWRVsvgq301108c2NNtxDsWHZ324r4jmmgY1qhmdoZqTRqJspUyGfMJQ==}
+    dependencies:
+      '@web3modal/common': 4.1.9
+      '@web3modal/wallet': 4.1.9
+      valtio: 1.11.2(@types/react@18.2.74)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - react
+    dev: false
+
+  /@web3modal/polyfills@4.1.9:
+    resolution: {integrity: sha512-skpS7RYX8IEV/V69a7agZD398ffvFkvA6cPqj01aThTrB9dP2THJSuUDQswfWC2frSOFnEdZbJ3LkaQb0eUjzg==}
+    dependencies:
+      buffer: 6.0.3
+    dev: false
+
+  /@web3modal/scaffold-react@4.1.9(@types/react@18.2.74)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-AoYtCMpdjvYPqDkz8QGgY77LXFkwrGHQqwg7igHYtFSerUDnKOBp7z3+Uv19UiDnAds95m5n+jiw3QijesVLZA==}
+    peerDependencies:
+      react: '>=17'
+      react-dom: '>=17'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@web3modal/scaffold': 4.1.9(@types/react@18.2.74)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+    dev: false
+
+  /@web3modal/scaffold-utils@4.1.9(@types/react@18.2.74)(react@18.2.0):
+    resolution: {integrity: sha512-W5Ek2m2AroraH/PbmI3BfCA1tDGGZA4zhXei5zJMH9/Zox7ltE7kApVmWjS33KfPz46KmifrqLjc+hJs78QO3w==}
+    dependencies:
+      '@web3modal/core': 4.1.9(@types/react@18.2.74)(react@18.2.0)
+      '@web3modal/polyfills': 4.1.9
+      valtio: 1.11.2(@types/react@18.2.74)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - react
+    dev: false
+
+  /@web3modal/scaffold-vue@4.1.9(@types/react@18.2.74)(react@18.2.0):
+    resolution: {integrity: sha512-DRiiBdBEgemyyz6Onb4LGPYj3DlPfFS9XfDqNzNo0AqfC4dYqaRd1dCbJ2YgXglqT/CQ+2J2dCVNmpWGYyR62w==}
+    peerDependencies:
+      vue: '>=3'
+    peerDependenciesMeta:
+      vue:
+        optional: true
+    dependencies:
+      '@web3modal/scaffold': 4.1.9(@types/react@18.2.74)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - react
+    dev: false
+
+  /@web3modal/scaffold@4.1.9(@types/react@18.2.74)(react@18.2.0):
+    resolution: {integrity: sha512-Q0eQdrxO27jQRvy85TF1b6+MK1DSMTSbkb9R4cQIU2IeO1ilTneYuiZtnUII9nlx4j9nXNFywcXWYfb9nvo3nw==}
+    dependencies:
+      '@web3modal/common': 4.1.9
+      '@web3modal/core': 4.1.9(@types/react@18.2.74)(react@18.2.0)
+      '@web3modal/siwe': 4.1.9(@types/react@18.2.74)(react@18.2.0)
+      '@web3modal/ui': 4.1.9
+      '@web3modal/wallet': 4.1.9
+      lit: 3.1.0
+    transitivePeerDependencies:
+      - '@types/react'
+      - react
+    dev: false
+
+  /@web3modal/siwe@4.1.9(@types/react@18.2.74)(react@18.2.0):
+    resolution: {integrity: sha512-4KKToXWkj9sK9kKSPAhaoO/yza3K1BChkr7+pOHIVwL7sl4HB7UQUvLKPffANNx/mz4wi0SgrvQB5WCdnmhcCA==}
+    dependencies:
+      '@web3modal/core': 4.1.9(@types/react@18.2.74)(react@18.2.0)
+      '@web3modal/scaffold-utils': 4.1.9(@types/react@18.2.74)(react@18.2.0)
+      lit: 3.1.0
+      valtio: 1.11.2(@types/react@18.2.74)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - react
+    dev: false
+
+  /@web3modal/ui@4.1.9:
+    resolution: {integrity: sha512-GoVbFLvf6l0m2JUShDNfjGNIzKMG3OCUxOZ4yu2H8ajZPKOSy5ZxEYM23H6ISYlAo3zDgTYzjWPctQB20A+W3w==}
+    dependencies:
+      lit: 3.1.0
+      qrcode: 1.5.3
+    dev: false
+
+  /@web3modal/wagmi@4.1.9(@types/react@18.2.74)(react-dom@18.2.0)(react@18.2.0)(viem@2.9.16):
+    resolution: {integrity: sha512-+2F2NI5UtTEUQ4pMXsz2zwpdVcsXhy7HfwFf4afLdloY/eG4ckqACYyGVqm4TQ3IC2CqW9zIyPRNUYTYa0iZng==}
+    peerDependencies:
+      '@wagmi/connectors': '>=4.0.0'
+      '@wagmi/core': '>=2.0.0'
+      react: '>=17'
+      react-dom: '>=17'
+      viem: '>=2.0.0'
+      vue: '>=3'
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+      vue:
+        optional: true
+    dependencies:
+      '@web3modal/polyfills': 4.1.9
+      '@web3modal/scaffold': 4.1.9(@types/react@18.2.74)(react@18.2.0)
+      '@web3modal/scaffold-react': 4.1.9(@types/react@18.2.74)(react-dom@18.2.0)(react@18.2.0)
+      '@web3modal/scaffold-utils': 4.1.9(@types/react@18.2.74)(react@18.2.0)
+      '@web3modal/scaffold-vue': 4.1.9(@types/react@18.2.74)(react@18.2.0)
+      '@web3modal/siwe': 4.1.9(@types/react@18.2.74)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      viem: 2.9.16(typescript@5.4.3)
+    transitivePeerDependencies:
+      - '@types/react'
+    dev: false
+
+  /@web3modal/wallet@4.1.9:
+    resolution: {integrity: sha512-YkFzTxtFImBVkFM7NZwUSxlDmz+uLp2hFJdWDbQI0THLLkKAjn4kE5EuQHjKILdMtIqx01seqn75BadyC/WYog==}
+    dependencies:
+      '@web3modal/polyfills': 4.1.9
+      zod: 3.22.4
+    dev: false
+
   /@yarnpkg/lockfile@1.1.0:
     resolution: {integrity: sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==}
     dev: true
@@ -4727,6 +4873,10 @@ packages:
     dev: true
     optional: true
 
+  /bignumber.js@9.1.2:
+    resolution: {integrity: sha512-2/mKyZH9K85bzOEfhXDBFZTGd1CTs+5IHpeFQo9luiBG7hghdC851Pj2WAhb6E3R6b9tZj/XKhbg4fum+Kepug==}
+    dev: false
+
   /binary-extensions@2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
@@ -5782,6 +5932,10 @@ packages:
     engines: {node: '>=0.11'}
     dependencies:
       '@babel/runtime': 7.24.4
+    dev: false
+
+  /dayjs@1.11.10:
+    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
     dev: false
 
   /debug@2.6.9:
@@ -9947,8 +10101,22 @@ packages:
       lit-html: 2.8.0
     dev: false
 
+  /lit-element@4.0.5:
+    resolution: {integrity: sha512-iTWskWZEtn9SyEf4aBG6rKT8GABZMrTWop1+jopsEOgEcugcXJGKuX5bEbkq9qfzY+XB4MAgCaSPwnNpdsNQ3Q==}
+    dependencies:
+      '@lit-labs/ssr-dom-shim': 1.2.0
+      '@lit/reactive-element': 2.0.4
+      lit-html: 3.1.3
+    dev: false
+
   /lit-html@2.8.0:
     resolution: {integrity: sha512-o9t+MQM3P4y7M7yNzqAyjp7z+mQGa4NS4CxiyLqFPyFWyc4O+nodLrkrxSaCTrla6M5YOLaT3RpbbqjszB5g3Q==}
+    dependencies:
+      '@types/trusted-types': 2.0.7
+    dev: false
+
+  /lit-html@3.1.3:
+    resolution: {integrity: sha512-FwIbqDD8O/8lM4vUZ4KvQZjPPNx7V1VhT7vmRB8RBAO0AU6wuTVdoXiu2CivVjEGdugvcbPNBLtPE1y0ifplHA==}
     dependencies:
       '@types/trusted-types': 2.0.7
     dev: false
@@ -9959,6 +10127,14 @@ packages:
       '@lit/reactive-element': 1.6.3
       lit-element: 3.3.3
       lit-html: 2.8.0
+    dev: false
+
+  /lit@3.1.0:
+    resolution: {integrity: sha512-rzo/hmUqX8zmOdamDAeydfjsGXbbdtAFqMhmocnh2j9aDYqbu0fjXygjCa0T99Od9VQ/2itwaGrjZz/ZELVl7w==}
+    dependencies:
+      '@lit/reactive-element': 2.0.4
+      lit-element: 4.0.5
+      lit-html: 3.1.3
     dev: false
 
   /load-json-file@1.1.0:
@@ -15239,6 +15415,10 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod@3.22.4:
+    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false
 
   /zustand@4.4.1(@types/react@18.2.74)(react@18.2.0):
     resolution: {integrity: sha512-QCPfstAS4EBiTQzlaGP1gmorkh/UL1Leaj2tdj+zZCZ/9bm0WS7sI2wnfD5lpOszFqWJ1DcPnGoY8RDL61uokw==}
