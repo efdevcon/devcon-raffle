@@ -1,7 +1,7 @@
 import { ReactNode, MouseEvent } from 'react'
 import styled from 'styled-components'
-import { Colors } from "@/styles/colors";
-import { Button } from "@/components/buttons";
+import { Colors } from '@/styles/colors'
+import { Button } from '@/components/buttons'
 
 interface TooltipButtonProps {
   color?: string

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { Logo } from "@/components/icons";
-import { Colors } from "@/styles/colors";
-import { AccountButton } from "@/components/topBar/AccountButton";
+import { Logo } from '@/components/icons'
+import { Colors } from '@/styles/colors'
+import { AccountButton } from '@/components/topBar/AccountButton'
 
 export const TopBar = () => {
   return (

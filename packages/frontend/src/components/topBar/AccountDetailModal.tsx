@@ -1,12 +1,12 @@
 import styled from 'styled-components'
-import { useAccount, useDisconnect } from "wagmi";
-import { Colors } from "@/styles/colors";
-import { Button } from "@/components/buttons";
-import { Modal } from "@/components/topBar/Modal";
-import { shortenEthAddress } from "@/utils/formatters/shortenEthAddress";
-import { CopyButton } from "@/components/buttons/CopyButton";
-import { RedirectButton } from "@/components/buttons/RedirectButton";
-import { useExplorerAddressLink } from "@/blockchain/hooks/useExplorerAddressLink";
+import { useAccount, useDisconnect } from 'wagmi'
+import { Colors } from '@/styles/colors'
+import { Button } from '@/components/buttons'
+import { Modal } from '@/components/topBar/Modal'
+import { shortenEthAddress } from '@/utils/formatters/shortenEthAddress'
+import { CopyButton } from '@/components/buttons/CopyButton'
+import { RedirectButton } from '@/components/buttons/RedirectButton'
+import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerAddressLink'
 
 export interface ModalProps {
   isShown: boolean | undefined

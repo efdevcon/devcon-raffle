@@ -1,8 +1,8 @@
 import { ReactNode, useState } from 'react'
 import copyToClipboard from 'copy-to-clipboard'
 import styled from 'styled-components'
-import { CopyIcon } from "@/components/icons";
-import { Tooltip, TooltipButton } from "@/components/tooltip";
+import { CopyIcon } from '@/components/icons'
+import { Tooltip, TooltipButton } from '@/components/tooltip'
 
 interface CopyButtonProps {
   value: string

@@ -4,7 +4,7 @@ import { Bid } from '@/types/bid'
 import { Colors } from '@/styles/colors'
 import { formatEther } from 'viem'
 import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerAddressLink'
-import { shortenEthAddress } from "@/utils/formatters/shortenEthAddress";
+import { shortenEthAddress } from '@/utils/formatters/shortenEthAddress'
 
 interface Props {
   bid: Bid

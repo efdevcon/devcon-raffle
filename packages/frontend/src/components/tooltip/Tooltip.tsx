@@ -1,7 +1,7 @@
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 import { ReactNode } from 'react'
 import styled from 'styled-components'
-import { Colors } from "@/styles/colors";
+import { Colors } from '@/styles/colors'
 
 interface TooltipProps {
   side?: 'top' | 'right' | 'bottom' | 'left'
@@ -19,7 +19,7 @@ export const Tooltip = ({ side = 'bottom', tooltip, children, onOpenChange }: To
         </TooltipPrimitive.Trigger>
         <TooltipContent side={side} sideOffset={side === 'top' || side === 'bottom' ? 4 : 8}>
           {tooltip}
-          <Arrow width={21} height={10}/>
+          <Arrow width={21} height={10} />
         </TooltipContent>
       </TooltipPrimitive.Root>
     </TooltipPrimitive.Provider>

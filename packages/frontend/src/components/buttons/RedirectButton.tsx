@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import styled from 'styled-components'
-import { Tooltip, TooltipLink } from "@/components/tooltip";
-import { RedirectIcon } from "@/components/icons";
+import { Tooltip, TooltipLink } from '@/components/tooltip'
+import { RedirectIcon } from '@/components/icons'
 
 interface RedirectTooltipProps {
   link: string

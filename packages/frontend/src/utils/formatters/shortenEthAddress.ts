@@ -1,3 +1,4 @@
-import { Hex } from "viem";
+import { Hex } from 'viem'
 
-export const shortenEthAddress = (address: Hex) => `${address.substring(0, 6)}......${address.substring(address.length - 4)}`
+export const shortenEthAddress = (address: Hex) =>
+  `${address.substring(0, 6)}......${address.substring(address.length - 4)}`

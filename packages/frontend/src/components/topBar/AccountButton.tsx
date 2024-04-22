@@ -1,9 +1,9 @@
-import { useAccount } from "wagmi";
-import { useState } from "react";
-import { Button } from "@/components/buttons/Button";
-import { shortenEthAddress } from "@/utils/formatters/shortenEthAddress";
-import { ConnectWalletButton } from "@/components/buttons/ConnectWalletButton";
-import { AccountDetailModal } from "@/components/topBar/AccountDetailModal";
+import { useAccount } from 'wagmi'
+import { useState } from 'react'
+import { Button } from '@/components/buttons/Button'
+import { shortenEthAddress } from '@/utils/formatters/shortenEthAddress'
+import { ConnectWalletButton } from '@/components/buttons/ConnectWalletButton'
+import { AccountDetailModal } from '@/components/topBar/AccountDetailModal'
 
 export const AccountButton = () => {
   const { address } = useAccount()
@@ -16,10 +16,11 @@ export const AccountButton = () => {
           {shortenEthAddress(address)}
         </Button>
       ) : (
-        <ConnectWalletButton view="secondary"/>
+        <ConnectWalletButton view="secondary" />
       )}
-      {address && isModalOpen &&
-        <AccountDetailModal isShown={isModalOpen} onRequestClose={() => setIsModalOpen(false)}/>}
+      {address && isModalOpen && (
+        <AccountDetailModal isShown={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
+      )}
     </>
   )
 }
