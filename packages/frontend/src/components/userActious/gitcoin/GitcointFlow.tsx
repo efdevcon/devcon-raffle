@@ -17,7 +17,7 @@ export const GitcoinFlow = () => {
       return <CheckGitcoinPassword />
 
     case GitcoinState.CHECKING_SCORE:
-        return <CheckGitcoinScore />
+      return <CheckGitcoinScore />
     default:
       return <CheckGitcoinPassword />
   }

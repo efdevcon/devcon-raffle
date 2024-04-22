@@ -57,13 +57,11 @@ const stepsDefault: Steps = [
 
 type StepType = 'neutral' | 'success' | 'failure'
 
-
 export interface StepperProps {
   steps?: Steps
   currentStep: number
   isFailed: boolean
 }
-
 
 export const TransactionStepper = ({ currentStep, isFailed, steps = stepsDefault }: StepperProps) => (
   <StepperContainer>

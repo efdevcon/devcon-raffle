@@ -3,11 +3,11 @@ import { FormWrapper } from '../../form'
 import { TransactionStepper } from '@/components/stepper/Stepper'
 
 export const CheckGitcoinScore = () => {
-    return (
-        <ConnectFormWrapper>
-            <TransactionStepper currentStep={2} isFailed={true} />
-        </ConnectFormWrapper>
-    )
+  return (
+    <ConnectFormWrapper>
+      <TransactionStepper currentStep={2} isFailed={true} />
+    </ConnectFormWrapper>
+  )
 }
 
 const ConnectFormWrapper = styled(FormWrapper)`
