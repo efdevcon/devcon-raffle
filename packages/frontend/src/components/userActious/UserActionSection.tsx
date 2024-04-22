@@ -1,4 +1,4 @@
-import { AuctionState } from '@/blockchain/hooks/useAuctionState'
+import { AuctionState, useAuctionState } from '@/blockchain/hooks/useAuctionState'
 import { Colors } from '@/styles/colors'
 import { ReactElement } from 'react'
 import styled from 'styled-components'
@@ -19,7 +19,7 @@ const UserActions: Record<AuctionState, () => ReactElement> = {
 }
 
 export const UserActionSection = () => {
-  const state = 'GitcoinFlow'
+  const state = useAuctionState()
   if (!state) {
     return <Wrapper />
   }
