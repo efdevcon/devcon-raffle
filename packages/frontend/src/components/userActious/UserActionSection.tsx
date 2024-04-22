@@ -3,6 +3,7 @@ import { Colors } from '@/styles/colors'
 import { ReactElement } from 'react'
 import styled from 'styled-components'
 import { ConnectWalletWarning } from './ConnectWalletWarning'
+import { GitcoinFlow } from './gitcoin/GitcointFlow'
 
 const Placeholder = () => <div />
 
@@ -14,6 +15,7 @@ const UserActions: Record<AuctionState, () => ReactElement> = {
   AwaitingResults: Placeholder,
   ClaimingFlow: Placeholder,
   ClaimingClosed: Placeholder,
+  GitcoinFlow: GitcoinFlow,
 }
 
 export const UserActionSection = () => {

@@ -14,6 +14,8 @@ export const Colors = {
   RedDark: '#FF6666',
   RedLight: '#FFF7F7',
   Transparent: 'transparent',
+  Porcelain: '#E7EAF3',
+  Mystic: '#D0D6E6',
 }
 
 export const hexOpacity = (color: string, opacity: number) => {
