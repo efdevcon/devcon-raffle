@@ -1,6 +1,6 @@
 import { Colors } from '@/styles/colors'
 import styled from 'styled-components'
-import { ClockIcon, CrossIcon } from '../icons'
+import { CrossIcon } from '../icons'
 
 interface StepContent {
   name: string
@@ -13,72 +13,23 @@ type Step = Record<StepDescription, StepContent>
 
 type Steps = Step[]
 
-const stepsDefault: Steps = [
-  {
-    default: {
-      name: `test`,
-      description: `desc`,
-    },
-    failed: {
-      name: 'Failed',
-      description: 'fail.',
-    },
-  },
-  {
-    default: {
-      name: 'Finalized',
-    },
-    failed: {
-      name: 'Failed',
-      description: 'Transaction failed.',
-    },
-  },
-  {
-    default: {
-      name: 'third',
-      description: 'The transaction has been confirmed on the blockchain.',
-    },
-    failed: {
-      name: 'Failed',
-      description: 'Transaction failed.',
-    },
-  },
-  {
-    default: {
-      name: 'quatro',
-      description: 'The transaction has been confirmed on the blockchain.',
-    },
-    failed: {
-      name: 'Failed',
-      description: 'Transaction failed.',
-    },
-  },
-]
-
 type StepType = 'neutral' | 'success' | 'failure'
 
-export interface StepperProps {
-  steps?: Steps
+interface StepperProps {
+  steps: Steps
   currentStep: number
   isFailed: boolean
 }
 
-export const TransactionStepper = ({ currentStep, isFailed, steps = stepsDefault }: StepperProps) => (
-  <StepperContainer>
-    <Row>
-      <ClockIcon size={38} />
-      <StepperHeader>Checking your score</StepperHeader>
-    </Row>
-
-    <StepperList>
-      {steps.map((item, index) => {
-        const isCurrent = index === currentStep
-        const status = isCurrent ? 'current' : index < currentStep ? 'completed' : 'next'
-        const { step, type } = pickStepVersion(item, isFailed && isCurrent, isCurrent)
-        return <StepperListItem key={index} step={step} status={status} type={type} />
-      })}
-    </StepperList>
-  </StepperContainer>
+export const TransactionStepper = ({ currentStep, isFailed, steps }: StepperProps) => (
+  <StepperList>
+    {steps.map((item, index) => {
+      const isCurrent = index === currentStep
+      const status = isCurrent ? 'current' : index < currentStep ? 'completed' : 'next'
+      const { step, type } = pickStepVersion(item, isFailed && isCurrent, isCurrent)
+      return <StepperListItem key={index} step={step} status={status} type={type} />
+    })}
+  </StepperList>
 )
 
 function pickStepVersion(item: Step, IsFailed: boolean, isCurrent: boolean) {
@@ -100,32 +51,16 @@ const StepperListItem = ({ step, status, type }: ListItemProps) => (
     <StepperBullet type={type} status={status}>
       {type === 'failure' && <CrossIcon size={16} color={Colors.RedDark} />}
     </StepperBullet>
-    <StepperItemName>{step.name}</StepperItemName>
+    <StepperItemName next={status === 'next'}>{step.name}</StepperItemName>
     <StepperItemDescription current={status === 'current'}>{step.description}</StepperItemDescription>
   </StepperListItemContainer>
 )
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 24px;
-  gap: 16px;
-`
-
-const StepperContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 82px 20px 82px 0;
-`
-const StepperHeader = styled.h3`
-  color: ${Colors.Black};
-`
 
 const StepperList = styled.ul`
   display: flex;
   flex-direction: column;
   padding: 0;
+  margin: 0;
 `
 
 function getItemColor(props: DisplayTypeProps) {
@@ -197,7 +132,7 @@ const StepperBullet = styled.div<DisplayTypeProps>`
       case 'current':
         switch (type) {
           case 'neutral':
-            return Colors.Black
+            return Colors.White
           case 'failure':
             return Colors.White
           case 'success':
@@ -230,12 +165,17 @@ const StepperBullet = styled.div<DisplayTypeProps>`
   }};
 `
 
-const StepperItemName = styled.span`
+interface ItemNameProps {
+  next?: boolean
+}
+
+const StepperItemName = styled.span<ItemNameProps>`
   grid-area: header;
   font-size: 16px;
   line-height: 1;
   font-weight: 600;
   color: inherit;
+  opacity: ${(props) => (props.next ? 0.7 : 1)};
 `
 
 interface ItemDescriptionProps {

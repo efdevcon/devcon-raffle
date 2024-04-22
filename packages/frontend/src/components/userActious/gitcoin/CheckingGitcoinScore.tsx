@@ -1,16 +1,66 @@
 import styled from 'styled-components'
-import { FormWrapper } from '../../form'
+import { FormRow, FormWrapper } from '../../form'
 import { TransactionStepper } from '@/components/stepper/Stepper'
+import { Colors } from '@/styles/colors'
+import { ClockIcon } from '@/components/icons'
+import { Button } from '@/components/buttons'
+
+const gitcoinScoreSteps = [
+  {
+    default: {
+      name: `Send request`,
+    },
+    failed: {
+      name: 'Request failed',
+    },
+  },
+  {
+    default: {
+      name: 'Sign the message',
+    },
+    failed: {
+      name: 'Signing message failed',
+    },
+  },
+  {
+    default: {
+      name: 'Obtaining the score',
+    },
+    failed: {
+      name: 'Obtaining the score failed',
+    },
+  },
+]
 
 export const CheckGitcoinScore = () => {
   return (
     <ConnectFormWrapper>
-      <TransactionStepper currentStep={2} isFailed={true} />
+      <Row>
+        <ClockIcon size={38} />
+        <StepperHeader>Checking Your Score</StepperHeader>
+      </Row>
+      <FormRow>
+        <span>It will take about 1 minute. Please stay on this page.</span>
+      </FormRow>
+      <TransactionStepper steps={gitcoinScoreSteps} currentStep={1} isFailed={false} />
+      <Button>Sign Again</Button>
     </ConnectFormWrapper>
   )
 }
 
 const ConnectFormWrapper = styled(FormWrapper)`
   justify-content: center;
+  gap: 16px;
   padding: 0 143px;
+`
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+`
+
+const StepperHeader = styled.h3`
+  color: ${Colors.Black};
 `
