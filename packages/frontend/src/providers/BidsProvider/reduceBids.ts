@@ -1,22 +1,21 @@
 import { Bid } from '@/types/bid'
 import { Hex } from 'viem'
 
-interface BidEvent {
-  args: {
-    bidder?: Hex
-    bidderID?: bigint
-    bidAmount?: bigint
-  }
-}
+export type RawBid = Omit<Bid, 'place'>
 
 interface BidsState {
-  bids: Map<Hex, Bid>
+  bids: Map<Hex, RawBid>
   bidList: Bid[]
 }
 
 export const defaultBidsState: BidsState = {
-  bids: new Map<Hex, Bid>(),
+  bids: new Map<Hex, RawBid>(),
   bidList: [],
+}
+
+interface InitialBidsAction {
+  type: 'InitialBids'
+  bids: readonly BidWithAddressPayload[]
 }
 
 interface BidWithAddressPayload {
@@ -27,14 +26,17 @@ interface BidWithAddressPayload {
   }
 }
 
-interface InitialBidsAction {
-  type: 'InitialBids'
-  bids: readonly BidWithAddressPayload[]
-}
-
 interface NewBidsAction {
   type: 'NewBids'
   events: BidEvent[]
+}
+
+interface BidEvent {
+  args: {
+    bidder?: Hex
+    bidderID?: bigint
+    bidAmount?: bigint
+  }
 }
 
 export type ReduceBidsAction = InitialBidsAction | NewBidsAction
@@ -49,7 +51,7 @@ export const reduceBids = (previousState: BidsState, action: ReduceBidsAction) =
 }
 
 const addInitialBids = (bidsPayload: readonly BidWithAddressPayload[]): BidsState => {
-  const bids = new Map<Hex, Bid>()
+  const bids = new Map<Hex, RawBid>()
   bidsPayload.forEach((bidPayload) =>
     bids.set(bidPayload.bidder, {
       address: bidPayload.bidder,
@@ -60,7 +62,7 @@ const addInitialBids = (bidsPayload: readonly BidWithAddressPayload[]): BidsStat
 
   return {
     bids,
-    bidList: Array.from(bids.values()).sort(biggerFirst),
+    bidList: bidsMapToList(bids),
   }
 }
 
@@ -71,11 +73,11 @@ const addNewBids = (previousState: BidsState, events: BidEvent[]): BidsState => 
 
   return {
     bids,
-    bidList: Array.from(bids.values()).sort(biggerFirst),
+    bidList: bidsMapToList(bids),
   }
 }
 
-const handleBid = (bids: Map<Hex, Bid>, eventArgs: BidEvent['args']) => {
+const handleBid = (bids: Map<Hex, RawBid>, eventArgs: BidEvent['args']) => {
   if (!eventArgs.bidder || !eventArgs.bidAmount || !eventArgs.bidderID) {
     return
   }
@@ -92,7 +94,17 @@ const handleBid = (bids: Map<Hex, Bid>, eventArgs: BidEvent['args']) => {
   })
 }
 
-const biggerFirst = (a: Bid, b: Bid) => {
+const bidsMapToList = (bids: Map<Hex, RawBid>) =>
+  Array.from(bids.values())
+    .sort(biggerFirst)
+    .map(
+      (bid: RawBid, arrayIndex: number): Bid => ({
+        ...bid,
+        place: arrayIndex + 1,
+      }),
+    )
+
+const biggerFirst = (a: RawBid, b: RawBid) => {
   if (a.amount === b.amount) {
     return 0
   }

@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { Bid, bidToBidWithPlace, BidWithPlace } from '@/types/bid'
+import { Bid } from '@/types/bid'
 import { useUserBid } from '@/blockchain/hooks/useUserBid'
 import { Colors } from '@/styles/colors'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
@@ -51,7 +51,7 @@ export const BidsShortList = () => {
 }
 
 function isAuctionParticipant(
-  userBid: BidWithPlace | undefined,
+  userBid: Bid | undefined,
   auctionWinnersCount: number | undefined,
   raffleWinnersCount: number | undefined,
   bidsLength: number,
@@ -63,30 +63,26 @@ function isAuctionParticipant(
   return userBid.place <= firstRaffleBidIndex
 }
 
-function selectBids(
-  auctionWinnersCount: number | undefined,
-  bidList: Bid[],
-  userBid: BidWithPlace | undefined,
-): BidWithPlace[] {
+function selectBids(auctionWinnersCount: number | undefined, bidList: Bid[], userBid: Bid | undefined): Bid[] {
   if (auctionWinnersCount === undefined) {
     return []
   }
 
   if (bidList.length <= bidsMaxCount) {
-    return bidList.map(bidToBidWithPlace)
+    return bidList
   }
 
-  const topAuctionBids = bidList.slice(0, topAuctionBidsCount).map(bidToBidWithPlace)
+  const topAuctionBids = bidList.slice(0, topAuctionBidsCount)
 
   const lastAuctionBidIndex = bidList.length > auctionWinnersCount ? auctionWinnersCount - 1 : bidList.length - 1
-  const lastAuctionBid = bidToBidWithPlace(bidList[lastAuctionBidIndex], lastAuctionBidIndex)
+  const lastAuctionBid = bidList[lastAuctionBidIndex]
 
   return userBid && shouldUserBidBeDisplayed(userBid, lastAuctionBid, auctionWinnersCount)
     ? topAuctionBids.concat([userBid, lastAuctionBid])
     : topAuctionBids.concat([lastAuctionBid])
 }
 
-const shouldUserBidBeDisplayed = (userBid: BidWithPlace, lastAuctionBid: Bid, auctionWinnersCount: number) => {
+const shouldUserBidBeDisplayed = (userBid: Bid, lastAuctionBid: Bid, auctionWinnersCount: number) => {
   return !(userBid.address === lastAuctionBid.address) && within(bidsMaxCount, auctionWinnersCount - 1, userBid.place)
 }
 
