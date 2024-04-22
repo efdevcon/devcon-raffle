@@ -12,14 +12,14 @@ export const AccountButton = () => {
   return (
     <>
       {address ? (
-        <Button view="secondary" onClick={() => setIsModalOpen(!isModalOpen)}>
-          {shortenEthAddress(address)}
-        </Button>
+        <>
+          <Button view="secondary" onClick={() => setIsModalOpen(!isModalOpen)}>
+            {shortenEthAddress(address)}
+          </Button>
+          {isModalOpen && <AccountDetailModal isShown={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />}
+        </>
       ) : (
         <ConnectWalletButton view="secondary" />
-      )}
-      {address && isModalOpen && (
-        <AccountDetailModal isShown={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
       )}
     </>
   )
