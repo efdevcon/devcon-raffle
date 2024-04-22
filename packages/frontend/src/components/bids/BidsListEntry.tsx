@@ -2,8 +2,9 @@ import { AddressColumn, BidColumn, PlaceColumn } from '@/components/bids/BidsCol
 import styled, { css } from 'styled-components'
 import { Bid } from '@/types/bid'
 import { Colors } from '@/styles/colors'
-import { formatEther, Hex } from 'viem'
+import { formatEther } from 'viem'
 import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerAddressLink'
+import { shortenEthAddress } from "@/utils/formatters/shortenEthAddress";
 
 interface Props {
   bid: Bid
@@ -28,8 +29,6 @@ export const BidsListEntry = ({ bid, isUser, view = 'full' }: Props) => {
     </BidsEntryRow>
   )
 }
-
-const shortenEthAddress = (address: Hex) => `${address.substring(0, 6)}......${address.substring(address.length - 4)}`
 
 const BidsEntryRow = styled.div<{ isUser?: boolean }>`
   display: grid;
