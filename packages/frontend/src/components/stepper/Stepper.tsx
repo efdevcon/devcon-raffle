@@ -66,13 +66,13 @@ const StepperList = styled.ul`
 function getItemColor(props: DisplayTypeProps) {
   switch (props.status) {
     case 'current':
-      return currentItemToColor[props.type]
+      return typeToItemToColor[props.type]
     default:
       return Colors.Black
   }
 }
 
-const currentItemToColor: Record<StepType, string> = {
+const typeToItemToColor: Record<StepType, string> = {
   neutral: Colors.Black,
   success: Colors.Black,
   failure: Colors.RedDark,
@@ -129,14 +129,7 @@ const StepperBullet = styled.div<DisplayTypeProps>`
   background-color: ${({ type, status }) => {
     switch (status) {
       case 'current':
-        switch (type) {
-          case 'neutral':
-            return Colors.White
-          case 'failure':
-            return Colors.White
-          case 'success':
-            return Colors.Black
-        }
+        return typeToBulletBackground[type]
       case 'completed':
         return Colors.Black
       default:
@@ -147,15 +140,7 @@ const StepperBullet = styled.div<DisplayTypeProps>`
   color: ${({ type, status }) => {
     switch (status) {
       case 'current':
-        switch (type) {
-          case 'neutral':
-            return Colors.Black
-          case 'failure':
-            return Colors.RedDark
-          case 'success':
-            return Colors.Black
-        }
-        break
+        return typeToBulletColor[type]
       case 'completed':
         return Colors.Black
       default:
@@ -163,6 +148,18 @@ const StepperBullet = styled.div<DisplayTypeProps>`
     }
   }};
 `
+
+const typeToBulletBackground: Record<StepType, string> = {
+  neutral: Colors.White,
+  failure: Colors.White,
+  success: Colors.Black,
+}
+
+const typeToBulletColor: Record<StepType, string> = {
+  neutral: Colors.Black,
+  failure: Colors.RedDark,
+  success: Colors.Black,
+}
 
 interface ItemNameProps {
   next?: boolean
