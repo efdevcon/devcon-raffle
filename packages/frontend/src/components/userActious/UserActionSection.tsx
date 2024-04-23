@@ -39,7 +39,7 @@ const Wrapper = styled.div`
   margin-left: -170px;
   width: 724px;
   height: 450px;
-  background-color: ${Colors.Blue};
+  background-color: ${Colors.Pink};
   position: relative;
   z-index: 1;
 `
