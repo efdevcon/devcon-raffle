@@ -5,13 +5,14 @@ import { PlaceBidFlow } from './PlaceBid/PlaceBidFlow'
 export const BidFlow = () => {
   const userBid = useUserBid()
   const [isTransactionViewLock, setTransactionViewLock] = useState(false)
+  const userBidExists = !!userBid
 
-  const [isInitialBid, setIsInitialBid] = useState<boolean>(!userBid)
+  const [isInitialBid, setIsInitialBid] = useState<boolean>(!userBidExists)
   useEffect(() => {
     if (!isTransactionViewLock) {
-      setIsInitialBid(!userBid)
+      setIsInitialBid(!userBidExists)
     }
-  }, [isTransactionViewLock, !userBid]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isTransactionViewLock, userBidExists])
 
   return isInitialBid ? <PlaceBidFlow setTransactionViewLock={setTransactionViewLock} /> : <BumpBidPlaceholder />
 }
