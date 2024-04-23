@@ -5,7 +5,7 @@ import { SeparatorWithText } from '@/components/common/Separator'
 
 export const CheckGitcoinPassword = () => {
   return (
-    <ConnectFormWrapper>
+    <Wrapper>
       <FormHeading>Check GitCoin Passport</FormHeading>
       <FormRow>
         <span>To place a bid we need to check your score. By verifying your score we checking if you are a human.</span>
@@ -18,11 +18,11 @@ export const CheckGitcoinPassword = () => {
         </span>
       </FormRow>
       <Button wide>Create a Gitcoin Passport</Button>
-    </ConnectFormWrapper>
+    </Wrapper>
   )
 }
 
-const ConnectFormWrapper = styled(FormWrapper)`
+const Wrapper = styled(FormWrapper)`
   justify-content: center;
   padding: 0 143px;
 `
