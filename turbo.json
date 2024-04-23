@@ -3,7 +3,7 @@
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
     "build": {
-      "env": ["NEXT_PUBLIC_VOUCHER_REDEEM_DEADLINE", "NEXT_PUBLIC_INFURA_KEY", "NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID"],
+      "env": ["NEXT_PUBLIC_VOUCHER_REDEEM_DEADLINE", "NEXT_PUBLIC_INFURA_KEY", "NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID", "NEXT_PUBLIC_GITCOIN_REQUIRED_SCORE"],
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "build/**", "cache"]
     },
