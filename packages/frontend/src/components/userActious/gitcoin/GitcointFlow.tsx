@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { CheckGitcoinPassword } from './CheckGitcoinPassword'
 import { CheckGitcoinScore } from './CheckingGitcoinScore'
-import { UserGitcoinScore } from "@/components/userActious/gitcoin/UserGitcoinScore";
+import { UserGitcoinScore } from '@/components/userActious/gitcoin/UserGitcoinScore'
 
 enum GitcoinState {
   INITIAL_PAGE,

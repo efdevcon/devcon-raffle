@@ -1,3 +1,3 @@
 export const urls = {
-  gitcoin: 'https://passport.gitcoin.co'
+  gitcoin: 'https://passport.gitcoin.co',
 }
