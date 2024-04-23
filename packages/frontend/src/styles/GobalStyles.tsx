@@ -70,8 +70,8 @@ export const GlobalStyles = createGlobalStyle`
   h4 {
     font-style: normal;
     font-weight: 700;
-    font-size: 18px;
-    line-height: 26px;
+    font-size: 20px;
+    line-height: 30px;
     color: ${Colors.Black};
   }
 
