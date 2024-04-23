@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { CheckGitcoinPassword } from './CheckGitcoinPassword'
+import { CheckGitcoinScore } from './CheckingGitcoinScore'
 
 enum GitcoinState {
   INITIAL_PAGE,
@@ -9,12 +10,14 @@ enum GitcoinState {
 }
 
 export const GitcoinFlow = () => {
-  const [gitcoinState] = useState<GitcoinState>(GitcoinState.INITIAL_PAGE)
+  const [gitcoinState] = useState<GitcoinState>(GitcoinState.CHECKING_SCORE)
 
   switch (gitcoinState) {
     case GitcoinState.INITIAL_PAGE:
       return <CheckGitcoinPassword />
 
+    case GitcoinState.CHECKING_SCORE:
+      return <CheckGitcoinScore />
     default:
       return <CheckGitcoinPassword />
   }
