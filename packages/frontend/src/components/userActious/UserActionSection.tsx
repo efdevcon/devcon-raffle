@@ -4,6 +4,7 @@ import { ReactElement } from 'react'
 import styled from 'styled-components'
 import { ConnectWalletWarning } from './ConnectWalletWarning'
 import { GitcoinFlow } from './gitcoin/GitcointFlow'
+import { BidFlow } from './bid/BidFlow'
 
 const Placeholder = () => <div />
 
@@ -11,7 +12,7 @@ const UserActions: Record<AuctionState, () => ReactElement> = {
   AwaitingBidding: Placeholder,
   WalletNotConnected: ConnectWalletWarning,
   WrongNetwork: Placeholder,
-  BiddingFlow: Placeholder,
+  BiddingFlow: BidFlow,
   AwaitingResults: Placeholder,
   ClaimingFlow: Placeholder,
   ClaimingClosed: Placeholder,
