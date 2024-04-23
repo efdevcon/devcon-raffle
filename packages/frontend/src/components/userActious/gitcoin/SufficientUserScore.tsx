@@ -13,7 +13,8 @@ export const SufficientUserScore = ({ userScore }: UserScoreProps) => {
       </FormHeading>
       <FormRow>
         <p>
-          To place a bid your score needs to be <b>at least {environment.gitcoinRequiredScore}</b>.
+          To place a bid your score needs to be <b>at least {environment.gitcoinRequiredScore}</b>. Higher score will
+          not increase your chances in the raffle.
         </p>
       </FormRow>
       <FormRow>
