@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { CheckGitcoinPassword } from './CheckGitcoinPassword'
 import { CheckGitcoinScore } from './CheckingGitcoinScore'
 import { UserGitcoinScore } from '@/components/userActious/gitcoin/UserGitcoinScore'
+import { YouDontHavePassport } from './YouDontHavePassport'
 
 enum GitcoinState {
   INITIAL_PAGE,
@@ -11,7 +12,7 @@ enum GitcoinState {
 }
 
 export const GitcoinFlow = () => {
-  const [gitcoinState] = useState<GitcoinState>(GitcoinState.YOUR_SCORE)
+  const [gitcoinState, setGitcoinState] = useState<GitcoinState>(GitcoinState.YOU_DONT_HAVE_PASSPORT)
 
   switch (gitcoinState) {
     case GitcoinState.INITIAL_PAGE:
@@ -20,6 +21,9 @@ export const GitcoinFlow = () => {
       return <CheckGitcoinScore />
     case GitcoinState.YOUR_SCORE:
       return <UserGitcoinScore />
+    case GitcoinState.YOU_DONT_HAVE_PASSPORT:
+      return <YouDontHavePassport afterCreateClick={() => setGitcoinState(GitcoinState.INITIAL_PAGE)} />
+
     default:
       return <CheckGitcoinPassword />
   }
