@@ -33,7 +33,7 @@ export const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 16px;
-  padding: 82px 115px 82px 170px;
+  padding: 82px 0 82px;
   width: 100%;
 `
 
@@ -50,4 +50,17 @@ export const FormWideWrapper = styled(FormSectionWrapper)`
 export const FormText = styled.p`
   max-width: 440px;
   color: ${Colors.Black};
+`
+
+export const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
+
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 32px;
 `
