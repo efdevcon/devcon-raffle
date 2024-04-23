@@ -18,15 +18,15 @@ export const FormRow = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  color: ${Colors.White};
+  color: ${Colors.Black};
 `
 
 export const FormHeading = styled.h2`
-  color: ${Colors.White};
+  color: ${Colors.Black};
 `
 
 export const FormSubHeading = styled.h3`
-  color: ${Colors.White};
+  color: ${Colors.Black};
 `
 
 export const FormWrapper = styled.div`
@@ -49,5 +49,5 @@ export const FormWideWrapper = styled(FormSectionWrapper)`
 
 export const FormText = styled.p`
   max-width: 440px;
-  color: ${Colors.White};
+  color: ${Colors.Black};
 `
