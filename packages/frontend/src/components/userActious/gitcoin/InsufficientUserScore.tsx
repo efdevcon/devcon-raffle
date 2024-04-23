@@ -10,7 +10,9 @@ import { environment } from '@/config/environment'
 export const InsufficientUserScore = ({ userScore }: UserScoreProps) => {
   return (
     <FormWrapper>
-      <FormHeading>Your Score: {userScore}</FormHeading>
+      <FormHeading>
+        Your Score:&nbsp;<Score>{userScore}</Score>
+      </FormHeading>
       <ErrorContent>
         <InfoIcon color={Colors.RedDark} size={24} />
         <p>Your score is too low!</p>
@@ -35,12 +37,16 @@ export const InsufficientUserScore = ({ userScore }: UserScoreProps) => {
   )
 }
 
-const Link = styled.a`
-  color: ${Colors.Black};
+const Score = styled.h2`
+  color: ${Colors.RedDark};
 `
 
 const ErrorContent = styled.div`
   display: flex;
   gap: 8px;
   color: ${Colors.RedDark};
+`
+
+const Link = styled.a`
+  color: ${Colors.Black};
 `
