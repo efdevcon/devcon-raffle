@@ -20,7 +20,7 @@ const UserActions: Record<AuctionState, () => ReactElement> = {
 }
 
 export const UserActionSection = () => {
-  const state = 'GitcoinFlow'
+  const state = useAuctionState()
   if (!state) {
     return <Wrapper />
   }
