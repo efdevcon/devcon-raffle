@@ -22,6 +22,7 @@ export const FormRow = styled.div`
 `
 
 export const FormHeading = styled.h2`
+  display: inline-flex;
   color: ${Colors.Black};
 `
 
