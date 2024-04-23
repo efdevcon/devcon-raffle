@@ -1,7 +1,7 @@
 import { useUserBid } from '@/blockchain/hooks/useUserBid'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useBalance } from 'wagmi'
+import { useAccount, useBalance } from 'wagmi'
 import { formatInputAmount } from './formatInputAmount'
 import { CloseCircleIcon, EtherIcon } from '../icons'
 import { Colors } from '@/styles/colors'
@@ -25,7 +25,8 @@ function checkOnChangeLength(value: string) {
 }
 
 export const Input = ({ initialAmount, setAmount, notEnoughBalance, bidTooLow }: InputProps) => {
-  const userBalance = useBalance().data?.value
+  const { address } = useAccount()
+  const userBalance = useBalance({ address }).data?.value
   const userBid = useUserBid()
 
   const [inputValue, setInputValue] = useState(initialAmount)
@@ -62,7 +63,7 @@ export const Input = ({ initialAmount, setAmount, notEnoughBalance, bidTooLow }:
 
   return (
     <InputWrapper userHasBid={!!userBid}>
-      <InputLabel>Balance: {userBalance ? formatEther(userBalance) : '-'} ETH</InputLabel>
+      <InputLabel>Balance: {userBalance !== undefined ? formatEther(userBalance) : '-'} ETH</InputLabel>
       <StyledInputWrapper isBadAmount={notEnoughBalance || bidTooLow}>
         <TokenIconWrapper>
           <EtherIcon />

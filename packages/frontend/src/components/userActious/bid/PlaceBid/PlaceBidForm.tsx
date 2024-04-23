@@ -3,7 +3,7 @@ import { Button } from '@/components/buttons'
 import { Form, FormHeading, FormRow, FormWrapper, Input } from '@/components/form'
 import { Bid } from '@/types/bid'
 import { formatEther } from 'viem'
-import { useBalance } from 'wagmi'
+import { useAccount, useBalance } from 'wagmi'
 import { getPositionAfterBid } from '../getPositionAfterBid'
 
 interface PlaceBidFormProps {
@@ -16,7 +16,8 @@ interface PlaceBidFormProps {
 }
 
 export const PlaceBidForm = ({ bid, parsedBid, setBid, minimumBid, bids, setView }: PlaceBidFormProps) => {
-  const userBalance = useBalance().data?.value
+  const { address } = useAccount()
+  const userBalance = useBalance({ address }).data?.value
   const notEnoughBalance = userBalance !== undefined && parsedBid > userBalance
   const bidTooLow = parsedBid < minimumBid
 
