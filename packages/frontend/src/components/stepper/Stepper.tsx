@@ -66,17 +66,16 @@ const StepperList = styled.ul`
 function getItemColor(props: DisplayTypeProps) {
   switch (props.status) {
     case 'current':
-      switch (props.type) {
-        case 'neutral':
-          return Colors.Black
-        case 'success':
-          return Colors.Black
-        case 'failure':
-          return Colors.RedDark
-      }
+      return currentItemToColor[props.type]
     default:
       return Colors.Black
   }
+}
+
+const currentItemToColor: Record<StepType, string> = {
+  neutral: Colors.Black,
+  success: Colors.Black,
+  failure: Colors.RedDark,
 }
 
 const StepperListItemContainer = styled.li<DisplayTypeProps>`
