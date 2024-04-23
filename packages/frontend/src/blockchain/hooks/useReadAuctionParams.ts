@@ -26,10 +26,17 @@ export const useReadAuctionParams = () => {
       biddingEndTime: data?.[1],
       auctionWinnersCount: data ? Number(data[2]) : undefined,
       raffleWinnersCount: data ? Number(data[3]) : undefined,
+      minimumBid: data ? data[4] : undefined,
       isLoading,
     }),
     [data, isLoading],
   )
 }
 
-const params = ['biddingStartTime', 'biddingEndTime', 'auctionWinnersCount', 'raffleWinnersCount'] as const
+const params = [
+  'biddingStartTime',
+  'biddingEndTime',
+  'auctionWinnersCount',
+  'raffleWinnersCount',
+  'reservePrice',
+] as const
