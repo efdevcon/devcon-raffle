@@ -9,9 +9,10 @@ interface BackButtonProps {
   setView?: (view: number) => void
   url?: string
   resetState?: () => void
+  withBack?: boolean
 }
 
-export function BackButton({ view, setView, url, resetState }: BackButtonProps) {
+export function BackButton({ view, setView, url, resetState, withBack = true }: BackButtonProps) {
   const router = useRouter()
 
   const goBack = useCallback(() => {
@@ -27,17 +28,17 @@ export function BackButton({ view, setView, url, resetState }: BackButtonProps) 
   }, [setView, view, router, url, resetState])
 
   return (
-    <BackBtn onClick={goBack}>
-      <ArrowLeftIcon />
-      Back
+    <BackBtn onClick={goBack} $withBack={withBack}>
+      <ArrowLeftIcon color={Colors.Black} />
+      {withBack && 'Back'}
     </BackBtn>
   )
 }
 
-const BackBtn = styled.button`
+const BackBtn = styled.button<{ $withBack?: boolean }>`
   display: flex;
   align-items: center;
-  width: 84px;
+  width: ${({ $withBack }) => ($withBack ? '84px' : '35px')};
   height: 32px;
   font-family: 'Roboto', Helvetica, Arial, sans-serif;
   font-weight: 400;
@@ -45,13 +46,12 @@ const BackBtn = styled.button`
   line-height: 24px;
   background-color: ${Colors.Transparent};
   color: ${Colors.GreenLight};
-  border: 1px solid ${Colors.GreenLight};
+  border: 1px solid ${Colors.Black};
   padding: 0;
 
   &:hover,
   &:focus-visible,
   &:active {
-    background-color: ${Colors.GreenLight};
-    color: ${Colors.Black};
+    background-color: ${Colors.Pink};
   }
 `
