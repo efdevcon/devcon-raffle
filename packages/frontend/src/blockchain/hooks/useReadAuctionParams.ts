@@ -26,7 +26,7 @@ export const useReadAuctionParams = () => {
       biddingEndTime: data?.[1],
       auctionWinnersCount: data ? Number(data[2]) : undefined,
       raffleWinnersCount: data ? Number(data[3]) : undefined,
-      minimumBid: data ? data[4] : undefined,
+      minimumBid: data?.[4],
       isLoading,
     }),
     [data, isLoading],
