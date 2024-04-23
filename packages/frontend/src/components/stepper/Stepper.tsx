@@ -21,7 +21,7 @@ interface StepperProps {
   isFailed: boolean
 }
 
-export const TransactionStepper = ({ currentStep, isFailed, steps }: StepperProps) => (
+export const Stepper = ({ currentStep, isFailed, steps }: StepperProps) => (
   <StepperList>
     {steps.map((item, index) => {
       const isCurrent = index === currentStep
