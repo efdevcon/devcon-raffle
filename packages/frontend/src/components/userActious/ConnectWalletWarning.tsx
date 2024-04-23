@@ -9,7 +9,7 @@ export const ConnectWalletWarning = () => {
   const text = getWarningText(state)
 
   return (
-    <ConnectFormWrapper>
+    <FormWrapper>
       <FormHeading>{text.heading}</FormHeading>
       <FormRow>
         <span>
@@ -17,11 +17,7 @@ export const ConnectWalletWarning = () => {
         </span>
       </FormRow>
       <ConnectWalletButton />
-    </ConnectFormWrapper>
+    </FormWrapper>
   )
 }
 
-const ConnectFormWrapper = styled(FormWrapper)`
-  justify-content: center;
-  padding: 0 218px;
-`
