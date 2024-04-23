@@ -37,7 +37,7 @@ export const InsufficientUserScore = ({ userScore }: UserScoreProps) => {
   )
 }
 
-const Score = styled.h2`
+const Score = styled.span`
   color: ${Colors.RedDark};
 `
 
