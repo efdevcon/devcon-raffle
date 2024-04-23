@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { FormRow, FormWrapper } from '../../form'
-import { TransactionStepper } from '@/components/stepper/Stepper'
+import { Stepper } from '@/components/stepper/Stepper'
 import { Colors } from '@/styles/colors'
 import { ClockIcon } from '@/components/icons'
 import { Button } from '@/components/buttons'
@@ -8,7 +8,7 @@ import { Button } from '@/components/buttons'
 const gitcoinScoreSteps = [
   {
     default: {
-      name: `Send request`,
+      name: `Sending request`,
     },
     failed: {
       name: 'Request failed',
@@ -16,7 +16,7 @@ const gitcoinScoreSteps = [
   },
   {
     default: {
-      name: 'Sign the message',
+      name: 'Signing the message',
     },
     failed: {
       name: 'Signing message failed',
@@ -42,7 +42,7 @@ export const CheckGitcoinScore = () => {
       <FormRow>
         <span>It will take about 1 minute. Please stay on this page.</span>
       </FormRow>
-      <TransactionStepper steps={gitcoinScoreSteps} currentStep={1} isFailed={false} />
+      <Stepper steps={gitcoinScoreSteps} currentStep={1} isFailed={false} />
       <Button>Sign Again</Button>
     </ConnectFormWrapper>
   )
