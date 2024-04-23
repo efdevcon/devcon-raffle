@@ -49,9 +49,7 @@ export const CheckGitcoinScore = () => {
 }
 
 const Wrapper = styled(FormWrapper)`
-  justify-content: center;
-  gap: 16px;
-  padding: 0 143px;
+  width: 530px;
 `
 
 const Row = styled.div`
@@ -61,6 +59,6 @@ const Row = styled.div`
   gap: 16px;
 `
 
-const StepperHeader = styled.h3`
+const StepperHeader = styled.h2`
   color: ${Colors.Black};
 `

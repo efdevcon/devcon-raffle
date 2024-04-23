@@ -23,6 +23,5 @@ export const CheckGitcoinPassword = () => {
 }
 
 const Wrapper = styled(FormWrapper)`
-  justify-content: center;
-  padding: 0 143px;
+  width: 390px;
 `
