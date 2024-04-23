@@ -4,16 +4,14 @@ import styled from 'styled-components'
 import { Colors } from '@/styles/colors'
 import { InfoIcon } from '@/components/icons'
 import { urls } from "@/constants/urls";
+import { UserScoreProps } from "@/components/userActious/gitcoin/UserGitcoinScore";
 
-const requiredScore = 20
-const userScore = 17
-
-export const InsufficientUserScore = () => {
+export const InsufficientUserScore = ({ userScore, requiredScore }: UserScoreProps) => {
   return (
     <FormWrapper>
       <FormHeading>Your Score: {userScore}</FormHeading>
       <ErrorContent>
-        <InfoIcon color={Colors.RedDark} size={24} />
+        <InfoIcon color={Colors.RedDark} size={24}/>
         <p>Your score is too low!</p>
       </ErrorContent>
       <FormRow>

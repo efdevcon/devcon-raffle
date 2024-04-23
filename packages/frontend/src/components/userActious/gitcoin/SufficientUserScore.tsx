@@ -1,10 +1,8 @@
 import { FormHeading, FormRow, FormWrapper } from '@/components/form'
 import { Button } from '@/components/buttons'
+import { UserScoreProps } from "@/components/userActious/gitcoin/UserGitcoinScore";
 
-const requiredScore = 20
-const userScore = 17
-
-export const SufficientUserScore = () => {
+export const SufficientUserScore = ({ userScore, requiredScore }: UserScoreProps) => {
   return (
     <FormWrapper>
       <FormHeading>Your Score: {userScore}</FormHeading>
