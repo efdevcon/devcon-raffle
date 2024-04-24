@@ -9,8 +9,7 @@ import { AwaitingResults } from '@/components/userActious/claim/AwaitingResults'
 import { ClaimingClosed } from '@/components/userActious/claim/ClaimingClosed'
 import { BidAwaiting } from '@/components/userActious/BidAwaiting'
 import { WrongNetworkWarning } from './WrongNetworkWarning'
-
-const Placeholder = () => <div />
+import { ClaimingFlow } from "@/components/userActious/claim/ClaimingFlow";
 
 const UserActions: Record<AuctionState, () => ReactElement> = {
   AwaitingBidding: BidAwaiting,
@@ -18,7 +17,7 @@ const UserActions: Record<AuctionState, () => ReactElement> = {
   WrongNetwork: WrongNetworkWarning,
   BiddingFlow: BidFlow,
   AwaitingResults: AwaitingResults,
-  ClaimingFlow: Placeholder,
+  ClaimingFlow: ClaimingFlow,
   ClaimingClosed: ClaimingClosed,
   GitcoinFlow: GitcoinFlow,
 }
