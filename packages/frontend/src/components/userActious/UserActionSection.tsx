@@ -7,11 +7,12 @@ import { GitcoinFlow } from './gitcoin/GitcointFlow'
 import { BidFlow } from './bid/BidFlow'
 import { AwaitingResults } from '@/components/userActious/claim/AwaitingResults'
 import { ClaimingClosed } from '@/components/userActious/claim/ClaimingClosed'
+import { BidAwaiting } from '@/components/userActious/BidAwaiting'
 
 const Placeholder = () => <div />
 
 const UserActions: Record<AuctionState, () => ReactElement> = {
-  AwaitingBidding: Placeholder,
+  AwaitingBidding: BidAwaiting,
   WalletNotConnected: ConnectWalletWarning,
   WrongNetwork: Placeholder,
   BiddingFlow: BidFlow,
