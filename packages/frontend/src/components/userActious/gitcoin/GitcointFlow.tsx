@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { CheckGitcoinPassword } from './CheckGitcoinPassword'
 import { CheckGitcoinScore } from './CheckingGitcoinScore'
 import { UserGitcoinScore } from '@/components/userActious/gitcoin/UserGitcoinScore'
-import { MissingGitcoinPassport } from './YouDontHavePassport'
+import { MissingGitcoinPassport } from './MissingGitcoinPassport'
 
 enum GitcoinState {
   INITIAL_PAGE,
