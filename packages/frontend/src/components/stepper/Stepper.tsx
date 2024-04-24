@@ -7,9 +7,10 @@ interface StepContent {
   description?: string
 }
 
-type StepDescription = 'default' | 'failed'
-
-type Step = Record<StepDescription, StepContent>
+interface Step {
+  default: StepContent
+  failed?: StepContent
+}
 
 type Steps = Step[]
 
