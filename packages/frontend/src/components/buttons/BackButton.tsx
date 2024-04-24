@@ -12,7 +12,7 @@ interface BackButtonProps {
   withBack?: boolean
 }
 
-export function BackButton({ view, setView, url, resetState, withBack = true }: BackButtonProps) {
+export function BackButton({ view, setView, url, resetState, withBack = false }: BackButtonProps) {
   const router = useRouter()
 
   const goBack = useCallback(() => {

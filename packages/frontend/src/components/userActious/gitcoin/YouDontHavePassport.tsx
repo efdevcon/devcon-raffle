@@ -18,7 +18,7 @@ export const MissingGitcoinPassport = ({ afterCreateClick }: Props) => {
   return (
     <Wrapper>
       <BackButtonRow>
-        <BackButton withBack={false} />
+        <BackButton />
         <Form>
           <WarningHeader>You don&apos;t have a Gitcoin Passport</WarningHeader>
           <FormRow>
