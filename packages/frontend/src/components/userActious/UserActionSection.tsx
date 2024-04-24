@@ -46,4 +46,6 @@ const Wrapper = styled.div`
   background-color: ${Colors.Pink};
   position: relative;
   z-index: 1;
+  justify-content: center;
+  align-items: center;
 `

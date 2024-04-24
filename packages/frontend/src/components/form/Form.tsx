@@ -1,18 +1,6 @@
 import { Colors } from '@/styles/colors'
 import styled from 'styled-components'
 
-export const Form = styled.div`
-  display: flex;
-  flex-direction: column;
-  row-gap: 16px;
-  width: 100%;
-  max-width: 460px;
-`
-
-export const FormNarrow = styled(Form)`
-  max-width: 289px;
-`
-
 export const FormRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -33,8 +21,8 @@ export const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 16px;
-  padding: 82px 115px 82px 170px;
-  width: 100%;
+  padding: 82px 0 82px;
+  width: 431px;
 `
 
 export const FormSectionWrapper = styled(FormWrapper)`
@@ -50,4 +38,16 @@ export const FormWideWrapper = styled(FormSectionWrapper)`
 export const FormText = styled.p`
   max-width: 440px;
   color: ${Colors.Black};
+`
+
+export const Form = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
+
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 `
