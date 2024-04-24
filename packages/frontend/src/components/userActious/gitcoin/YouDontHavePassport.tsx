@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Button } from '../../buttons'
 import { Colors } from '@/styles/colors'
 import { BackButton } from '@/components/buttons/BackButton'
-import { Column, FormRow, FormWrapper, Row } from '@/components/form'
+import { Form, FormRow, FormWrapper, Row } from '@/components/form'
 import { urls } from '@/constants/urls'
 
 interface Props {
@@ -17,19 +17,23 @@ export const YouDontHavePassport = ({ afterCreateClick }: Props) => {
 
   return (
     <Wrapper>
-      <Row>
+      <BackButtonRow>
         <BackButton withBack={false} />
-        <Column>
+        <Form>
           <WarningHeader>You don&apos;t have a GitCoin Passport</WarningHeader>
           <FormRow>
             <span>To finish placing a bid, please create a GitCoin Passport.</span>
           </FormRow>
           <Button onClick={onCreateClick}>Create a Gitcoin Passport</Button>
-        </Column>
-      </Row>
+        </Form>
+      </BackButtonRow>
     </Wrapper>
   )
 }
+
+const BackButtonRow = styled(Row)`
+  gap: 32px;
+`
 
 const Wrapper = styled(FormWrapper)`
   width: 465px;
