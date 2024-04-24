@@ -2,7 +2,7 @@ import { createConfig, webSocket } from 'wagmi'
 import { arbitrum, arbitrumSepolia, hardhat } from 'wagmi/chains'
 import { coinbaseWallet, walletConnect } from 'wagmi/connectors'
 import { environment } from '@/config/environment'
-import { SupportedChains } from "@/blockchain/chain";
+import { SupportedChains } from '@/blockchain/chain'
 
 export const wagmiConfig = createConfig({
   chains: SupportedChains,

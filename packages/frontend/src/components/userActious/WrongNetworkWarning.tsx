@@ -1,18 +1,18 @@
-import { useSwitchChain } from "wagmi";
-import { useContractState } from "@/blockchain/hooks/useAuctionState";
-import { getWarningText } from "@/components/userActious/getWarningText";
-import { FormHeading, FormRow, FormWrapper } from "@/components/form";
-import { Colors } from "@/styles/colors";
-import styled from "styled-components";
-import { Button } from "@/components/buttons";
-import { arbitrum } from "wagmi/chains";
+import { useSwitchChain } from 'wagmi'
+import { useContractState } from '@/blockchain/hooks/useAuctionState'
+import { getWarningText } from '@/components/userActious/getWarningText'
+import { FormHeading, FormRow, FormWrapper } from '@/components/form'
+import { Colors } from '@/styles/colors'
+import styled from 'styled-components'
+import { Button } from '@/components/buttons'
+import { arbitrum } from 'wagmi/chains'
 
 export const WrongNetworkWarning = () => {
   const { switchChainAsync } = useSwitchChain()
   const { state } = useContractState()
   const text = getWarningText(state)
 
-  const onSwitch = () => switchChainAsync({chainId: arbitrum.id})
+  const onSwitch = () => switchChainAsync({ chainId: arbitrum.id })
 
   return (
     <FormWrapper>

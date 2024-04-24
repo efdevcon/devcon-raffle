@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { ConnectWalletWarning } from './ConnectWalletWarning'
 import { GitcoinFlow } from './gitcoin/GitcointFlow'
 import { BidFlow } from './bid/BidFlow'
-import { WrongNetworkWarning } from "./WrongNetworkWarning";
+import { WrongNetworkWarning } from './WrongNetworkWarning'
 
 const Placeholder = () => <div />
 
