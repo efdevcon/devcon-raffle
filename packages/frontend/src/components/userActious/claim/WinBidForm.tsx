@@ -1,14 +1,15 @@
 import styled from 'styled-components'
-import { WinType } from "@/types/winType";
-import { UserBid } from "@/types/bid";
-import { TxFlowSteps } from "@/components/auction/TxFlowSteps";
-import { Form, FormHeading, FormText } from "@/components/form";
-import { Button } from "@/components/buttons";
-import { formatEther } from "viem";
-import { Colors } from "@/styles/colors";
+import { WinType } from '@/types/winType'
+import { UserBid } from '@/types/bid'
+import { TxFlowSteps } from '@/components/auction/TxFlowSteps'
+import { Form, FormHeading, FormText } from '@/components/form'
+import { Button } from '@/components/buttons'
+import { formatEther } from 'viem'
+import { Colors } from '@/styles/colors'
+import { ReactNode } from 'react'
 
 const withdrawText = {
-  [WinType.Loss]: `You can withdraw your bid amount minus the 2% fee.`,
+  [WinType.Loss]: `You can withdraw all your funds.`,
   [WinType.GoldenTicket]: 'This means your ticket is free, so you can withdraw all your funds.',
   [WinType.Raffle]: 'This means that you can withdraw all funds you bid over the reserve price.',
 }
@@ -27,7 +28,7 @@ export const WinBidForm = ({ userBid, withdrawalAmount, setView, voucher, setVou
   return (
     <WinnerForm>
       <WinFormHeading voucher={voucher}>{isWinningBid ? 'Congratulations 🎉 ' : 'No luck 😔'}</WinFormHeading>
-      <FormText>{getWinText(userBid.winType)}</FormText>
+      <FormText>{winTypeToText[userBid.winType]}</FormText>
       {!userBid.claimed && userBid.winType !== WinType.Auction && (
         <WinOption>
           <span>{withdrawText[userBid.winType]}</span>
@@ -36,8 +37,6 @@ export const WinBidForm = ({ userBid, withdrawalAmount, setView, voucher, setVou
           </Button>
         </WinOption>
       )}
-
-      {/*{!voucher && isWinningBid && <ClaimVoucherSection setVoucher={setVoucher} />}*/}
     </WinnerForm>
   )
 }
@@ -47,29 +46,23 @@ export const WinnerForm = styled(Form)`
   text-align: center;
 `
 
-function getWinText(winType: WinType) {
-  switch (winType) {
-    case WinType.Loss:
-      return <span>We are sorry, but you did not win in auction or raffle.</span>
-    case WinType.GoldenTicket:
-      return (
-        <span>
-          You won <b>the Golden Ticket!</b>
-        </span>
-      )
-    case WinType.Auction:
-      return (
-        <span>
-          Your bid was in the top 20, so you <b>won a ticket</b> to Devcon 7!
-        </span>
-      )
-    case WinType.Raffle:
-      return (
-        <span>
-          You were chosen <b>in the raffle</b> and have successfully purchased a ticket!
-        </span>
-      )
-  }
+const winTypeToText: Record<WinType, ReactNode> = {
+  [WinType.Loss]: <span>We are sorry, but you did not win in auction or raffle.</span>,
+  [WinType.GoldenTicket]: (
+    <span>
+      You won <b>the Golden Ticket!</b>
+    </span>
+  ),
+  [WinType.Auction]: (
+    <span>
+      Your bid was in the top 20, so you <b>won a ticket</b> to Devcon 7!
+    </span>
+  ),
+  [WinType.Raffle]: (
+    <span>
+      You were chosen <b>in the raffle</b> and have successfully purchased a ticket!
+    </span>
+  ),
 }
 
 export const WinOption = styled.div`
