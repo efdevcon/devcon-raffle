@@ -27,7 +27,7 @@ export const VoucherForm = ({ voucher, withdrawnBid }: Props) => {
           <VoucherIdText>{voucher}</VoucherIdText>
           <CopyButton value={voucher} side="top" text="Copy voucher code" />
         </VoucherIdBox>
-        <VoucherIdLabel isVoucherExpired={isVoucherExpired}>
+        <VoucherIdLabel $isVoucherExpired={isVoucherExpired}>
           {isVoucherExpired ? 'Voucher redeem period expired' : 'Enter this code in the sales system'}
         </VoucherIdLabel>
       </VoucherIdWrapper>
@@ -53,14 +53,14 @@ const VoucherIdWrapper = styled.div`
 `
 
 interface LabelProps {
-  isVoucherExpired: boolean
+  $isVoucherExpired: boolean
 }
 
 const VoucherIdLabel = styled(InputLabel)<LabelProps>`
   justify-content: center;
   line-height: 14px;
   margin-bottom: 8px;
-  color: ${({ isVoucherExpired }) => (isVoucherExpired ? Colors.Red : Colors.White)};
+  color: ${({ $isVoucherExpired }) => ($isVoucherExpired ? Colors.Red : Colors.White)};
 `
 
 const VoucherFormHeading = styled(FormHeading)<Props>`

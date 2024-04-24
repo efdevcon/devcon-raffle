@@ -27,7 +27,7 @@ export const WinBidForm = ({ userBid, withdrawalAmount, setView, voucher, setVou
 
   return (
     <WinnerForm>
-      <WinFormHeading voucher={voucher}>{isWinningBid ? 'Congratulations 🎉 ' : 'No luck 😔'}</WinFormHeading>
+      <WinFormHeading $voucher={voucher}>{isWinningBid ? 'Congratulations 🎉 ' : 'No luck 😔'}</WinFormHeading>
       <FormText>{winTypeToText[userBid.winType]}</FormText>
       {!userBid.claimed && userBid.winType !== WinType.Auction && (
         <WinOption>
@@ -73,6 +73,6 @@ export const WinOption = styled.div`
   color: ${Colors.White};
 `
 
-const WinFormHeading = styled(FormHeading)<{ voucher?: string }>`
-  font-size: ${({ voucher }) => (voucher ? '24px' : '40px')};
+const WinFormHeading = styled(FormHeading)<{ $voucher?: string }>`
+  font-size: ${({ $voucher }) => ($voucher ? '24px' : '40px')};
 `
