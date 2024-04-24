@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { useAccount } from "wagmi"
+import { useAccount } from 'wagmi'
 import styled from 'styled-components'
-import { TxFlowSteps } from "@/components/auction/TxFlowSteps"
-import { UserBid } from "@/types/bid"
-import { FormWrapper } from "@/components/form"
-import { Colors } from "@/styles/colors"
-import { WinBidForm } from "@/components/userActious/claim/WinBidForm";
-import { VoucherForm } from "@/components/userActious/claim/VoucherForm";
+import { TxFlowSteps } from '@/components/auction/TxFlowSteps'
+import { UserBid } from '@/types/bid'
+import { FormWrapper } from '@/components/form'
+import { Colors } from '@/styles/colors'
+import { WinBidForm } from '@/components/userActious/claim/WinBidForm'
+import { VoucherForm } from '@/components/userActious/claim/VoucherForm'
 
 interface WinFormProps {
   userBid: UserBid
@@ -48,7 +48,7 @@ export const WinForm = ({ userBid, withdrawalAmount, setView }: WinFormProps) =>
         />
       </WinFormWrapper>
       <VoucherFormWrapper>
-        <VoucherForm voucher={voucher} withdrawnBid={userBid.claimed}/>
+        <VoucherForm voucher={voucher} withdrawnBid={userBid.claimed} />
       </VoucherFormWrapper>
     </WrapperRow>
   )

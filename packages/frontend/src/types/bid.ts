@@ -1,5 +1,5 @@
 import { Hex } from 'viem'
-import { WinType } from "@/types/winType";
+import { WinType } from '@/types/winType'
 
 export interface Bid {
   address: Hex

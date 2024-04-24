@@ -2,11 +2,11 @@ import styled from 'styled-components'
 
 import { VoucherTimeLeft } from './VoucherTimeLeft'
 import { WinnerForm } from './WinBidForm'
-import { CopyButton } from "@/components/buttons/CopyButton";
-import { useVoucherRedeemDeadline } from "@/blockchain/hooks/useVoucherRedeemDeadline";
-import { Button } from "@/components/buttons";
-import { FormHeading, InputLabel } from "@/components/form";
-import { Colors } from "@/styles/colors";
+import { CopyButton } from '@/components/buttons/CopyButton'
+import { useVoucherRedeemDeadline } from '@/blockchain/hooks/useVoucherRedeemDeadline'
+import { Button } from '@/components/buttons'
+import { FormHeading, InputLabel } from '@/components/form'
+import { Colors } from '@/styles/colors'
 
 interface Props {
   voucher: string

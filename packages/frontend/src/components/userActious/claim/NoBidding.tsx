@@ -1,4 +1,4 @@
-import { FormHeading, FormText, FormWideWrapper } from "@/components/form";
+import { FormHeading, FormText, FormWideWrapper } from '@/components/form'
 
 export const NoBidding = () => (
   <FormWideWrapper>

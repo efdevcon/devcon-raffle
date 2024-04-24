@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useVoucherRedeemDeadline } from "@/blockchain/hooks/useVoucherRedeemDeadline";
-import { formatTimeLeft } from "@/utils/formatters/formatTimeLeft";
-import { setIntervalImmediately } from "@/utils/setIntervalImmediately";
-import { Colors } from "@/styles/colors";
+import { useVoucherRedeemDeadline } from '@/blockchain/hooks/useVoucherRedeemDeadline'
+import { formatTimeLeft } from '@/utils/formatters/formatTimeLeft'
+import { setIntervalImmediately } from '@/utils/setIntervalImmediately'
+import { Colors } from '@/styles/colors'
 
 export const VoucherTimeLeft = () => {
   const redeemDeadline = useVoucherRedeemDeadline()
