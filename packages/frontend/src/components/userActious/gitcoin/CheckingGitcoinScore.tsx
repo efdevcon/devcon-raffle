@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-import { FormRow, FormWrapper } from '../../form'
+import { FormHeading, FormRow, FormWrapper } from '../../form'
 import { Stepper } from '@/components/stepper/Stepper'
-import { Colors } from '@/styles/colors'
 import { ClockIcon } from '@/components/icons'
 import { Button } from '@/components/buttons'
 
@@ -37,7 +36,7 @@ export const CheckGitcoinScore = () => {
     <Wrapper>
       <Row>
         <ClockIcon size={38} />
-        <StepperHeader>Checking Your Score</StepperHeader>
+        <FormHeading>Checking Your Score</FormHeading>
       </Row>
       <FormRow>
         <span>It will take about 1 minute. Please stay on this page.</span>
@@ -49,9 +48,7 @@ export const CheckGitcoinScore = () => {
 }
 
 const Wrapper = styled(FormWrapper)`
-  justify-content: center;
-  gap: 16px;
-  padding: 0 143px;
+  width: 530px;
 `
 
 const Row = styled.div`
@@ -59,8 +56,4 @@ const Row = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 16px;
-`
-
-const StepperHeader = styled.h3`
-  color: ${Colors.Black};
 `

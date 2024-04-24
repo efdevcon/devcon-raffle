@@ -1,5 +1,4 @@
 import { useContractState } from '@/blockchain/hooks/useAuctionState'
-import styled from 'styled-components'
 import { FormHeading, FormRow, FormWrapper } from '../form'
 import { ConnectWalletButton } from '../buttons'
 import { getWarningText } from './getWarningText'
@@ -9,7 +8,7 @@ export const ConnectWalletWarning = () => {
   const text = getWarningText(state)
 
   return (
-    <ConnectFormWrapper>
+    <FormWrapper>
       <FormHeading>{text.heading}</FormHeading>
       <FormRow>
         <span>
@@ -17,11 +16,6 @@ export const ConnectWalletWarning = () => {
         </span>
       </FormRow>
       <ConnectWalletButton />
-    </ConnectFormWrapper>
+    </FormWrapper>
   )
 }
-
-const ConnectFormWrapper = styled(FormWrapper)`
-  justify-content: center;
-  padding: 0 218px;
-`
