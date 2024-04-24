@@ -2,9 +2,10 @@ import { createConfig, webSocket } from 'wagmi'
 import { arbitrum, arbitrumSepolia, hardhat } from 'wagmi/chains'
 import { coinbaseWallet, walletConnect } from 'wagmi/connectors'
 import { environment } from '@/config/environment'
+import { SupportedChains } from '@/blockchain/chain'
 
 export const wagmiConfig = createConfig({
-  chains: [arbitrum, arbitrumSepolia, hardhat],
+  chains: SupportedChains,
   ssr: true,
   transports: {
     [arbitrum.id]: webSocket(`wss://arbitrum-mainnet.infura.io/ws/v3/${environment.infuraKey}`),
