@@ -16,12 +16,11 @@ export const WrongNetworkWarning = () => {
     <FormWrapper>
       <FormHeading>{text.heading}</FormHeading>
       <FormRow>
-        <span>You are connected to the wrong network.</span>
-      </FormRow>
-      <FormRow>
-        <span>
+        <div>
+          You are connected to the wrong network.
+          <br></br>
           To {text.action} connect your wallet to the <b>Arbitrum network.</b>
-        </span>
+        </div>
       </FormRow>
       <Button onClick={onSwitch}>Change network</Button>
     </FormWrapper>
