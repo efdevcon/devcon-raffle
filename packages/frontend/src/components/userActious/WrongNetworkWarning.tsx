@@ -6,11 +6,11 @@ import { Button } from '@/components/buttons'
 import { arbitrum } from 'wagmi/chains'
 
 export const WrongNetworkWarning = () => {
-  const { switchChainAsync } = useSwitchChain()
+  const { switchChain } = useSwitchChain()
   const { state } = useContractState()
   const text = getWarningText(state)
 
-  const onSwitch = () => switchChainAsync({ chainId: arbitrum.id })
+  const onSwitch = () => switchChain({ chainId: arbitrum.id })
 
   return (
     <FormWrapper>
