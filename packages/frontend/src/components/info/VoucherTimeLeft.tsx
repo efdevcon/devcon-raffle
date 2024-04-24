@@ -2,7 +2,7 @@ import { Colors } from '@/styles/colors'
 import styled from 'styled-components'
 
 import { RemainingTime } from './TimeLeft'
-import { formatEndDate } from '@/utils/formatters/formatEndDate'
+import { formatDate } from '@/utils/formatters/formatDate'
 import { useVoucherRedeemDeadline } from '@/blockchain/hooks/useVoucherRedeemDeadline'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 
@@ -15,8 +15,8 @@ export const VoucherTimeLeft = () => {
     <VoucherTimeBox isPeriodExpired={isPeriodExpired}>
       <TimeRow isPeriodExpired={isPeriodExpired}>
         <span>{isPeriodExpired ? 'Voucher redeem period expired on ' : 'Voucher redeem period: '}</span>
-        {!isPeriodExpired && <RemainingTime>{formatEndDate(biddingEndTime)} - </RemainingTime>}
-        <RemainingTime>{formatEndDate(redeemTimestamp)}</RemainingTime>
+        {!isPeriodExpired && <RemainingTime>{formatDate(biddingEndTime)} - </RemainingTime>}
+        <RemainingTime>{formatDate(redeemTimestamp)}</RemainingTime>
       </TimeRow>
     </VoucherTimeBox>
   )

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { formatTimeLeft } from '@/utils/formatters/formatTimeLeft'
-import { formatEndDate } from '@/utils/formatters/formatEndDate'
+import { formatDate } from '@/utils/formatters/formatDate'
 import { setIntervalImmediately } from '@/utils/setIntervalImmediately'
 import { useAuctionState } from '@/blockchain/hooks/useAuctionState'
 import { useAuctionTime } from '@/blockchain/hooks/useAuctionTime'
@@ -24,8 +24,7 @@ export const TimeLeft = () => {
         <RemainingTime>{timeLeft}</RemainingTime>
       </TimeRow>
       <TimeRow>
-        {state === 'AwaitingBidding' ? 'Starts on' : ' Ends on'}{' '}
-        <RemainingTime>{formatEndDate(timestamp)}</RemainingTime>
+        {state === 'AwaitingBidding' ? 'Starts on' : ' Ends on'} <RemainingTime>{formatDate(timestamp)}</RemainingTime>
       </TimeRow>
     </TimeBox>
   )
