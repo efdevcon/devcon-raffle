@@ -1,6 +1,6 @@
 import { useMinimumBid } from "@/blockchain/hooks/useMinimumBid";
 import { useEffect, useMemo, useState } from "react";
-import { Bid, UserBid } from "@/types/bid";
+import { UserBid } from "@/types/bid";
 import { WinType } from "@/types/winType";
 import { WinForm } from "@/components/userActious/claim/WinForm";
 import { TxFlowSteps } from "@/components/auction/TxFlowSteps";
