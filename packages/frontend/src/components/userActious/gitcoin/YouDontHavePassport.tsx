@@ -9,7 +9,7 @@ interface Props {
   afterCreateClick: () => void
 }
 
-export const YouDontHavePassport = ({ afterCreateClick }: Props) => {
+export const MissingGitcoinPassport = ({ afterCreateClick }: Props) => {
   const onCreateClick = () => {
     window.open(urls.gitcoin, '_blank')
     afterCreateClick()
