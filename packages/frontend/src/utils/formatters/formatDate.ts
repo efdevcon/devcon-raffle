@@ -1,6 +1,6 @@
 import moment from 'moment-timezone'
 
-export function formatEndDate(timestamp: bigint | undefined, timeZone: string = moment.tz.guess()) {
+export function formatDate(timestamp: bigint | undefined, timeZone: string = moment.tz.guess()) {
   if (!timestamp) {
     return '-'
   }
