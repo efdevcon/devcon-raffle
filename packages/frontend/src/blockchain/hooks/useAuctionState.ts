@@ -35,7 +35,7 @@ export function useAuctionState(): AuctionState | undefined {
   }
 
   if (state === ContractState.BIDDING_OPEN) {
-    return getStateUsingWallet(address, userChainId, chainId, 'BiddingFlow')
+    return getStateForWallet({ address, userChainId, chainId, state: 'BiddingFlow' })
   }
 
   if (state === ContractState.BIDDING_CLOSED || state === ContractState.AUCTION_SETTLED) {
@@ -43,7 +43,7 @@ export function useAuctionState(): AuctionState | undefined {
   }
 
   if (state === ContractState.RAFFLE_SETTLED) {
-    return getStateUsingWallet(address, userChainId, chainId, 'ClaimingFlow')
+    return getStateForWallet({ address, userChainId, chainId, state: 'ClaimingFlow' })
   }
 
   if (state === ContractState.CLAIMING_CLOSED) {
@@ -65,19 +65,21 @@ export const useContractState = () => {
   return { state: data as ContractState, isLoading }
 }
 
-function getStateUsingWallet(
-  account: Hex | undefined,
-  userChainId: number | undefined,
-  chainId: number,
-  state: AuctionState,
-) {
-  if (!account) {
+interface GetStateForWalletParams {
+  address: Hex | undefined
+  userChainId: number | undefined
+  chainId: number
+  state: AuctionState
+}
+
+function getStateForWallet(params: GetStateForWalletParams): AuctionState {
+  if (!params.address) {
     return 'WalletNotConnected'
   }
 
-  if (userChainId !== chainId) {
+  if (params.userChainId !== params.chainId) {
     return 'WrongNetwork'
   }
 
-  return state
+  return params.state
 }
