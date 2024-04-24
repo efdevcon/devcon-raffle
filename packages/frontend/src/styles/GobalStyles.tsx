@@ -41,6 +41,7 @@ export const GlobalStyles = createGlobalStyle`
     font-family: 'Space Mono', 'Roboto Mono', monospace;
     font-style: normal;
     margin: 0;
+    color: ${Colors.Black};
   }
 
   h1 {
@@ -48,7 +49,6 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: 700;
     font-size: 55px;
     line-height: 1.2;
-    color: ${Colors.White};
   }
 
   h2 {
@@ -56,7 +56,6 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: 700;
     font-size: 40px;
     line-height: 1.2;
-    color: ${Colors.White};
   }
 
   h3 {
@@ -64,7 +63,6 @@ export const GlobalStyles = createGlobalStyle`
     font-size: 24px;
     font-weight: 700;
     line-height: 36px;
-    color: ${Colors.Black};
   }
 
   h4 {
@@ -72,7 +70,6 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: 700;
     font-size: 20px;
     line-height: 30px;
-    color: ${Colors.Black};
   }
 
   p {

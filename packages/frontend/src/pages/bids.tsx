@@ -18,5 +18,5 @@ const Body = styled.div`
   align-items: center;
   flex: 1;
   width: 100%;
-  background: ${Colors.GreyLight};
+  background: ${Colors.White};
 `

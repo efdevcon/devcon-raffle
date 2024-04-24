@@ -108,7 +108,7 @@ export const InputLabel = styled.div`
   width: 100%;
   max-width: 100%;
   margin-bottom: 4px;
-  color: ${Colors.White};
+  color: ${Colors.Black};
   font-size: 12px;
   line-height: 18px;
 `
