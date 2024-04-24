@@ -23,7 +23,8 @@ export enum ContractState {
 }
 
 export function useAuctionState(): AuctionState | undefined {
-  const { address, chainId } = useAccount()
+  const { address, chainId: userChainId } = useAccount()
+  const chainId = useChainId()
   const { state, isLoading } = useContractState()
   if (isLoading) {
     return undefined
@@ -34,7 +35,7 @@ export function useAuctionState(): AuctionState | undefined {
   }
 
   if (state === ContractState.BIDDING_OPEN) {
-    return getStateUsingWallet(address, chainId, 'BiddingFlow')
+    return getStateUsingWallet(address, userChainId, chainId, 'BiddingFlow')
   }
 
   if (state === ContractState.BIDDING_CLOSED || state === ContractState.AUCTION_SETTLED) {
@@ -42,7 +43,7 @@ export function useAuctionState(): AuctionState | undefined {
   }
 
   if (state === ContractState.RAFFLE_SETTLED) {
-    return getStateUsingWallet(address, chainId, 'ClaimingFlow')
+    return getStateUsingWallet(address, userChainId, chainId, 'ClaimingFlow')
   }
 
   if (state === ContractState.CLAIMING_CLOSED) {
@@ -64,12 +65,17 @@ export const useContractState = () => {
   return { state: data as ContractState, isLoading }
 }
 
-function getStateUsingWallet(account: Hex | undefined, chainId: number | undefined, state: AuctionState) {
+function getStateUsingWallet(
+  account: Hex | undefined,
+  userChainId: number | undefined,
+  chainId: number,
+  state: AuctionState,
+) {
   if (!account) {
     return 'WalletNotConnected'
   }
 
-  if (!chainId) {
+  if (userChainId !== chainId) {
     return 'WrongNetwork'
   }
 
