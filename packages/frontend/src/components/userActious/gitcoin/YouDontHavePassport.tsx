@@ -20,9 +20,9 @@ export const YouDontHavePassport = ({ afterCreateClick }: Props) => {
       <BackButtonRow>
         <BackButton withBack={false} />
         <Form>
-          <WarningHeader>You don&apos;t have a GitCoin Passport</WarningHeader>
+          <WarningHeader>You don&apos;t have a Gitcoin Passport</WarningHeader>
           <FormRow>
-            <span>To finish placing a bid, please create a GitCoin Passport.</span>
+            <span>To finish placing a bid, please create a Gitcoin Passport.</span>
           </FormRow>
           <Button onClick={onCreateClick}>Create a Gitcoin Passport</Button>
         </Form>

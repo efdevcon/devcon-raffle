@@ -6,7 +6,7 @@ import { SeparatorWithText } from '@/components/common/Separator'
 export const CheckGitcoinPassword = () => {
   return (
     <Wrapper>
-      <FormHeading>Check GitCoin Passport</FormHeading>
+      <FormHeading>Check Gitcoin Passport</FormHeading>
       <FormRow>
         <span>To place a bid we need to check your score. By verifying your score we checking if you are a human.</span>
       </FormRow>
@@ -14,7 +14,7 @@ export const CheckGitcoinPassword = () => {
       <SeparatorWithText text="Or" />
       <FormRow>
         <span>
-          If you don’t have a <b>GitCoin Passport</b>, please create one.
+          If you don’t have a <b>Gitcoin Passport</b>, please create one.
         </span>
       </FormRow>
       <Button wide>Create a Gitcoin Passport</Button>
