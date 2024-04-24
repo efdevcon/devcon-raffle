@@ -57,6 +57,6 @@ const BidsEntryRow = styled.div<{ isUser?: boolean }>`
 const AddressLink = styled.a`
   font-family: 'Space Mono', 'Roboto Mono', monospace;
   font-style: normal;
-  color: ${Colors.Blue};
+  color: ${Colors.Black};
   text-decoration: none;
 `

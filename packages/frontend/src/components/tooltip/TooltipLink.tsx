@@ -31,7 +31,7 @@ const TooltipLinkComponent = styled.a<Pick<TooltipLinkProps, 'color' | 'label'>>
 
   &:hover,
   &:focus-visible {
-    color: ${Colors.BlueDark};
-    background-color: ${Colors.GreenLight};
+    color: ${Colors.Black};
+    background-color: ${Colors.Pink};
   }
 `

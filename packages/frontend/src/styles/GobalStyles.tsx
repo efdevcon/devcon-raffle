@@ -96,7 +96,7 @@ export const GlobalStyles = createGlobalStyle`
 
   body::-webkit-scrollbar-thumb {
     border-radius: 0;
-    background-color: ${Colors.GreenDark};
+    background-color: ${Colors.Grey};
   }
 
   body::-webkit-scrollbar-track {

@@ -55,33 +55,24 @@ const commonButtonStyles = css<ButtonProps>`
 const PrimaryButtonStyles = css<ButtonProps>`
   ${commonButtonStyles};
 
-  background-color: ${Colors.GreenLight};
-  color: ${Colors.Black};
-
-  &:hover,
-  &:focus-visible {
-    background-color: ${Colors.Green};
-  }
-
-  &:active {
-    background-color: ${Colors.GreenDark};
-  }
+  background-color: ${Colors.Black};
+  color: ${Colors.White};
 `
 
 const SecondaryButtonStyles = css<ButtonProps>`
   ${commonButtonStyles};
 
   background-color: ${Colors.White};
-  color: ${Colors.Blue};
-  border: 1px solid ${Colors.Blue};
+  color: ${Colors.Black};
+  border: 1px solid ${Colors.Black};
 
-  &:hover,
+  &:hover:enabled,
   &:focus-visible {
-    background-color: ${Colors.BlueLight};
+    background-color: ${Colors.Pink};
   }
 
   &:active {
-    background-color: ${Colors.BlueLight};
+    background-color: ${Colors.Pink};
   }
 `
 

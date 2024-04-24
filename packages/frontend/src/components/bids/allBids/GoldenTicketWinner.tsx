@@ -30,7 +30,7 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 90px;
-  background-color: ${Colors.GreenLight};
+  background-color: ${Colors.Pink};
 `
 
 const Section = styled.div`
@@ -60,6 +60,6 @@ const HeaderText = styled.h3`
 const AddressLink = styled.a`
   font-family: 'Space Mono', 'Roboto Mono', monospace;
   font-style: normal;
-  color: ${Colors.Blue};
+  color: ${Colors.Black};
   text-decoration: none;
 `

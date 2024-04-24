@@ -38,14 +38,14 @@ export const AccountDetailModal = ({ isShown, onRequestClose }: ModalProps) => {
               <RedirectButton
                 link={explorerLink ?? ''}
                 tooltip="View on Arbiscan"
-                color={Colors.Blue}
+                color={Colors.Black}
                 label=" View in block explorer"
                 side="top"
               />
               <CopyButton
                 value={address}
                 text="Copy account address"
-                color={Colors.Blue}
+                color={Colors.Black}
                 label="Copy address"
                 side="top"
               />

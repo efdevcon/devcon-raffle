@@ -15,10 +15,7 @@ export const PlaceColumn = styled.span`
 
 export const BidColumn = styled.div`
   grid-area: bid;
-
-  & > span {
-    color: ${Colors.GreyDark};
-  }
+  color: ${Colors.Black};
 `
 
 export const AddressColumn = styled.span`

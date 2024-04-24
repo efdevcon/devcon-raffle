@@ -34,15 +34,9 @@ const SearchInputWrapper = styled.div`
   margin-bottom: 8px;
   border-width: 2px;
   border-style: solid;
-  border-color: ${Colors.GreenLight};
+  border-color: ${Colors.GreyLight};
   background-color: ${Colors.White};
   transition: all 0.25s ease;
-
-  &:hover,
-  &:focus-visible,
-  &:focus-within {
-    border-color: ${Colors.Green};
-  }
 `
 
 const StyledInput = styled.input`
@@ -67,6 +61,6 @@ const StyledInput = styled.input`
   }
 
   &::placeholder {
-    color: ${Colors.Grey};
+    color: ${Colors.Black};
   }
 `

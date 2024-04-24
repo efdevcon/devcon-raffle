@@ -5,19 +5,8 @@ export const Colors = {
   Grey: '#787878',
   GreyLight: '#F8F8F8',
   Pink: '#FADAFA',
-  Red: '#F45757',
-
-  Blue: '#1144AA',
-  BlueDark: '#103D96',
-  BlueLight: '#F6FFFE',
-  GreenDark: '#93D7CF',
-  GreenLight: '#DDFAF7',
-  GreyDark: '#898989',
-  RedDark: '#FF6666',
-  RedLight: '#FF5151',
+  Red: '#FF5151',
   Transparent: 'transparent',
-  Porcelain: '#E7EAF3',
-  Mystic: '#D0D6E6',
 }
 
 export const hexOpacity = (color: string, opacity: number) => {

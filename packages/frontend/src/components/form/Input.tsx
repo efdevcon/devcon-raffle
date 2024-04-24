@@ -129,7 +129,7 @@ const StyledInputWrapper = styled.div<{ isBadAmount?: boolean; disabled?: boolea
   &:hover,
   &:focus-visible,
   &:focus-within {
-    border-color: ${({ isBadAmount }) => (isBadAmount ? Colors.Red : Colors.GreenLight)};
+    border-color: ${({ isBadAmount }) => (isBadAmount ? Colors.Red : Colors.White)};
   }
 `
 

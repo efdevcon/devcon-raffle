@@ -29,7 +29,7 @@ interface TimeProps {
 const VoucherTimeBox = styled.div<TimeProps>`
   width: calc(100% - 54px);
   padding: 8px 24px 8px 68px;
-  background: ${({ isPeriodExpired }) => (isPeriodExpired ? Colors.RedLight : Colors.Blue)};
+  background: ${({ isPeriodExpired }) => (isPeriodExpired ? Colors.Red : Colors.Black)};
 `
 const TimeRow = styled.div<TimeProps>`
   display: flex;
@@ -39,5 +39,5 @@ const TimeRow = styled.div<TimeProps>`
   margin: 0 auto;
   max-width: 1112px;
   font-family: 'Space Mono', 'Roboto Mono', monospace;
-  color: ${({ isPeriodExpired }) => (isPeriodExpired ? Colors.RedDark : Colors.White)};
+  color: ${({ isPeriodExpired }) => (isPeriodExpired ? Colors.Red : Colors.White)};
 `
