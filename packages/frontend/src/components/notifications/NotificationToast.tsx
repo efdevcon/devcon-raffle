@@ -1,9 +1,9 @@
 import * as ToastPrimitive from '@radix-ui/react-toast'
 import { useCallback } from 'react'
 import styled from 'styled-components'
-import { ErrorIcon } from "@/components/icons/ErrorIcon";
-import { Colors } from "@/styles/colors";
-import { CrossIcon } from "@/components/icons";
+import { ErrorIcon } from '@/components/icons/ErrorIcon'
+import { Colors } from '@/styles/colors'
+import { CrossIcon } from '@/components/icons'
 
 interface Props {
   message: string

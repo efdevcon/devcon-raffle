@@ -7,7 +7,7 @@ import { Button } from '@/components/buttons'
 import { formatEther } from 'viem'
 import { Colors } from '@/styles/colors'
 import { ReactNode } from 'react'
-import { ClaimVoucherSection } from "@/components/userActious/claim/ClaimVoucherSection";
+import { ClaimVoucherSection } from '@/components/userActious/claim/ClaimVoucherSection'
 
 const withdrawText = {
   [WinType.Loss]: `You can withdraw all your funds.`,

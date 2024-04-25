@@ -22,7 +22,7 @@ export const WinForm = ({ userBid, withdrawalAmount, setView }: WinFormProps) =>
   }, [address])
 
   if (voucher) {
-    return <VoucherForm voucher={voucher} withdrawnBid={userBid.claimed}/>
+    return <VoucherForm voucher={voucher} withdrawnBid={userBid.claimed} />
   }
 
   return (

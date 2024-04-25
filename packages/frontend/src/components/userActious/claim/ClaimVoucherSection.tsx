@@ -2,10 +2,10 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 import { VoucherTimeLeft } from './VoucherTimeLeft'
-import { useAuctionState } from "@/blockchain/hooks/useAuctionState";
-import { Button } from "@/components/buttons";
-import { ErrorNotifications } from "@/components/notifications/ErrorNotifications";
-import { Colors } from "@/styles/colors";
+import { useAuctionState } from '@/blockchain/hooks/useAuctionState'
+import { Button } from '@/components/buttons'
+import { ErrorNotifications } from '@/components/notifications/ErrorNotifications'
+import { Colors } from '@/styles/colors'
 
 interface ClaimVoucherSectionProps {
   setVoucher: (val: string) => void

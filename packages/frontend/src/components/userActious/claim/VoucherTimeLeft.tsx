@@ -16,8 +16,7 @@ export const VoucherTimeLeft = () => {
 
   return (
     <TimeRow>
-      <b>{timeLeft}</b> {' '}
-      <span>left to redeem your voucher code</span>
+      <b>{timeLeft}</b> <span>left to redeem your voucher code</span>
     </TimeRow>
   )
 }
