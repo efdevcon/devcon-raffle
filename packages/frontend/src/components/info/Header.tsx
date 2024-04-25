@@ -1,9 +1,7 @@
 import styled from 'styled-components'
-
 import { TimeLeft } from './TimeLeft'
 import { VoucherTimeLeft } from './VoucherTimeLeft'
 import { Colors } from '@/styles/colors'
-import { KeyIcon } from '@/components/icons'
 import { HeaderBar } from '@/components/common/Header'
 import { AuctionState, useAuctionState } from '@/blockchain/hooks/useAuctionState'
 
@@ -21,9 +19,6 @@ export const Header = () => {
             </TitleWrapper>
             <TimeLeft />
           </InfoWrapper>
-          <Key>
-            <KeyIcon />
-          </Key>
         </HeaderWrapper>
       </StyledHeader>
       {isClaimingFlow(state) && <VoucherTimeLeft />}
@@ -42,7 +37,7 @@ const Wrapper = styled.div`
 
 const StyledHeader = styled(HeaderBar)`
   height: 225px;
-  padding: 16px 125px 24px 68px;
+  padding: 16px 68px;
 `
 
 const HeaderWrapper = styled.div`
@@ -60,7 +55,6 @@ const InfoWrapper = styled.div`
   justify-content: space-between;
   height: 100%;
   width: 100%;
-  color: ${Colors.White};
 
   @media screen and (min-width: 1800px) {
     justify-content: flex-start;
@@ -95,19 +89,4 @@ const Title = styled.h1`
 const SubTitle = styled.h3`
   color: ${Colors.Black};
   background-color: ${Colors.White};
-`
-const Key = styled.div`
-  position: absolute;
-  top: -16px;
-  right: 0;
-  height: 225px;
-  opacity: 0.5;
-
-  @media screen and (max-width: 1240px) {
-    opacity: 0.2;
-  }
-
-  @media screen and (min-width: 1400px) {
-    opacity: 1;
-  }
 `
