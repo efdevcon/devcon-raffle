@@ -1,13 +1,14 @@
 import { useAccount } from 'wagmi'
 import { useBids } from '@/providers/BidsProvider'
 import { useMemo } from 'react'
-import { Bid } from '@/types/bid'
+import { UserBid } from '@/types/bid'
+import { useBidWinType } from './useBidWinType'
 
-export const useUserBid = (): Bid | undefined => {
+export const useUserBid = (): UserBid | undefined => {
   const { address } = useAccount()
   const { bidList } = useBids()
 
-  return useMemo(() => {
+  const bid = useMemo(() => {
     if (!address) {
       return undefined
     }
@@ -20,4 +21,15 @@ export const useUserBid = (): Bid | undefined => {
         }
       : undefined
   }, [address, bidList])
+
+  const winType = useBidWinType(bid?.bidderId)
+
+  if (winType == undefined || !bid) {
+    return undefined
+  }
+
+  return {
+    ...bid,
+    winType,
+  }
 }

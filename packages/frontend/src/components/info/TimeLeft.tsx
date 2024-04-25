@@ -5,6 +5,7 @@ import { formatDate } from '@/utils/formatters/formatDate'
 import { setIntervalImmediately } from '@/utils/setIntervalImmediately'
 import { useAuctionState } from '@/blockchain/hooks/useAuctionState'
 import { useAuctionTime } from '@/blockchain/hooks/useAuctionTime'
+import { Colors } from '@/styles/colors'
 
 export const TimeLeft = () => {
   const timestamp = useAuctionTime()
@@ -35,6 +36,7 @@ const TimeBox = styled.div`
   flex-direction: column;
   row-gap: 4px;
   font-family: 'Space Mono', 'Roboto Mono', monospace;
+  color: ${Colors.Black};
 
   @media screen and (min-width: 1800px) {
     flex-direction: row;
@@ -46,6 +48,7 @@ const TimeRow = styled.div`
   display: flex;
   align-items: center;
   column-gap: 8px;
+  background-color: ${Colors.White};
 `
 
 export const RemainingTime = styled.span`

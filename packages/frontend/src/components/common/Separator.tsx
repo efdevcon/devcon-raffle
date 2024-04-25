@@ -12,7 +12,7 @@ export const Separator = ({ orientation = 'horizontal', color }: SeparatorElemen
 }
 
 const SeparatorElement = styled(SeparatorPrimitive.Root)<SeparatorElementProps>`
-  background-color: ${({ color }) => (color ? color : Colors.GreenLight)};
+  background-color: ${({ color }) => (color ? color : Colors.Grey)};
 
   &[data-orientation='horizontal'] {
     height: 1px;

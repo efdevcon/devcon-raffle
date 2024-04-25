@@ -222,7 +222,7 @@ const StyledTrigger = styled(Accordion.AccordionTrigger)`
   font-family: 'Space Mono', 'Roboto Mono', monospace;
   font-style: normal;
   border: none;
-  background-color: ${Colors.GreenLight};
+  background-color: ${Colors.GreyLight};
   text-align: left;
   font-size: 20px;
   line-height: 1.5;
@@ -263,12 +263,12 @@ const AccordionArrow = styled(ArrowDownIcon)`
 `
 
 const Link = styled.a`
-  color: ${Colors.Blue};
+  color: ${Colors.Black};
   text-decoration: underline;
 `
 
 const BulletList = styled.ul`
-  color: ${Colors.Blue};
+  color: ${Colors.Black};
   margin: 0;
 `
 

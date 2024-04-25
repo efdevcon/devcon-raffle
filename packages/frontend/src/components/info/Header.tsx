@@ -81,6 +81,8 @@ const TitleWrapper = styled.div`
 `
 
 const Title = styled.h1`
+  background-color: ${Colors.White};
+
   @media screen and (min-width: 1800px) {
     line-height: 1;
   }
@@ -91,7 +93,8 @@ const Title = styled.h1`
 `
 
 const SubTitle = styled.h3`
-  color: ${Colors.White};
+  color: ${Colors.Black};
+  background-color: ${Colors.White};
 `
 const Key = styled.div`
   position: absolute;

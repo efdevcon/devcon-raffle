@@ -10,7 +10,7 @@ export const Header = () => {
 
   return (
     <StyledHeader>
-      <BackButton url="/" withBack />
+      <BackButton url="/" />
       <Wrapper>
         <Title>
           <h2>Number of participants:</h2>
@@ -53,5 +53,5 @@ const Key = styled.div`
 `
 
 const Number = styled.h2`
-  color: ${Colors.BlueDark};
+  color: ${Colors.Black};
 `

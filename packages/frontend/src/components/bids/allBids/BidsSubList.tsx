@@ -33,7 +33,7 @@ const TitleBanner = styled.div`
   align-items: center;
   width: 100%;
   padding: 4px 0;
-  background-color: ${Colors.GreenLight};
+  background-color: ${Colors.GreyLight};
 `
 
 const SubListHeader = styled.h3`

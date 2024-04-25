@@ -108,7 +108,7 @@ export const InputLabel = styled.div`
   width: 100%;
   max-width: 100%;
   margin-bottom: 4px;
-  color: ${Colors.White};
+  color: ${Colors.Black};
   font-size: 12px;
   line-height: 18px;
 `
@@ -129,7 +129,7 @@ const StyledInputWrapper = styled.div<{ isBadAmount?: boolean; disabled?: boolea
   &:hover,
   &:focus-visible,
   &:focus-within {
-    border-color: ${({ isBadAmount }) => (isBadAmount ? Colors.Red : Colors.GreenLight)};
+    border-color: ${({ isBadAmount }) => (isBadAmount ? Colors.Red : Colors.White)};
   }
 `
 

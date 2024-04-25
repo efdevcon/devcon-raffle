@@ -9,10 +9,9 @@ interface BackButtonProps {
   setView?: (view: number) => void
   url?: string
   resetState?: () => void
-  withBack?: boolean
 }
 
-export function BackButton({ view, setView, url, resetState, withBack = false }: BackButtonProps) {
+export function BackButton({ view, setView, url, resetState }: BackButtonProps) {
   const router = useRouter()
 
   const goBack = useCallback(() => {
@@ -28,24 +27,23 @@ export function BackButton({ view, setView, url, resetState, withBack = false }:
   }, [setView, view, router, url, resetState])
 
   return (
-    <BackBtn onClick={goBack} $withBack={withBack}>
+    <BackBtn onClick={goBack}>
       <ArrowLeftIcon color={Colors.Black} />
-      {withBack && 'Back'}
     </BackBtn>
   )
 }
 
-const BackBtn = styled.button<{ $withBack?: boolean }>`
+const BackBtn = styled.button`
   display: flex;
   align-items: center;
-  width: ${({ $withBack }) => ($withBack ? '84px' : '35px')};
+  width: 35px;
   height: 32px;
   font-family: 'Roboto', Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   background-color: ${Colors.Transparent};
-  color: ${Colors.GreenLight};
+  color: ${Colors.Black};
   border: 1px solid ${Colors.Black};
   padding: 0;
 

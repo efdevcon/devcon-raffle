@@ -40,5 +40,5 @@ const Wrapper = styled(FormWrapper)`
 `
 
 const WarningHeader = styled.h2`
-  color: ${Colors.RedDark};
+  color: ${Colors.Red};
 `
