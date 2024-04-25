@@ -40,34 +40,25 @@ export const GlobalStyles = createGlobalStyle`
   h1, h2, h3, h4 {
     font-family: 'Space Mono', 'Roboto Mono', monospace;
     font-style: normal;
+    font-weight: 700;
+    line-height: 1.2;
     margin: 0;
     color: ${Colors.Black};
   }
 
   h1 {
-    font-style: normal;
-    font-weight: 700;
     font-size: 55px;
-    line-height: 1.2;
   }
 
   h2 {
-    font-style: normal;
-    font-weight: 700;
     font-size: 40px;
-    line-height: 1.2;
   }
 
   h3 {
-    font-style: normal;
     font-size: 24px;
-    font-weight: 700;
-    line-height: 36px;
   }
 
   h4 {
-    font-style: normal;
-    font-weight: 700;
     font-size: 20px;
     line-height: 30px;
   }
