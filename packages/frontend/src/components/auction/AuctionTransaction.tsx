@@ -1,11 +1,11 @@
 import { TransactionAction, Transactions } from '@/blockchain/transaction'
-import { useState } from 'react'
 import styled from 'styled-components'
 import { TxFlowSteps } from './TxFlowSteps'
 import { BackButton } from '../buttons/BackButton'
 import { FormSubHeading, FormWrapper } from '../form'
 import { TransactionStepper } from '../stepper/TransactionStepper'
 import { ReviewForm } from '../form/ReviewForm'
+import { TransactionSuccess } from './TransactionSuccess'
 
 export const heading = {
   [Transactions.Place]: 'Place bid',

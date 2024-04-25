@@ -1,6 +1,6 @@
-import { Transactions } from "@/blockchain/transaction"
-import { Stepper } from "./Stepper"
-import { heading } from "../auction/AuctionTransaction"
+import { Transactions } from '@/blockchain/transaction'
+import { Stepper } from './Stepper'
+import { heading } from '../auction/AuctionTransaction'
 
 interface Props<StepName extends string> {
   current: StepName
@@ -11,11 +11,7 @@ interface Props<StepName extends string> {
 export const TransactionStepper = <StepName extends string>({ action, current, isFailed }: Props<StepName>) => {
   const steps = getTransactionSteps(action)
   const currentStepIndex = steps.findIndex((step) => [step.default.name, step.failed?.name].includes(current))
-  return <Stepper
-    steps={steps}
-    currentStep={currentStepIndex}
-    isFailed={isFailed}
-  />
+  return <Stepper steps={steps} currentStep={currentStepIndex} isFailed={isFailed} />
 }
 
 const header = {

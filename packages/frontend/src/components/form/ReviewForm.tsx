@@ -1,11 +1,11 @@
-import { TransactionAction, Transactions } from "@/blockchain/transaction"
-import { TxFlowSteps } from "../auction/TxFlowSteps"
-import { useAccount, useBalance } from "wagmi"
-import { useEffect } from "react"
-import { FormNarrow, FormRow } from "."
-import { formatEther } from "viem"
-import { Button } from "../buttons"
-import { heading } from "../auction/AuctionTransaction"
+import { TransactionAction, Transactions } from '@/blockchain/transaction'
+import { TxFlowSteps } from '../auction/TxFlowSteps'
+import { useAccount, useBalance } from 'wagmi'
+import { useEffect } from 'react'
+import { FormNarrow, FormRow } from '.'
+import { formatEther } from 'viem'
+import { Button } from '../buttons'
+import { heading } from '../auction/AuctionTransaction'
 
 const amountLabel = {
   [Transactions.Place]: 'Your Bid',
@@ -23,7 +23,7 @@ interface ReviewFormProps {
 }
 
 export const ReviewForm = ({
-  action: {status, resetStatus, ...action},
+  action: { status, resetStatus, ...action },
   amount,
   impact,
   view,
