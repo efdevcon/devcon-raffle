@@ -52,6 +52,5 @@ export const useUserBid = (): UserBid | undefined => {
     place: bid.place,
     claimed,
     winType,
-    claimed: false,
   }
 }
