@@ -1,11 +1,5 @@
 import { Hex } from 'viem'
-
-enum WinType {
-  LOSS,
-  GOLDEN_TICKET,
-  AUCTION,
-  RAFFLE,
-}
+import { WinType } from '@/types/winType'
 
 export interface Bid {
   address: Hex
@@ -16,4 +10,5 @@ export interface Bid {
 
 export interface UserBid extends Bid {
   winType: WinType
+  claimed: boolean
 }
