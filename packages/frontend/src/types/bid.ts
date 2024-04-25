@@ -16,4 +16,5 @@ export interface Bid {
 
 export interface UserBid extends Bid {
   winType: WinType
+  claimed: boolean
 }
