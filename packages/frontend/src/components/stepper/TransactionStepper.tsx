@@ -1,6 +1,8 @@
 import { Transactions } from '@/blockchain/transaction'
 import { Stepper } from './Stepper'
 import { heading } from '../auction/AuctionTransaction'
+import { styled } from 'styled-components'
+import { Colors } from '@/styles/colors'
 
 interface Props<StepName extends string> {
   current: StepName
@@ -11,7 +13,12 @@ interface Props<StepName extends string> {
 export const TransactionStepper = <StepName extends string>({ action, current, isFailed }: Props<StepName>) => {
   const steps = getTransactionSteps(action)
   const currentStepIndex = steps.findIndex((step) => [step.default.name, step.failed?.name].includes(current))
-  return <Stepper steps={steps} currentStep={currentStepIndex} isFailed={isFailed} />
+  return (
+    <StepperContainer>
+      <StepperHeader>Finalize {header[action]}</StepperHeader>
+      <Stepper steps={steps} currentStep={currentStepIndex} isFailed={isFailed} />
+    </StepperContainer>
+  )
 }
 
 const header = {
@@ -46,3 +53,15 @@ const getTransactionSteps = (action: Transactions) => {
     },
   ]
 }
+
+const StepperContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 313px;
+  padding: 82px 20px 82px 0;
+  background-color: ${Colors.BlueDark};
+`
+const StepperHeader = styled.h3`
+  margin: 0 0 24px 24px;
+  color: ${Colors.White};
+`
