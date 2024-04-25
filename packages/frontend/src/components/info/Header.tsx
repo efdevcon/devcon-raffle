@@ -55,33 +55,17 @@ const InfoWrapper = styled.div`
   justify-content: space-between;
   height: 100%;
   width: 100%;
-
-  @media screen and (min-width: 1800px) {
-    justify-content: flex-start;
-    row-gap: 40px;
-  }
 `
 
 const TitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
-  @media screen and (min-width: 1800px) {
-    flex-direction: row;
-    align-items: flex-end;
-    column-gap: 20px;
-    padding-top: 16px;
-  }
 `
 
 const Title = styled.h1`
   background-color: ${Colors.White};
   padding: 0 10px;
-
-  @media screen and (min-width: 1800px) {
-    line-height: 1;
-  }
 
   @media screen and (max-width: 1260px) {
     font-size: 40px;

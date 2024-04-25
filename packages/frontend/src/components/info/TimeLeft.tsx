@@ -36,13 +36,8 @@ const TimeBox = styled.div`
   flex-direction: column;
   align-items: flex-start;
   font-family: 'Space Mono', 'Roboto Mono', monospace;
-
-  @media screen and (min-width: 1800px) {
-    flex-direction: row;
-    align-items: center;
-    column-gap: 40px;
-  }
 `
+
 const TimeRow = styled.div`
   display: flex;
   align-items: center;
