@@ -53,9 +53,7 @@ export const AccountDetailModal = ({ isShown, onRequestClose }: ModalProps) => {
           </>
         )}
       </ContentWrapper>
-      <Button view="secondary" onClick={onDisconnect}>
-        Disconnect
-      </Button>
+      <Button onClick={onDisconnect}>Disconnect</Button>
     </Modal>
   )
 }
