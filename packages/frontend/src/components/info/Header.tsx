@@ -14,8 +14,8 @@ export const Header = () => {
         <HeaderWrapper>
           <InfoWrapper>
             <TitleWrapper>
-              <Title>Devcon 6</Title>
-              <SubTitle>Auction & Raffle Ticket Sale</SubTitle>
+              <Title>Devcon 7</Title>
+              <SubTitle>Ticket Sale</SubTitle>
             </TitleWrapper>
             <TimeLeft />
           </InfoWrapper>
@@ -65,6 +65,7 @@ const InfoWrapper = styled.div`
 const TitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 
   @media screen and (min-width: 1800px) {
     flex-direction: row;
@@ -76,6 +77,7 @@ const TitleWrapper = styled.div`
 
 const Title = styled.h1`
   background-color: ${Colors.White};
+  padding: 0 10px;
 
   @media screen and (min-width: 1800px) {
     line-height: 1;
@@ -87,6 +89,6 @@ const Title = styled.h1`
 `
 
 const SubTitle = styled.h3`
-  color: ${Colors.Black};
   background-color: ${Colors.White};
+  padding: 0 10px;
 `
