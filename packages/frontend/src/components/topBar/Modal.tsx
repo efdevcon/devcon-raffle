@@ -21,7 +21,7 @@ export const Modal = ({ isShown, onRequestClose, title, children }: ModalProps) 
           <Content>
             <Header>
               <Title>{title}</Title>
-              <CloseButton size={24} color={Colors.Black} onClick={closeModal} />
+              <CloseButton size={16} color={Colors.Black} onClick={closeModal} />
             </Header>
             {children}
           </Content>
