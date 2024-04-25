@@ -12,10 +12,10 @@ export const Header = () => {
     <StyledHeader>
       <BackButton url="/" withBack />
       <Wrapper>
-        <Title>
-          <h2>Number of participants:</h2>
-          <Number>{bidList.length}</Number>
-        </Title>
+        <TitleColumn>
+          <Title>Number of participants:</Title>
+          <Title>{bidList.length}</Title>
+        </TitleColumn>
       </Wrapper>
       <Key>
         <KeyIcon />
@@ -38,7 +38,7 @@ const Wrapper = styled.div`
   color: ${Colors.White};
 `
 
-const Title = styled.div`
+const TitleColumn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -52,6 +52,7 @@ const Key = styled.div`
   height: 225px;
 `
 
-const Number = styled.h2`
-  color: ${Colors.Black};
+const Title = styled.h2`
+  background-color: ${Colors.White};
+  padding: 4px 20px;
 `
