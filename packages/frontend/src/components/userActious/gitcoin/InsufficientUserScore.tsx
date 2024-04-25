@@ -14,7 +14,7 @@ export const InsufficientUserScore = ({ userScore }: UserScoreProps) => {
         Your Score:&nbsp;<Score>{userScore}</Score>
       </FormHeading>
       <ErrorContent>
-        <InfoIcon color={Colors.RedDark} size={24} />
+        <InfoIcon color={Colors.Red} size={24} />
         <p>Your score is too low!</p>
       </ErrorContent>
       <FormRow>
@@ -38,13 +38,13 @@ export const InsufficientUserScore = ({ userScore }: UserScoreProps) => {
 }
 
 const Score = styled.span`
-  color: ${Colors.RedDark};
+  color: ${Colors.Red};
 `
 
 const ErrorContent = styled.div`
   display: flex;
   gap: 8px;
-  color: ${Colors.RedDark};
+  color: ${Colors.Red};
 `
 
 const Link = styled.a`

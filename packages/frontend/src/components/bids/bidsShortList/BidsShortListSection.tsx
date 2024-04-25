@@ -72,5 +72,5 @@ const EmptyList = styled.div`
 `
 const ColoredText = styled.h3`
   width: max-content;
-  color: ${Colors.Blue};
+  color: ${Colors.Black};
 `

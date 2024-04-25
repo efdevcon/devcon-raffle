@@ -29,7 +29,7 @@ const TooltipButtonComponent = styled(Button)<Pick<TooltipButtonProps, 'color' |
 
   &:hover,
   &:focus-visible {
-    color: ${Colors.BlueDark};
-    background-color: ${Colors.GreenLight};
+    color: ${Colors.Black};
+    background-color: ${Colors.Pink};
   }
 `

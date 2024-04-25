@@ -9,6 +9,7 @@ import { SearchInput } from '@/components/form/SearchInput'
 import { useContractState } from '@/blockchain/hooks/useAuctionState'
 import { isAuctionSettled } from '@/utils/isAuctionSettled'
 import { SettledBidsList } from '@/components/bids/allBids/SettledBidsList'
+import { Colors } from '@/styles/colors'
 
 export const AllBids = () => {
   const [search, setSearch] = useState('')
@@ -57,4 +58,5 @@ const PageContainer = styled.div`
   width: 100%;
   max-width: 780px;
   padding: 28px 0 56px;
+  background-color: ${Colors.White};
 `

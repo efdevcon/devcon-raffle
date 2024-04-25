@@ -32,7 +32,7 @@ export const Modal = ({ isShown, onRequestClose, title, children }: ModalProps) 
 }
 
 const Overlay = styled(Dialog.Overlay)`
-  background-color: ${hexOpacity(Colors.Blue, 0.8)};
+  background-color: ${hexOpacity(Colors.Pink, 0.8)};
   position: fixed;
   top: 0;
   left: 0;

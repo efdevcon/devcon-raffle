@@ -45,7 +45,7 @@ const BackBtn = styled.button<{ $withBack?: boolean }>`
   font-size: 16px;
   line-height: 24px;
   background-color: ${Colors.Transparent};
-  color: ${Colors.GreenLight};
+  color: ${Colors.Black};
   border: 1px solid ${Colors.Black};
   padding: 0;
 
