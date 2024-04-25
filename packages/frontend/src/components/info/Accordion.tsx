@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ArrowDownIcon } from '../icons'
 import { Colors } from '@/styles/colors'
 import { Rule, RuleText } from '@/components/info/Rules'
-import { formatEndDate } from '@/utils/formatters/formatEndDate'
+import { formatDate } from '@/utils/formatters/formatDate'
 import { useVoucherRedeemDeadline } from '@/blockchain/hooks/useVoucherRedeemDeadline'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 
@@ -149,7 +149,7 @@ export const InfoAccordion = () => {
             <AccordionStyledTrigger heading="In what form will I get the ticket?" />
           </StyledHeader>
           <StyledContent>
-            After the raffle is settled, you will have 48 hours (<Bold>until {formatEndDate(redeemTimestamp)}</Bold>) to
+            After the raffle is settled, you will have 48 hours (<Bold>until {formatDate(redeemTimestamp)}</Bold>) to
             claim your voucher code for the ticket. In order to do so, you will be asked to sign a message using your
             wallet to authenticate as the owner of the winning account. The voucher code will be presented to you on
             this page.
@@ -163,8 +163,8 @@ export const InfoAccordion = () => {
           <StyledContent>
             <span>
               Your Voucher Code will be available to you for 48 hours after the closing of the Auction & Raffle (
-              <Bold>until {formatEndDate(redeemTimestamp)}</Bold>). Once you have input your voucher code into our
-              ticket portal, you will go through the standard ticket checkout flow. You can go to{' '}
+              <Bold>until {formatDate(redeemTimestamp)}</Bold>). Once you have input your voucher code into our ticket
+              portal, you will go through the standard ticket checkout flow. You can go to{' '}
               <Link href="https://tickets.devcon.org/">our ticket shop here</Link> to redeem your voucher code for a
               Devcon 6 ticket. See you at the conference!
             </span>
@@ -222,7 +222,7 @@ const StyledTrigger = styled(Accordion.AccordionTrigger)`
   font-family: 'Space Mono', 'Roboto Mono', monospace;
   font-style: normal;
   border: none;
-  background-color: ${Colors.GreenLight};
+  background-color: ${Colors.GreyLight};
   text-align: left;
   font-size: 20px;
   line-height: 1.5;
@@ -263,12 +263,12 @@ const AccordionArrow = styled(ArrowDownIcon)`
 `
 
 const Link = styled.a`
-  color: ${Colors.Blue};
+  color: ${Colors.Black};
   text-decoration: underline;
 `
 
 const BulletList = styled.ul`
-  color: ${Colors.Blue};
+  color: ${Colors.Black};
   margin: 0;
 `
 

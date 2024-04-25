@@ -12,7 +12,7 @@ export const Separator = ({ orientation = 'horizontal', color }: SeparatorElemen
 }
 
 const SeparatorElement = styled(SeparatorPrimitive.Root)<SeparatorElementProps>`
-  background-color: ${({ color }) => (color ? color : Colors.GreenLight)};
+  background-color: ${({ color }) => (color ? color : Colors.Grey)};
 
   &[data-orientation='horizontal'] {
     height: 1px;
@@ -28,9 +28,9 @@ const SeparatorElement = styled(SeparatorPrimitive.Root)<SeparatorElementProps>`
 export const SeparatorWithText = ({ text }: { text: string }) => {
   return (
     <SeparatorWrapper>
-      <Separator color={Colors.Mystic} />
+      <Separator color={Colors.Black} />
       {text}
-      <Separator color={Colors.Mystic} />
+      <Separator color={Colors.Black} />
     </SeparatorWrapper>
   )
 }
@@ -40,5 +40,5 @@ const SeparatorWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 10px;
-  color: White;
+  color: ${Colors.Black};
 `

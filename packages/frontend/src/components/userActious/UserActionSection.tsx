@@ -5,17 +5,21 @@ import styled from 'styled-components'
 import { ConnectWalletWarning } from './ConnectWalletWarning'
 import { GitcoinFlow } from './gitcoin/GitcointFlow'
 import { BidFlow } from './bid/BidFlow'
+import { AwaitingResults } from '@/components/userActious/claim/AwaitingResults'
+import { ClaimingClosed } from '@/components/userActious/claim/ClaimingClosed'
+import { BidAwaiting } from '@/components/userActious/BidAwaiting'
+import { WrongNetworkWarning } from './WrongNetworkWarning'
 
 const Placeholder = () => <div />
 
 const UserActions: Record<AuctionState, () => ReactElement> = {
-  AwaitingBidding: Placeholder,
+  AwaitingBidding: BidAwaiting,
   WalletNotConnected: ConnectWalletWarning,
-  WrongNetwork: Placeholder,
+  WrongNetwork: WrongNetworkWarning,
   BiddingFlow: BidFlow,
-  AwaitingResults: Placeholder,
+  AwaitingResults: AwaitingResults,
   ClaimingFlow: Placeholder,
-  ClaimingClosed: Placeholder,
+  ClaimingClosed: ClaimingClosed,
   GitcoinFlow: GitcoinFlow,
 }
 
@@ -42,4 +46,6 @@ const Wrapper = styled.div`
   background-color: ${Colors.Pink};
   position: relative;
   z-index: 1;
+  justify-content: center;
+  align-items: center;
 `

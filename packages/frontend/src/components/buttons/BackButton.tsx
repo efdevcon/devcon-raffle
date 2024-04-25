@@ -28,8 +28,7 @@ export function BackButton({ view, setView, url, resetState }: BackButtonProps) 
 
   return (
     <BackBtn onClick={goBack}>
-      <ArrowLeftIcon />
-      Back
+      <ArrowLeftIcon color={Colors.Black} />
     </BackBtn>
   )
 }
@@ -37,21 +36,20 @@ export function BackButton({ view, setView, url, resetState }: BackButtonProps) 
 const BackBtn = styled.button`
   display: flex;
   align-items: center;
-  width: 84px;
+  width: 35px;
   height: 32px;
   font-family: 'Roboto', Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   background-color: ${Colors.Transparent};
-  color: ${Colors.GreenLight};
-  border: 1px solid ${Colors.GreenLight};
+  color: ${Colors.Black};
+  border: 1px solid ${Colors.Black};
   padding: 0;
 
   &:hover,
   &:focus-visible,
   &:active {
-    background-color: ${Colors.GreenLight};
-    color: ${Colors.Black};
+    background-color: ${Colors.Pink};
   }
 `

@@ -50,7 +50,7 @@ interface ListItemProps {
 const StepperListItem = ({ step, status, type }: ListItemProps) => (
   <StepperListItemContainer type={type} status={status}>
     <StepperBullet type={type} status={status}>
-      {type === 'failure' && <CrossIcon size={16} color={Colors.RedDark} />}
+      {type === 'failure' && <CrossIcon size={16} color={Colors.Red} />}
     </StepperBullet>
     <StepperItemName next={status === 'next'}>{step.name}</StepperItemName>
     <StepperItemDescription current={status === 'current'}>{step.description}</StepperItemDescription>
@@ -76,7 +76,7 @@ function getItemColor(props: DisplayTypeProps) {
 const typeToItemColor: Record<StepType, string> = {
   neutral: Colors.Black,
   success: Colors.Black,
-  failure: Colors.RedDark,
+  failure: Colors.Red,
 }
 
 const StepperListItemContainer = styled.li<DisplayTypeProps>`
@@ -158,7 +158,7 @@ const typeToBulletBackground: Record<StepType, string> = {
 
 const typeToBulletColor: Record<StepType, string> = {
   neutral: Colors.Black,
-  failure: Colors.RedDark,
+  failure: Colors.Red,
   success: Colors.Black,
 }
 

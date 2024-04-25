@@ -53,5 +53,5 @@ const Key = styled.div`
 `
 
 const Number = styled.h2`
-  color: ${Colors.BlueDark};
+  color: ${Colors.Black};
 `
