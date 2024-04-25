@@ -6,7 +6,7 @@ import { Modal } from '@/components/topBar/Modal'
 import { shortenEthAddress } from '@/utils/formatters/shortenEthAddress'
 import { CopyButton } from '@/components/buttons/CopyButton'
 import { RedirectButton } from '@/components/buttons/RedirectButton'
-import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerAddressLink'
+import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerLinks'
 
 export interface ModalProps {
   isShown: boolean | undefined

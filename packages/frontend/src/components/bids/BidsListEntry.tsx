@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 import { Bid } from '@/types/bid'
 import { Colors } from '@/styles/colors'
 import { formatEther } from 'viem'
-import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerAddressLink'
+import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerLinks'
 import { shortenEthAddress } from '@/utils/formatters/shortenEthAddress'
 
 interface Props {
