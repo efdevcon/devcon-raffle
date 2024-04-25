@@ -37,7 +37,6 @@ export const FormWideWrapper = styled(FormSectionWrapper)`
 
 export const FormText = styled.p`
   max-width: 440px;
-  color: ${Colors.Black};
 `
 
 export const Form = styled.div`
