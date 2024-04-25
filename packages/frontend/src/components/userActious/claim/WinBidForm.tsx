@@ -7,6 +7,7 @@ import { Button } from '@/components/buttons'
 import { formatEther } from 'viem'
 import { Colors } from '@/styles/colors'
 import { ReactNode } from 'react'
+import { ClaimVoucherSection } from "@/components/userActious/claim/ClaimVoucherSection";
 
 const withdrawText = {
   [WinType.Loss]: `You can withdraw all your funds.`,
@@ -37,6 +38,7 @@ export const WinBidForm = ({ userBid, withdrawalAmount, setView, voucher, setVou
           </Button>
         </WinOption>
       )}
+      {!voucher && isWinningBid && <ClaimVoucherSection setVoucher={setVoucher} />}
     </WinnerForm>
   )
 }
@@ -70,7 +72,7 @@ export const WinOption = styled.div`
   flex-direction: column;
   row-gap: 8px;
   width: 100%;
-  color: ${Colors.White};
+  color: ${Colors.Black};
 `
 
 const WinFormHeading = styled(FormHeading)<{ $voucher?: string }>`
