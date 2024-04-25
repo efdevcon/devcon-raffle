@@ -59,7 +59,7 @@ const StepperContainer = styled.div`
   flex-direction: column;
   width: 313px;
   padding: 82px 20px 82px 0;
-  background-color: ${Colors.BlueDark};
+  background-color: ${Colors.Pink};
 `
 const StepperHeader = styled.h3`
   margin: 0 0 24px 24px;

@@ -7,7 +7,7 @@ import { shortenTxHash } from './shortenTxHash'
 import { CopyButton } from '@/components/buttons/CopyButton'
 import { RedirectButton } from '@/components/buttons/RedirectButton'
 import { Button } from '@/components/buttons'
-import { FormNarrow, InputLabel } from '@/components/form'
+import { Form, InputLabel } from '@/components/form'
 import { Colors } from '@/styles/colors'
 
 interface Props {
@@ -47,7 +47,7 @@ export const TransactionSuccess = ({ txHash, action, setView, unlockViewFromTran
   )
 }
 
-const Container = styled(FormNarrow)`
+const Container = styled(Form)`
   row-gap: 24px;
 `
 

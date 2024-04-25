@@ -2,7 +2,7 @@ import { TransactionAction, Transactions } from '@/blockchain/transaction'
 import { TxFlowSteps } from '../auction/TxFlowSteps'
 import { useAccount, useBalance } from 'wagmi'
 import { useEffect } from 'react'
-import { FormNarrow, FormRow } from '.'
+import { Form, FormRow } from '.'
 import { formatEther } from 'viem'
 import { Button } from '../buttons'
 import { heading } from '../auction/AuctionTransaction'
@@ -47,7 +47,7 @@ export const ReviewForm = ({
   }
 
   return (
-    <FormNarrow>
+    <Form>
       <FormRow>
         <span>{amountLabel[action.type]}</span>
         <span>{formatEther(amount)} ETH</span>
@@ -65,6 +65,6 @@ export const ReviewForm = ({
       <Button view="primary" isLoading={isPending} onClick={sendTransaction}>
         {heading[action.type]}
       </Button>
-    </FormNarrow>
+    </Form>
   )
 }
