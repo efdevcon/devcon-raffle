@@ -10,7 +10,7 @@ export const Header = () => {
 
   return (
     <StyledHeader>
-      <BackButton url="/" withBack />
+      <BackButton url="/" />
       <Wrapper>
         <TitleColumn>
           <Title>Number of participants:</Title>

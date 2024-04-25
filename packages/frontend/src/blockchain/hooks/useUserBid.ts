@@ -31,5 +31,6 @@ export const useUserBid = (): UserBid | undefined => {
   return {
     ...bid,
     winType,
+    claimed: false,
   }
 }
