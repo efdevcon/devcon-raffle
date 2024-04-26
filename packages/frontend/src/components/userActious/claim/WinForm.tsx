@@ -21,23 +21,35 @@ export const WinForm = ({ userBid, withdrawalAmount, setView }: WinFormProps) =>
     setVoucher(undefined)
   }, [address])
 
-  if (voucher) {
-    return <VoucherForm voucher={voucher} withdrawnBid={userBid.claimed} />
-  }
-
   return (
-    <Wrapper>
-      <WinBidForm
-        userBid={userBid}
-        withdrawalAmount={withdrawalAmount}
-        setView={setView}
-        voucher={voucher}
-        setVoucher={setVoucher}
-      />
-    </Wrapper>
+    <>
+      {!(userBid.claimed && voucher) && (
+        <Wrapper>
+          <WinBidFormWrapper $hasVoucher={!!voucher}>
+            <WinBidForm
+              userBid={userBid}
+              withdrawalAmount={withdrawalAmount}
+              setView={setView}
+              voucher={voucher}
+              setVoucher={setVoucher}
+            />
+          </WinBidFormWrapper>
+        </Wrapper>
+      )}
+      {voucher && (
+        <Wrapper>
+          <VoucherForm voucher={voucher} withdrawnBid={userBid.claimed} />
+        </Wrapper>
+      )}
+    </>
   )
 }
 
-const Wrapper = styled(FormWrapper)`
+const WinBidFormWrapper = styled(FormWrapper)<{ $hasVoucher?: boolean }>`
   justify-content: center;
+  width: ${(props) => (props.$hasVoucher ? '289px' : '431px')};
+`
+
+const Wrapper = styled.div`
+  padding: 0 35px;
 `
