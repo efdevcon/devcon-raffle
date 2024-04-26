@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { Colors } from '@/styles/colors'
 
 export const BidsColumns = styled.div`
   display: grid;
@@ -9,16 +8,15 @@ export const BidsColumns = styled.div`
   font-weight: 600;
 `
 
-export const PlaceColumn = styled.span`
+export const PlaceColumn = styled.div`
   grid-area: place;
 `
 
 export const BidColumn = styled.div`
   grid-area: bid;
-  color: ${Colors.Black};
 `
 
-export const AddressColumn = styled.span`
+export const AddressColumn = styled.div`
   grid-area: address;
   text-align: right;
   z-index: 2;

@@ -16,7 +16,7 @@ export const BidsShortListSection = () => {
   if (areBidsLoading) {
     return (
       <EmptyList>
-        <ColoredText>Loading...</ColoredText>
+        <HeaderText>Loading...</HeaderText>
       </EmptyList>
     )
   }
@@ -25,18 +25,20 @@ export const BidsShortListSection = () => {
     <BidsListContainer>
       {bidList.length === 0 ? (
         <EmptyList>
-          <ColoredText>
+          <HeaderText>
             {state === 'AwaitingBidding' ? 'Bids will show up here' : `No bidders yet. Be the first one!`}
-          </ColoredText>
+          </HeaderText>
         </EmptyList>
       ) : (
         <>
           <ListHeader>
             <h3>Number of participants:</h3>
-            <ColoredText>{bidList.length}</ColoredText>
+            <HeaderText>{bidList.length}</HeaderText>
           </ListHeader>
-          <BidsListHeaders />
-          <BidsShortList />
+          <ListContainer>
+            <BidsListHeaders />
+            <BidsShortList />
+          </ListContainer>
         </>
       )}
       {bidList.length !== 0 && (
@@ -52,15 +54,22 @@ const BidsListContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  row-gap: 44px;
+  width: 100%;
+  padding: 44px 0;
+`
+
+const ListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   row-gap: 32px;
   width: 100%;
-  padding: 46px 0;
 `
 
 const ListHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 22px;
   width: 100%;
 `
 
@@ -68,9 +77,10 @@ const EmptyList = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 48px 0;
+  margin: 46px 0;
 `
-const ColoredText = styled.h3`
+
+const HeaderText = styled.h3`
   width: max-content;
   color: ${Colors.Black};
 `
