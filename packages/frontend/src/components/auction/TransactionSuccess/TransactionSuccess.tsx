@@ -34,10 +34,10 @@ export const TransactionSuccess = ({ txHash, action, setView, unlockViewFromTran
     <Container>
       <TransactionSuccessHeader action={action} />
       <TransactionIdWrapper>
-        <TransactionIdLabel>Your transaction ID</TransactionIdLabel>
+        <TransactionIdLabel>Your transaction hash</TransactionIdLabel>
         <TransactionIdBox>
           <TransactionIdText>{shortenHexString(txHash, 12)}</TransactionIdText>
-          <CopyButton value={txHash} side="top" text="Copy transaction ID" />
+          <CopyButton value={txHash} side="top" text="Copy transaction hash" />
           <RedirectButton link={transactionLink} side="top" tooltip="View on Arbiscan" />
         </TransactionIdBox>
       </TransactionIdWrapper>
