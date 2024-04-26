@@ -16,7 +16,7 @@ export const BidsListEntry = ({ bid, isUser, view = 'full' }: Props) => {
   const explorerAddressLink = useExplorerAddressLink(bid.address)
 
   return (
-    <BidsEntryRow isUser={isUser}>
+    <BidsEntryRow $isUser={isUser}>
       <PlaceColumn>{bid.place}.</PlaceColumn>
       <BidColumn>
         {formatEther(bid.amount)} <span>ETH</span>
@@ -30,14 +30,14 @@ export const BidsListEntry = ({ bid, isUser, view = 'full' }: Props) => {
   )
 }
 
-const BidsEntryRow = styled.div<{ isUser?: boolean }>`
+const BidsEntryRow = styled.div<{ $isUser?: boolean }>`
   display: grid;
   grid-template-columns: 1fr 1fr 2fr;
   grid-template-areas: 'place bid address';
   position: relative;
 
-  ${({ isUser }) =>
-    isUser &&
+  ${({ $isUser }) =>
+    $isUser &&
     css`
       &::before {
         content: '';

@@ -48,12 +48,12 @@ interface ListItemProps {
 }
 
 const StepperListItem = ({ step, status, type }: ListItemProps) => (
-  <StepperListItemContainer type={type} status={status}>
-    <StepperBullet type={type} status={status}>
+  <StepperListItemContainer $type={type} $status={status}>
+    <StepperBullet $type={type} $status={status}>
       {type === 'failure' && <CrossIcon size={16} color={Colors.Red} />}
     </StepperBullet>
-    <StepperItemName next={status === 'next'}>{step.name}</StepperItemName>
-    <StepperItemDescription current={status === 'current'}>{step.description}</StepperItemDescription>
+    <StepperItemName $next={status === 'next'}>{step.name}</StepperItemName>
+    <StepperItemDescription $current={status === 'current'}>{step.description}</StepperItemDescription>
   </StepperListItemContainer>
 )
 
@@ -64,8 +64,8 @@ const StepperList = styled.ul`
   margin: 0;
 `
 
-function getItemColor({ status, type }: DisplayTypeProps) {
-  return status === 'current' ? typeToItemColor[type] : Colors.Black
+function getItemColor({ $status, $type }: DisplayTypeProps) {
+  return $status === 'current' ? typeToItemColor[$type] : Colors.Black
 }
 
 const typeToItemColor: Record<StepType, string> = {
@@ -93,7 +93,7 @@ const StepperListItemContainer = styled.li<DisplayTypeProps>`
     left: 9px;
     top: 17px;
     width: 0px;
-    border-left: 2px ${({ status }) => (status === 'completed' ? 'solid' : 'dashed')} ${Colors.Black};
+    border-left: 2px ${({ $status }) => ($status === 'completed' ? 'solid' : 'dashed')} ${Colors.Black};
     height: calc(100% + 19px);
     transform: translateX(-50%);
     pointer-events: none;
@@ -110,8 +110,8 @@ const StepperListItemContainer = styled.li<DisplayTypeProps>`
   }
 `
 interface DisplayTypeProps {
-  type: StepType
-  status: StepStatus
+  $type: StepType
+  $status: StepStatus
 }
 
 const StepperBullet = styled.div<DisplayTypeProps>`
@@ -122,10 +122,10 @@ const StepperBullet = styled.div<DisplayTypeProps>`
   height: 17px;
   border: 2px solid currentColor;
   border-radius: 50%;
-  background-color: ${({ type, status }) => {
-    switch (status) {
+  background-color: ${({ $type, $status }) => {
+    switch ($status) {
       case 'current':
-        return typeToBulletBackground[type]
+        return typeToBulletBackground[$type]
       case 'completed':
         return Colors.Black
       default:
@@ -133,10 +133,10 @@ const StepperBullet = styled.div<DisplayTypeProps>`
     }
   }};
 
-  color: ${({ type, status }) => {
-    switch (status) {
+  color: ${({ $type, $status }) => {
+    switch ($status) {
       case 'current':
-        return typeToBulletColor[type]
+        return typeToBulletColor[$type]
       case 'completed':
         return Colors.Black
       default:
@@ -157,26 +157,18 @@ const typeToBulletColor: Record<StepType, string> = {
   success: Colors.Black,
 }
 
-interface ItemNameProps {
-  next?: boolean
-}
-
-const StepperItemName = styled.span<ItemNameProps>`
+const StepperItemName = styled.span<{ $next: boolean }>`
   grid-area: header;
   font-size: 16px;
   line-height: 1;
   font-weight: 600;
   color: inherit;
-  opacity: ${(props) => (props.next ? 0.7 : 1)};
+  opacity: ${({ $next }) => ($next ? 0.7 : 1)};
 `
 
-interface ItemDescriptionProps {
-  current?: boolean
-}
-
-const StepperItemDescription = styled.span<ItemDescriptionProps>`
+const StepperItemDescription = styled.span<{ $current: boolean }>`
   grid-area: description;
   color: ${Colors.Black};
-  opacity: ${(props) => (props.current ? 1 : 0.7)};
+  opacity: ${({ $current }) => ($current ? 1 : 0.7)};
   transition: all 0.25s ease;
 `

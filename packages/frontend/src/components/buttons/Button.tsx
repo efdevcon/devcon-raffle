@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 import { Colors } from '@/styles/colors'
 import { LoadingIcon } from '@/components/icons'
+import { TransientProps } from '@/styles/transientProps'
 
 export interface ButtonProps {
   children: ReactNode
@@ -17,8 +18,8 @@ export const Button = ({ children, className, view = 'primary', wide, disabled, 
   return (
     <ButtonContainer
       className={className}
-      view={view}
-      wide={wide}
+      $view={view}
+      $wide={wide}
       disabled={disabled || isLoading}
       isLoading={isLoading}
       onClick={onClick}
@@ -28,12 +29,14 @@ export const Button = ({ children, className, view = 'primary', wide, disabled, 
   )
 }
 
-const commonButtonStyles = css<ButtonProps>`
+type ButtonTransientProps = TransientProps<ButtonProps, 'wide' | 'view'>
+
+const commonButtonStyles = css<ButtonTransientProps>`
   display: flex;
   position: relative;
   justify-content: center;
   align-items: center;
-  width: ${({ wide }) => (wide ? '100%' : '289px')};
+  width: ${({ $wide }) => ($wide ? '100%' : '289px')};
   height: 40px;
   margin: 0;
   padding: 8px;
@@ -52,14 +55,14 @@ const commonButtonStyles = css<ButtonProps>`
   }
 `
 
-const PrimaryButtonStyles = css<ButtonProps>`
+const PrimaryButtonStyles = css<ButtonTransientProps>`
   ${commonButtonStyles};
 
   background-color: ${Colors.Black};
   color: ${Colors.White};
 `
 
-const SecondaryButtonStyles = css<ButtonProps>`
+const SecondaryButtonStyles = css<ButtonTransientProps>`
   ${commonButtonStyles};
 
   background-color: ${Colors.White};
@@ -76,9 +79,9 @@ const SecondaryButtonStyles = css<ButtonProps>`
   }
 `
 
-export const ButtonContainer = styled.button<ButtonProps>`
-  ${({ view }) => {
-    switch (view) {
+export const ButtonContainer = styled.button<ButtonTransientProps>`
+  ${({ $view }) => {
+    switch ($view) {
       case 'primary':
       default:
         return PrimaryButtonStyles

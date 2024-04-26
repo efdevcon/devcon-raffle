@@ -62,9 +62,9 @@ export const Input = ({ initialAmount, setAmount, notEnoughBalance, bidTooLow }:
   }
 
   return (
-    <InputWrapper userHasBid={!!userBid}>
+    <InputWrapper $userHasBid={!!userBid}>
       <InputLabel>Balance: {userBalance !== undefined ? formatEther(userBalance) : '-'} ETH</InputLabel>
-      <StyledInputWrapper isBadAmount={notEnoughBalance || bidTooLow}>
+      <StyledInputWrapper $isBadAmount={notEnoughBalance || bidTooLow}>
         <TokenIconWrapper>
           <EtherIcon />
         </TokenIconWrapper>
@@ -93,12 +93,12 @@ const ErrorMessage = ({ message }: { message: string }) => {
   )
 }
 
-const InputWrapper = styled.div<{ userHasBid: boolean }>`
+const InputWrapper = styled.div<{ $userHasBid: boolean }>`
   display: flex;
   position: relative;
   flex-direction: column;
   width: 100%;
-  margin-bottom: ${({ userHasBid }) => (userHasBid ? '16px' : '12px')};
+  margin-bottom: ${({ $userHasBid }) => ($userHasBid ? '16px' : '12px')};
 `
 
 export const InputLabel = styled.div`
@@ -112,7 +112,7 @@ export const InputLabel = styled.div`
   font-size: 12px;
   line-height: 18px;
 `
-const StyledInputWrapper = styled.div<{ isBadAmount?: boolean; disabled?: boolean }>`
+const StyledInputWrapper = styled.div<{ $isBadAmount?: boolean; disabled?: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -122,14 +122,14 @@ const StyledInputWrapper = styled.div<{ isBadAmount?: boolean; disabled?: boolea
   padding: 13px;
   border-width: 2px;
   border-style: solid;
-  border-color: ${({ isBadAmount }) => (isBadAmount ? Colors.Red : Colors.White)};
+  border-color: ${({ $isBadAmount }) => ($isBadAmount ? Colors.Red : Colors.White)};
   background-color: ${({ disabled }) => (disabled ? Colors.GreyLight : Colors.White)};
   transition: all 0.25s ease;
 
   &:hover,
   &:focus-visible,
   &:focus-within {
-    border-color: ${({ isBadAmount }) => (isBadAmount ? Colors.Red : Colors.White)};
+    border-color: ${({ $isBadAmount }) => ($isBadAmount ? Colors.Red : Colors.White)};
   }
 `
 
