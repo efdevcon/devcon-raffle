@@ -34,15 +34,9 @@ export const ReviewForm = ({
   const etherBalance = useBalance({ address }).data?.value
   const isPending = status === 'pending'
 
-  useEffect(() => {
-    if (status === 'success') {
-      setView(view + 1)
-      resetStatus()
-    }
-  }, [view, setView, status, resetStatus])
-
-  const sendTransaction = () => {
-    action.send()
+  const sendTransaction = async () => {
+    await action.send()
+    setView(view + 1)
     lockViewOnTransaction?.()
   }
 

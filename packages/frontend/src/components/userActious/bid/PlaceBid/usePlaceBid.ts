@@ -26,9 +26,14 @@ export function usePlaceBid({ score, proof, value }: Props): TransactionAction {
           args: [score, proof],
           value,
         },
-        { onSuccess: setTransactionHash },
+        {
+          onSuccess: (hash) => {
+            setTransactionHash(hash)
+            reset()
+          }
+        },
       ),
-    [writeContractAsync, score, proof, chainId, value],
+    [writeContractAsync, chainId, score, proof, value, reset],
   )
 
   return { send, status, resetStatus: reset, type: Transactions.Place, transactionHash }

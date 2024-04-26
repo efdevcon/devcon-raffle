@@ -28,7 +28,7 @@ export const AuctionTransaction = ({
   impact,
   view,
   setView,
-  setTransactionViewLock: setTransactionViewLock,
+  setTransactionViewLock,
 }: AuctionTransactionProps) => {
   const isFailed = action.status === 'error'
   const lockViewOnTransaction = () => setTransactionViewLock?.(true)
