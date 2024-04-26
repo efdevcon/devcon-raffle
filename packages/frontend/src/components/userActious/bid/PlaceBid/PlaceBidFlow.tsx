@@ -15,15 +15,10 @@ export const PlaceBidFlow = ({ setTransactionViewLock }: FlowProps) => {
   const [bid, setBid] = useState('0')
   const parsedBid = useMemo(() => parseEther(bid || '0'), [bid])
   const bidAction = usePlaceBid({ value: parsedBid, score: BigInt(20), proof: '0x' })
-  useEffect(() => {
-    setTransactionViewLock(bidAction.status !== 'idle')
-  }, [bidAction.status, setTransactionViewLock])
 
+  useEffect(() => setTransactionViewLock(bidAction.status !== 'idle'), [bidAction.status, setTransactionViewLock])
   useEffect(() => setView(TxFlowSteps.Placing), [address])
-
-  useEffect(() => {
-    setBid(formatEther(minimumBid))
-  }, [minimumBid])
+  useEffect(() => setBid(formatEther(minimumBid)), [minimumBid])
 
   return (
     <>
