@@ -17,7 +17,7 @@ export function TransactionSuccessHeader({ action }: SuccessHeaderProps) {
   return (
     <SuccessHeaderWrap>
       <HeaderRowIconContainer>
-        <CheckIcon color={Colors.White} size={32} />
+        <CheckIcon color={Colors.Black} size={32} />
       </HeaderRowIconContainer>
       <SuccessText>You&apos;ve successfully {text[action]}!</SuccessText>
     </SuccessHeaderWrap>
@@ -37,12 +37,11 @@ const HeaderRowIconContainer = styled.div`
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 2px solid ${Colors.White};
+  border: 2px solid ${Colors.Black};
 `
 
 const SuccessText = styled.span`
   font-weight: 600;
   font-size: 20px;
   line-height: 26px;
-  color: ${Colors.White};
 `
