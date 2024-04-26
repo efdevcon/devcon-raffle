@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 import { Colors } from '@/styles/colors'
 import { LoadingIcon } from '@/components/icons'
-import { TransientProps } from "@/styles/transientProps";
+import { TransientProps } from '@/styles/transientProps'
 
 export interface ButtonProps {
   children: ReactNode
