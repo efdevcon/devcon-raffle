@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { KeyIcon } from '@/components/icons'
 import { Colors } from '@/styles/colors'
 import { useBids } from '@/providers/BidsProvider'
 import { HeaderBar } from '@/components/common/Header'
@@ -17,9 +16,6 @@ export const Header = () => {
           <Title>{bidList.length}</Title>
         </TitleColumn>
       </Wrapper>
-      <Key>
-        <KeyIcon />
-      </Key>
     </StyledHeader>
   )
 }
@@ -43,13 +39,6 @@ const TitleColumn = styled.div`
   flex-direction: column;
   align-items: center;
   row-gap: 8px;
-`
-
-const Key = styled.div`
-  position: absolute;
-  bottom: -5px;
-  right: 68px;
-  height: 225px;
 `
 
 const Title = styled.h2`
