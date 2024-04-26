@@ -15,15 +15,15 @@ interface Props {
   txHash: Hex | undefined
   action: Transactions
   setView: (state: TxFlowSteps) => void
-  unlockViewFromTransaction?: () => void
+  resetStatus: () => void
 }
 
-export const TransactionSuccess = ({ txHash, action, setView, unlockViewFromTransaction }: Props) => {
+export const TransactionSuccess = ({ txHash, action, setView, resetStatus }: Props) => {
   const transactionLink = useExplorerTxLink(txHash ?? '0x')
 
   const goHome = () => {
     setView(0)
-    unlockViewFromTransaction?.()
+    resetStatus()
   }
 
   if (!txHash) {

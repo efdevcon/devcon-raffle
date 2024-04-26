@@ -19,7 +19,6 @@ interface ReviewFormProps {
   impact?: bigint
   view: TxFlowSteps
   setView: (state: TxFlowSteps) => void
-  lockViewOnTransaction?: () => void
 }
 
 export const ReviewForm = ({
@@ -28,7 +27,6 @@ export const ReviewForm = ({
   impact,
   view,
   setView,
-  lockViewOnTransaction,
 }: ReviewFormProps) => {
   const { address } = useAccount()
   const etherBalance = useBalance({ address }).data?.value
@@ -37,7 +35,6 @@ export const ReviewForm = ({
   const sendTransaction = async () => {
     await action.send()
     setView(view + 1)
-    lockViewOnTransaction?.()
   }
 
   return (

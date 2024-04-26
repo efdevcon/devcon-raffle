@@ -15,5 +15,7 @@ export async function bidAsSigner(
     attestor as unknown as Wallet,
     scoreAttestationVerifier.address
   )
-  await auctionRaffle.connect(signer).bid(score, proof, { value, gasLimit: 1_000_000 })
+  console.log('proof: ', proof)
+  console.log('score: ', score)
+  // await auctionRaffle.connect(signer).bid(score, proof, { value, gasLimit: 1_000_000 })
 }

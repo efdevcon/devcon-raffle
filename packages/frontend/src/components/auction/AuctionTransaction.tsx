@@ -19,7 +19,6 @@ interface AuctionTransactionProps {
   impact?: bigint
   view: TxFlowSteps
   setView: (state: TxFlowSteps) => void
-  setTransactionViewLock?: (val: boolean) => void
 }
 
 export const AuctionTransaction = ({
@@ -28,11 +27,8 @@ export const AuctionTransaction = ({
   impact,
   view,
   setView,
-  setTransactionViewLock,
 }: AuctionTransactionProps) => {
   const isFailed = action.status === 'error'
-  const lockViewOnTransaction = () => setTransactionViewLock?.(true)
-  const unlockViewFromTransaction = () => setTransactionViewLock?.(false)
 
   return (
     <Transaction>
@@ -50,7 +46,6 @@ export const AuctionTransaction = ({
             impact={impact}
             view={view}
             setView={setView}
-            lockViewOnTransaction={lockViewOnTransaction}
           />
         )}
         {view === TxFlowSteps.Confirmation && (
@@ -58,7 +53,7 @@ export const AuctionTransaction = ({
             action={action.type}
             txHash={action.transactionHash}
             setView={setView}
-            unlockViewFromTransaction={unlockViewFromTransaction}
+            resetStatus={action.resetStatus}
           />
         )}
       </TransactionWrapper>
