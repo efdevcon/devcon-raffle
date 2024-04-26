@@ -4,30 +4,47 @@ import log from '@/utils/log'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { environment } from '@/config/environment'
 import { GetScoreResponse } from '@/types/api/scorer'
+import z from 'zod'
 
 const gtcScorerId = environment.gtcScorerId
 const gtcScorerApiBaseUri = environment.gtcScorerApiBaseUri
 const gtcScorerApiKey = environment.gtcScorerApiKey
 
-// GET /api/scorer/[userAddress]
+// GET /api/scorer/[userAddress]?chainId=31337
 // Get [userAddress]'s passport score (might still be processing). Score must be submitted first.
 export default async function handler(req: NextApiRequest, res: NextApiResponse<GetScoreResponse>) {
   if (req.method !== 'GET') {
     return res.status(405).end()
   }
+  const chainIdResult = z.number().safeParse(Number(req.query.chainId))
+  if (!chainIdResult.success) {
+    return res.status(400).end() // TODO
+  }
+  const userAddressResult = EthereumAddressSchema.safeParse(req.query.userAddress)
+  if (!userAddressResult.success) {
+    return res.status(400).end() // TODO
+  }
+  const chainId = chainIdResult.data
+  const userAddress = userAddressResult.data
 
-  const userAddress = EthereumAddressSchema.parse(req.query.userAddress)
-  let gtcResponse
+  let gtcResult
   try {
-    gtcResponse = await fetch(new URL(`/registry/v2/score/${gtcScorerId}/${userAddress}`, gtcScorerApiBaseUri).href, {
-      headers: {
-        'X-API-KEY': gtcScorerApiKey,
+    const gtcResponse = await fetch(
+      new URL(`/registry/v2/score/${gtcScorerId}/${userAddress}`, gtcScorerApiBaseUri).href,
+      {
+        headers: {
+          'X-API-KEY': gtcScorerApiKey,
+        },
       },
-    }).then((response) => response.json())
+    )
+    gtcResult = await gtcResponse.json()
+    if (gtcResponse.status !== 200) {
+      throw new Error(gtcResult.detail)
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     // The scorer will return a 400 when the score has not been submitted for querying
-    if (err.response?.data?.detail?.startsWith('Unable to get score')) {
+    if (err.message.startsWith('Unable to get score')) {
       res.status(500).json({
         status: 'error',
         error: `Unable to get score for ${userAddress}. Submit the score before querying.`,
@@ -43,7 +60,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   // Parse && sum stamp scores
-  const { error, address, stamp_scores, status } = gtcResponse
+  const { error, address, stamp_scores, status } = gtcResult
   const rawScore = stamp_scores
     ? Object.values(stamp_scores)
         .map((value) => {
@@ -70,7 +87,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     // Scale up to 8 decimals to be encoded as uint256
     const score = BigInt(Math.floor(rawScore * 10 ** 8))
     // Sign EIP-712 attestation
-    const { digest, signature } = await attestScore(address, score)
+    const { digest, signature } = await attestScore(chainId, address, score)
     const result: GetScoreResponse = {
       status,
       address,

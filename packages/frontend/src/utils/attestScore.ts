@@ -1,15 +1,16 @@
+import { environment } from '@/config/environment'
 import { hashTypedData } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
-const scoreAttestationVerifierAddress = process.env.SCORE_ATTESTATION_VERIFIER_ADDRESS as `0x${string}`
-const attestor = privateKeyToAccount(process.env.SCORE_ATTESTOR_PRIVATE_KEY as `0x${string}`)
+const scoreAttestationVerifierAddress = environment.scoreAttestationVerifierAddress as `0x${string}`
+const attestor = privateKeyToAccount(environment.scoreAttestorPrivateKey as `0x${string}`)
 
-export async function attestScore(subject: string, score: bigint) {
+export async function attestScore(chainId: number, subject: string, score: bigint) {
   const typedData = {
     domain: {
       name: 'ScoreAttestationVerifier',
       version: '1',
-      chainId: 31337, // TODO: Receive param from route
+      chainId,
       verifyingContract: scoreAttestationVerifierAddress,
     },
     types: {

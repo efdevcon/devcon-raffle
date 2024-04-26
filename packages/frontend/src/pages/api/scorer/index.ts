@@ -15,10 +15,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 export async function submitAddressForScoring(req: NextApiRequest, res: NextApiResponse) {
-  let gtcResponse
+  let gtcResult
   try {
     const requestBody = SubmitAddressForScoringRequestSchema.parse(req.body)
-    gtcResponse = await fetch(new URL('/registry/v2/submit-passport', environment.gtcScorerApiBaseUri).href, {
+    const gtcResponse = await fetch(new URL('/registry/v2/submit-passport', environment.gtcScorerApiBaseUri).href, {
       method: 'POST',
       headers: {
         'X-API-KEY': environment.gtcScorerApiKey,
@@ -30,16 +30,16 @@ export async function submitAddressForScoring(req: NextApiRequest, res: NextApiR
         signature: requestBody.signature,
         nonce: requestBody.nonce,
       }),
-    }).then((result) => result.json())
+    })
+    gtcResult = await gtcResponse.json()
+    if (gtcResponse.status !== 200 || gtcResult.error) {
+      throw new Error(gtcResult.detail)
+    }
   } catch (err) {
     log.error(err)
     res.status(500).end()
     return
   }
-  if (gtcResponse.error) {
-    log.error(gtcResponse.error)
-    res.status(500).end()
-  } else {
-    res.status(200).end()
-  }
+
+  res.status(200).end()
 }
