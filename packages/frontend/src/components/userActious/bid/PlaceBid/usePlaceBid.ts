@@ -27,7 +27,7 @@ export function usePlaceBid({ score, proof, value }: Props): TransactionAction {
           value,
         },
         {
-          onSuccess: setTransactionHash
+          onSuccess: setTransactionHash,
         },
       ),
     [writeContractAsync, chainId, score, proof, value],

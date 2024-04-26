@@ -4,7 +4,7 @@ import { Form, FormHeading, FormRow, FormWrapper, Input } from '@/components/for
 import { formatEther } from 'viem'
 import { useAccount, useBalance } from 'wagmi'
 import { getPositionAfterBid } from '../getPositionAfterBid'
-import { useBids } from "@/providers/BidsProvider";
+import { useBids } from '@/providers/BidsProvider'
 
 interface PlaceBidFormProps {
   bid: string

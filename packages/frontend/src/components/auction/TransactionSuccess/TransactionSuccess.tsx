@@ -8,8 +8,8 @@ import { RedirectButton } from '@/components/buttons/RedirectButton'
 import { Button } from '@/components/buttons'
 import { Form, InputLabel } from '@/components/form'
 import { Colors } from '@/styles/colors'
-import { shortenHexString } from "@/utils/formatters/shortenHexString";
-import { Hex } from "viem";
+import { shortenHexString } from '@/utils/formatters/shortenHexString'
+import { Hex } from 'viem'
 
 interface Props {
   txHash: Hex | undefined

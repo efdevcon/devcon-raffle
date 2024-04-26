@@ -1,7 +1,6 @@
 import { TransactionAction, Transactions } from '@/blockchain/transaction'
 import { TxFlowSteps } from '../auction/TxFlowSteps'
 import { useAccount, useBalance } from 'wagmi'
-import { useEffect } from 'react'
 import { Form, FormRow } from '.'
 import { formatEther } from 'viem'
 import { Button } from '../buttons'

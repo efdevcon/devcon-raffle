@@ -16,8 +16,8 @@ export const PlaceBidFlow = ({ setTransactionViewLock }: FlowProps) => {
   const parsedBid = useMemo(() => parseEther(bid || '0'), [bid])
   const bidAction = usePlaceBid({ value: parsedBid, score: BigInt(20), proof: '0x' })
   useEffect(() => {
-    setTransactionViewLock(bidAction.status !== "idle")
-  }, [bidAction.status, setTransactionViewLock]);
+    setTransactionViewLock(bidAction.status !== 'idle')
+  }, [bidAction.status, setTransactionViewLock])
 
   useEffect(() => setView(TxFlowSteps.Placing), [address])
 
@@ -28,20 +28,9 @@ export const PlaceBidFlow = ({ setTransactionViewLock }: FlowProps) => {
   return (
     <>
       {view === TxFlowSteps.Placing ? (
-        <PlaceBidForm
-          bid={bid}
-          parsedBid={parsedBid}
-          setBid={setBid}
-          setView={setView}
-          minimumBid={minimumBid}
-        />
+        <PlaceBidForm bid={bid} parsedBid={parsedBid} setBid={setBid} setView={setView} minimumBid={minimumBid} />
       ) : (
-        <AuctionTransaction
-          action={bidAction}
-          amount={parsedBid}
-          view={view}
-          setView={setView}
-        />
+        <AuctionTransaction action={bidAction} amount={parsedBid} view={view} setView={setView} />
       )}
     </>
   )

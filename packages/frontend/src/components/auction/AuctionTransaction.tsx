@@ -21,13 +21,7 @@ interface AuctionTransactionProps {
   setView: (state: TxFlowSteps) => void
 }
 
-export const AuctionTransaction = ({
-  action,
-  amount,
-  impact,
-  view,
-  setView,
-}: AuctionTransactionProps) => {
+export const AuctionTransaction = ({ action, amount, impact, view, setView }: AuctionTransactionProps) => {
   const isFailed = action.status === 'error'
 
   return (
@@ -40,13 +34,7 @@ export const AuctionTransaction = ({
           <FormSubHeading>{heading[action.type]}</FormSubHeading>
         </TransactionHeading>
         {view === TxFlowSteps.Review && (
-          <ReviewForm
-            action={action}
-            amount={amount}
-            impact={impact}
-            view={view}
-            setView={setView}
-          />
+          <ReviewForm action={action} amount={amount} impact={impact} view={view} setView={setView} />
         )}
         {view === TxFlowSteps.Confirmation && (
           <TransactionSuccess
