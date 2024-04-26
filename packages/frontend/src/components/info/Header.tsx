@@ -1,9 +1,7 @@
 import styled from 'styled-components'
-
 import { TimeLeft } from './TimeLeft'
 import { VoucherTimeLeft } from './VoucherTimeLeft'
 import { Colors } from '@/styles/colors'
-import { KeyIcon } from '@/components/icons'
 import { HeaderBar } from '@/components/common/Header'
 import { AuctionState, useAuctionState } from '@/blockchain/hooks/useAuctionState'
 
@@ -16,14 +14,11 @@ export const Header = () => {
         <HeaderWrapper>
           <InfoWrapper>
             <TitleWrapper>
-              <Title>Devcon 6</Title>
-              <SubTitle>Auction & Raffle Ticket Sale</SubTitle>
+              <Title>Devcon 7</Title>
+              <SubTitle>Ticket Sale</SubTitle>
             </TitleWrapper>
             <TimeLeft />
           </InfoWrapper>
-          <Key>
-            <KeyIcon />
-          </Key>
         </HeaderWrapper>
       </StyledHeader>
       {isClaimingFlow(state) && <VoucherTimeLeft />}
@@ -42,7 +37,7 @@ const Wrapper = styled.div`
 
 const StyledHeader = styled(HeaderBar)`
   height: 225px;
-  padding: 16px 125px 24px 68px;
+  padding: 16px 68px;
 `
 
 const HeaderWrapper = styled.div`
@@ -60,32 +55,17 @@ const InfoWrapper = styled.div`
   justify-content: space-between;
   height: 100%;
   width: 100%;
-  color: ${Colors.White};
-
-  @media screen and (min-width: 1800px) {
-    justify-content: flex-start;
-    row-gap: 40px;
-  }
 `
 
 const TitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
-
-  @media screen and (min-width: 1800px) {
-    flex-direction: row;
-    align-items: flex-end;
-    column-gap: 20px;
-    padding-top: 16px;
-  }
+  align-items: flex-start;
 `
 
 const Title = styled.h1`
   background-color: ${Colors.White};
-
-  @media screen and (min-width: 1800px) {
-    line-height: 1;
-  }
+  padding: 0 10px;
 
   @media screen and (max-width: 1260px) {
     font-size: 40px;
@@ -93,21 +73,6 @@ const Title = styled.h1`
 `
 
 const SubTitle = styled.h3`
-  color: ${Colors.Black};
   background-color: ${Colors.White};
-`
-const Key = styled.div`
-  position: absolute;
-  top: -16px;
-  right: 0;
-  height: 225px;
-  opacity: 0.5;
-
-  @media screen and (max-width: 1240px) {
-    opacity: 0.2;
-  }
-
-  @media screen and (min-width: 1400px) {
-    opacity: 1;
-  }
+  padding: 0 10px;
 `

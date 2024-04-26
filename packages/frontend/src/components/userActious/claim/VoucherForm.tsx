@@ -10,10 +10,10 @@ import { Colors } from '@/styles/colors'
 
 interface Props {
   voucher: string
-  withdrawnBid: boolean
+  withdrawnBid?: boolean
 }
 
-export const VoucherForm = ({ voucher, withdrawnBid }: Props) => {
+export const VoucherForm = ({ voucher, withdrawnBid = false }: Props) => {
   const redeemTimestamp = useVoucherRedeemDeadline()
   const isVoucherExpired = redeemTimestamp ? redeemTimestamp * BigInt(1000) > Date.now() : false
 
