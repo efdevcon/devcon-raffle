@@ -3,15 +3,15 @@ import styled from 'styled-components'
 import { NotificationToast } from '@/components/notifications/NotificationToast'
 
 interface Props {
-  error: string | undefined
-  setError: (str?: string) => void
-  onClick: () => Promise<void>
+  error: Error | undefined
+  reset: () => void
+  onClick: () => Promise<void> | void
 }
 
-export const ErrorNotifications = ({ error, setError, onClick }: Props) => {
+export const ErrorNotifications = ({ error, reset, onClick }: Props) => {
   return (
     <ToastPrimitive.Provider>
-      {error && <NotificationToast message={error} setError={setError} onClick={onClick} />}
+      {error && <NotificationToast message={error.message} reset={reset} onClick={onClick} />}
       <NotificationsList />
     </ToastPrimitive.Provider>
   )

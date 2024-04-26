@@ -1,5 +1,4 @@
 import * as ToastPrimitive from '@radix-ui/react-toast'
-import { useCallback } from 'react'
 import styled from 'styled-components'
 import { ErrorIcon } from '@/components/icons/ErrorIcon'
 import { Colors } from '@/styles/colors'
@@ -7,15 +6,13 @@ import { CrossIcon } from '@/components/icons'
 
 interface Props {
   message: string
-  setError: (str?: string) => void
-  onClick: () => Promise<void>
+  reset: () => void
+  onClick: () => Promise<void> | void
 }
 
-export const NotificationToast = ({ message, setError, onClick }: Props) => {
-  const removeNotification = useCallback(() => setError(undefined), [setError])
-
+export const NotificationToast = ({ message, reset, onClick }: Props) => {
   return (
-    <Toast onOpenChange={(open) => open || removeNotification()} duration={5000}>
+    <Toast duration={5000}>
       <NotificationIconWrapper>
         <ErrorIcon color={Colors.Red} size={24} />
       </NotificationIconWrapper>
@@ -26,7 +23,7 @@ export const NotificationToast = ({ message, setError, onClick }: Props) => {
           Try Again
         </NotificationActionText>
       </ToastContent>
-      <Close>
+      <Close onClick={reset}>
         <CrossIcon size={24} color={Colors.Grey} />
       </Close>
     </Toast>
