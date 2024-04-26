@@ -3,7 +3,7 @@ import { useAccount, useDisconnect } from 'wagmi'
 import { Colors } from '@/styles/colors'
 import { Button } from '@/components/buttons'
 import { Modal } from '@/components/topBar/Modal'
-import { shortenEthAddress } from '@/utils/formatters/shortenEthAddress'
+import { shortenHexString } from '@/utils/formatters/shortenHexString'
 import { CopyButton } from '@/components/buttons/CopyButton'
 import { RedirectButton } from '@/components/buttons/RedirectButton'
 import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerLinks'
@@ -32,7 +32,7 @@ export const AccountDetailModal = ({ isShown, onRequestClose }: ModalProps) => {
         {address && (
           <>
             <CenteredContentRow>
-              <AccountAddress>{shortenEthAddress(address)}</AccountAddress>
+              <AccountAddress>{shortenHexString(address)}</AccountAddress>
             </CenteredContentRow>
             <ContentRow>
               <RedirectButton

@@ -1,7 +1,7 @@
 import { useAccount } from 'wagmi'
 import { useState } from 'react'
 import { Button } from '@/components/buttons/Button'
-import { shortenEthAddress } from '@/utils/formatters/shortenEthAddress'
+import { shortenHexString } from '@/utils/formatters/shortenHexString'
 import { ConnectWalletButton } from '@/components/buttons/ConnectWalletButton'
 import { AccountDetailModal } from '@/components/topBar/AccountDetailModal'
 
@@ -14,7 +14,7 @@ export const AccountButton = () => {
       {address ? (
         <>
           <Button view="secondary" onClick={() => setIsModalOpen(!isModalOpen)}>
-            {shortenEthAddress(address)}
+            {shortenHexString(address)}
           </Button>
           {isModalOpen && <AccountDetailModal isShown={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />}
         </>

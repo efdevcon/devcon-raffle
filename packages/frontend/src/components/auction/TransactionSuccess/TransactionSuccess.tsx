@@ -3,15 +3,16 @@ import styled from 'styled-components'
 import { TxFlowSteps } from '../TxFlowSteps'
 import { TransactionSuccessHeader } from './TransactionSuccessHeader'
 import { useExplorerTxLink } from '@/blockchain/hooks/useExplorerLinks'
-import { shortenTxHash } from './shortenTxHash'
 import { CopyButton } from '@/components/buttons/CopyButton'
 import { RedirectButton } from '@/components/buttons/RedirectButton'
 import { Button } from '@/components/buttons'
 import { Form, InputLabel } from '@/components/form'
 import { Colors } from '@/styles/colors'
+import { shortenHexString } from "@/utils/formatters/shortenHexString";
+import { Hex } from "viem";
 
 interface Props {
-  txHash: string | undefined
+  txHash: Hex | undefined
   action: Transactions
   setView: (state: TxFlowSteps) => void
   unlockViewFromTransaction?: () => void
@@ -35,7 +36,7 @@ export const TransactionSuccess = ({ txHash, action, setView, unlockViewFromTran
       <TransactionIdWrapper>
         <TransactionIdLabel>Your transaction ID</TransactionIdLabel>
         <TransactionIdBox>
-          <TransactionIdText>{shortenTxHash(txHash)}</TransactionIdText>
+          <TransactionIdText>{shortenHexString(txHash, 12)}</TransactionIdText>
           <CopyButton value={txHash} side="top" text="Copy transaction ID" />
           <RedirectButton link={transactionLink} side="top" tooltip="View on Arbiscan" />
         </TransactionIdBox>

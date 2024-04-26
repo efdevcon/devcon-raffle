@@ -4,7 +4,7 @@ import { Bid } from '@/types/bid'
 import { Colors } from '@/styles/colors'
 import { formatEther } from 'viem'
 import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerLinks'
-import { shortenEthAddress } from '@/utils/formatters/shortenEthAddress'
+import { shortenHexString } from '@/utils/formatters/shortenHexString'
 
 interface Props {
   bid: Bid
@@ -23,7 +23,7 @@ export const BidsListEntry = ({ bid, isUser, view = 'full' }: Props) => {
       </BidColumn>
       <AddressColumn>
         <AddressLink href={explorerAddressLink} target="_blank" rel="noopener noreferrer">
-          {view === 'short' ? shortenEthAddress(bid.address) : bid.address}
+          {view === 'short' ? shortenHexString(bid.address) : bid.address}
         </AddressLink>
       </AddressColumn>
     </BidsEntryRow>
