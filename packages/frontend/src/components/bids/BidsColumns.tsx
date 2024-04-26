@@ -10,10 +10,12 @@ export const BidsColumns = styled.div`
 
 export const PlaceColumn = styled.div`
   grid-area: place;
+  z-index: 2;
 `
 
 export const BidColumn = styled.div`
   grid-area: bid;
+  z-index: 2;
 `
 
 export const AddressColumn = styled.div`
