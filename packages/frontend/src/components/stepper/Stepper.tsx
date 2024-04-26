@@ -7,9 +7,10 @@ interface StepContent {
   description?: string
 }
 
-type StepDescription = 'default' | 'failed'
-
-type Step = Record<StepDescription, StepContent>
+interface Step {
+  default: StepContent
+  failed?: StepContent
+}
 
 type Steps = Step[]
 
@@ -63,13 +64,8 @@ const StepperList = styled.ul`
   margin: 0;
 `
 
-function getItemColor(props: DisplayTypeProps) {
-  switch (props.status) {
-    case 'current':
-      return typeToItemColor[props.type]
-    default:
-      return Colors.Black
-  }
+function getItemColor({ status, type }: DisplayTypeProps) {
+  return status === 'current' ? typeToItemColor[type] : Colors.Black
 }
 
 const typeToItemColor: Record<StepType, string> = {
