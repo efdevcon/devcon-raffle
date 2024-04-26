@@ -34,20 +34,15 @@ export const TimeLeft = () => {
 const TimeBox = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: 4px;
+  align-items: flex-start;
   font-family: 'Space Mono', 'Roboto Mono', monospace;
-  color: ${Colors.Black};
-
-  @media screen and (min-width: 1800px) {
-    flex-direction: row;
-    align-items: center;
-    column-gap: 40px;
-  }
 `
+
 const TimeRow = styled.div`
   display: flex;
   align-items: center;
   column-gap: 8px;
+  padding: 5px 10px;
   background-color: ${Colors.White};
 `
 
