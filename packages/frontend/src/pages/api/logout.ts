@@ -12,7 +12,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 export async function logout(_req: NextApiRequest, res: NextApiResponse) {
-  res.setHeader('Set-Cookie', 'voucherNonce=deleted; Expires=Thu, 01 Jan 1970 00:00:00 GMT')
   res.setHeader('Set-Cookie', 'voucherCodeJwt=deleted; Expires=Thu, 01 Jan 1970 00:00:00 GMT')
   res.status(200).end()
 }

@@ -19,7 +19,9 @@
         "VOUCHER_CODES",
         "AUTH_SECRET",
         "WHITELISTED_ORIGINS",
-        "RATE_LIMIT_GLOBAL"
+        "RATE_LIMIT_GLOBAL",
+        "RATE_LIMIT_NONCES",
+        "NONCE_EXPIRY"
       ],
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "build/**", "cache"]

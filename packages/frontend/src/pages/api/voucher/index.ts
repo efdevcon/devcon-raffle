@@ -10,6 +10,7 @@ import * as jose from 'jose'
 import log from '@/utils/log'
 import { buildVoucherClaimMessage } from '@/utils/buildVoucherClaimMessage'
 import { GetVoucherResponse, GetVoucherWithSigRequestSchema } from '@/types/api/voucher'
+import { nonceStore } from '@/utils/nonceStore'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -57,13 +58,11 @@ export async function getVoucherWithSig(req: NextApiRequest, res: NextApiRespons
   }
 
   const { chainId, userAddress, signature, nonce } = reqParseResult.data
-  const voucherNonce = req.cookies['voucherNonce']
-  if (nonce !== voucherNonce) {
-    res.status(401).end()
+  // Check & spend nonce
+  if (!nonceStore.delete(nonce)) {
+    res.status(403).end()
     return
   }
-  // Spend nonce
-  res.setHeader('Set-Cookie', 'voucherNonce=deleted; Expires=Thu, 01 Jan 1970 00:00:00 GMT')
 
   const isValid = await verifyMessage({
     address: userAddress,

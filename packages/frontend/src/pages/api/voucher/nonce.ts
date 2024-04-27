@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { randomUUID } from 'crypto'
 import { GetVoucherNonceResponse } from '@/types/api/voucher'
+import { nonceStore } from '@/utils/nonceStore'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -15,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 export async function getVoucherNonce(_req: NextApiRequest, res: NextApiResponse) {
   const nonce = randomUUID()
-  res.setHeader('Set-Cookie', `voucherNonce=${nonce}; maxAge=60000 sameSite=none; httpOnly=true; secure=true;`)
+  nonceStore.add(nonce)
 
   const result: GetVoucherNonceResponse = {
     nonce,

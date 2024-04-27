@@ -16,7 +16,9 @@ export const environment = {
   authSecret: new TextEncoder().encode(process.env.AUTH_SECRET),
   rateLimit: {
     global: Number(process.env.RATE_LIMIT_GLOBAL),
+    nonce: Number(process.env.RATE_LIMIT_NONCES),
   },
+  nonceExpiry: Number(process.env.NONCE_EXPIRY),
 }
 
 function getDateEnv(envValue: string | undefined): number | undefined {
