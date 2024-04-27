@@ -15,7 +15,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 export async function getVoucherNonce(_req: NextApiRequest, res: NextApiResponse) {
   const nonce = randomUUID()
-  res.setHeader('Set-Cookie', `voucherNonce=${nonce}; sameSite=none; httpOnly=true; secure=true;`)
+  res.setHeader('Set-Cookie', `voucherNonce=${nonce}; maxAge=60000 sameSite=none; httpOnly=true; secure=true;`)
+
   const result: GetVoucherNonceResponse = {
     nonce,
   }

@@ -96,7 +96,7 @@ export async function getVoucherWithSig(req: NextApiRequest, res: NextApiRespons
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .sign(environment.authSecret)
-  res.setHeader('Set-Cookie', `voucherCodeJwt=${jwt}; sameSite=none; httpOnly=true; secure=true;`)
+  res.setHeader('Set-Cookie', `voucherCodeJwt=${jwt}; sameSite=none; secure=true;`)
   res.status(200)
   res.json(result)
 }
