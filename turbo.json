@@ -18,7 +18,8 @@
         "SCORE_ATTESTOR_PRIVATE_KEY",
         "VOUCHER_CODES",
         "AUTH_SECRET",
-        "WHITELISTED_ORIGINS"
+        "WHITELISTED_ORIGINS",
+        "RATE_LIMIT_GLOBAL"
       ],
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "build/**", "cache"]
