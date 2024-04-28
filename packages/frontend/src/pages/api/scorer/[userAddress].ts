@@ -31,14 +31,14 @@ async function getScore(req: NextApiRequest, res: NextApiResponse<GetScoreRespon
   if (!chainIdResult.success) {
     return res.status(400).json({
       status: 'error',
-      error: chainIdResult.error.message,
+      error: `Could not parse chainId: ${chainIdResult.error.message}`,
     } satisfies GetScoreResponse)
   }
   const userAddressResult = EthereumAddressSchema.safeParse(req.query.userAddress)
   if (!userAddressResult.success) {
     return res.status(400).json({
       status: 'error',
-      error: userAddressResult.error.message,
+      error: `Could not parse userAddress: ${userAddressResult.error.message}`,
     } satisfies GetScoreResponse)
   }
   const chainId = chainIdResult.data
@@ -106,7 +106,7 @@ async function getScore(req: NextApiRequest, res: NextApiResponse<GetScoreRespon
     // Sign EIP-712 attestation
     const { digest, signature } = await attestScore(chainId, address, score)
     res.status(200).json({
-      status,
+      status: 'done',
       address,
       score: String(score),
       digest,

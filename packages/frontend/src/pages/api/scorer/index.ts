@@ -21,7 +21,7 @@ export async function submitAddressForScoring(req: NextApiRequest, res: NextApiR
   const requestBodyResult = SubmitAddressForScoringRequestSchema.safeParse(req.body)
   if (!requestBodyResult.success) {
     res.status(400).json({
-      error: requestBodyResult.error,
+      error: `Could not parse request: ${requestBodyResult.error}`,
     } satisfies SubmitAddressForScoringResponse)
     return
   }
