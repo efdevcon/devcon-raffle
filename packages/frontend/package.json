@@ -52,7 +52,7 @@
     "eslint-config-turbo": "^1.13.2",
     "eslint-plugin-react": "^7.34.1",
     "next-test-api-route-handler": "^4.0.7",
-    "prettier": "^2.4.1",
+    "prettier": "^2.8.8",
     "typescript": "^5",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.5.2"

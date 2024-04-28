@@ -1,13 +1,17 @@
 import z from 'zod'
 import { EthereumAddressSchema } from '../EthereumAddress'
 import { HexStringSchema } from '../HexString'
+import { ApiErrorResponseSchema } from './error'
 
-export const GetPassportScorerNonceSchema = z.object({
-  message: z.string(),
-  nonce: z.string(),
-})
+export const GetPassportScorerNonceResponseSchema = z.union([
+  ApiErrorResponseSchema,
+  z.object({
+    message: z.string(),
+    nonce: z.string(),
+  }),
+])
 
-export type GetPassportScorerNonce = z.infer<typeof GetPassportScorerNonceSchema>
+export type GetPassportScorerNonceResponse = z.infer<typeof GetPassportScorerNonceResponseSchema>
 
 export const SubmitAddressForScoringRequestSchema = z.object({
   userAddress: z.string(),
@@ -16,6 +20,10 @@ export const SubmitAddressForScoringRequestSchema = z.object({
 })
 
 export type SubmitAddressForScoringRequest = z.infer<typeof SubmitAddressForScoringRequestSchema>
+
+export const SubmitAddressForScoringResponseSchema = z.union([ApiErrorResponseSchema, z.object({})])
+
+export type SubmitAddressForScoringResponse = z.infer<typeof SubmitAddressForScoringResponseSchema>
 
 const ErrorResponseSchema = z.object({
   status: z.literal('error'),

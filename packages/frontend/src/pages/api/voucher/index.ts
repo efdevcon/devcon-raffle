@@ -11,6 +11,7 @@ import log from '@/utils/log'
 import { buildVoucherClaimMessage } from '@/utils/buildVoucherClaimMessage'
 import { GetVoucherResponse, GetVoucherWithSigRequestSchema } from '@/types/api/voucher'
 import { nonceStore } from '@/utils/nonceStore'
+import { ApiErrorResponse } from '@/types/api/error'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -23,14 +24,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Submit a signature (of signed nonce) in order to get a voucher code
       return getVoucherWithSig(req, res)
     default:
-      res.status(405).end()
+      res.status(405).json({
+        error: 'Method not allowed',
+      } satisfies ApiErrorResponse)
   }
 }
 
 export async function getVoucherWithJwt(req: NextApiRequest, res: NextApiResponse) {
   const voucherCodeJwt = req.cookies.voucherCodeJwt
   if (!voucherCodeJwt) {
-    res.status(403).end() // TODO
+    res.status(403).json({
+      error: 'No JWT supplied',
+    } satisfies GetVoucherResponse)
     return
   }
 
@@ -40,27 +45,32 @@ export async function getVoucherWithJwt(req: NextApiRequest, res: NextApiRespons
 
   const voucherCodeResult = await getVoucherCode(payload.chainId as number, payload.address as `0x${string}`)
   if (!voucherCodeResult.isWinner) {
-    res.status(403).end() // TODO
+    res.status(403).json({
+      error: `${payload.chainId}:${payload.address} did not win a ticket!`,
+    } satisfies GetVoucherResponse)
     return
   }
 
-  const result: GetVoucherResponse = {
+  res.status(200).json({
     voucherCode: voucherCodeResult.voucherCode,
-  }
-  res.status(200).json(result)
+  } satisfies GetVoucherResponse)
 }
 
 export async function getVoucherWithSig(req: NextApiRequest, res: NextApiResponse) {
   const reqParseResult = GetVoucherWithSigRequestSchema.safeParse(req.body)
   if (!reqParseResult.success) {
-    res.status(400).end()
+    res.status(400).json({
+      error: reqParseResult.error.message,
+    } satisfies GetVoucherResponse)
     return
   }
 
   const { chainId, userAddress, signature, nonce } = reqParseResult.data
   // Check & spend nonce
   if (!nonceStore.delete(nonce)) {
-    res.status(403).end()
+    res.status(403).json({
+      error: `Unknown nonce: ${nonce}`,
+    } satisfies GetVoucherResponse)
     return
   }
 
@@ -70,26 +80,29 @@ export async function getVoucherWithSig(req: NextApiRequest, res: NextApiRespons
     message: buildVoucherClaimMessage(chainId, userAddress, nonce),
   })
   if (!isValid) {
-    res.status(403).end() // TODO
+    res.status(403).json({
+      error: 'Invalid signature',
+    } satisfies GetVoucherResponse)
     return
   }
 
   const isReady = await isContractSettled(chainId)
   if (!isReady) {
-    res.status(403).end() // TODO
+    res.status(403).json({
+      error: 'Contract not yet settled',
+    } satisfies GetVoucherResponse)
     return
   }
 
   const voucherCodeResult = await getVoucherCode(chainId, userAddress)
   if (!voucherCodeResult.isWinner) {
-    res.status(403).end() // TODO
+    res.status(403).json({
+      error: `${chainId}:${userAddress} did not win a ticket!`,
+    } satisfies GetVoucherResponse)
     return
   }
 
   // All good
-  const result: GetVoucherResponse = {
-    voucherCode: voucherCodeResult.voucherCode,
-  }
   // Send back JWT for future requests
   const jwt = await new jose.SignJWT({ chainId, address: userAddress })
     .setProtectedHeader({ alg: 'HS256' })
@@ -97,7 +110,9 @@ export async function getVoucherWithSig(req: NextApiRequest, res: NextApiRespons
     .sign(environment.authSecret)
   res.setHeader('Set-Cookie', `voucherCodeJwt=${jwt}; sameSite=none; secure=true;`)
   res.status(200)
-  res.json(result)
+  res.json({
+    voucherCode: voucherCodeResult.voucherCode,
+  } satisfies GetVoucherResponse)
 }
 
 async function isContractSettled(chainId: number): Promise<boolean> {
