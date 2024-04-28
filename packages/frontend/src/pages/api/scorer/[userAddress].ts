@@ -14,8 +14,8 @@ const gtcScorerApiKey = environment.gtcScorerApiKey
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case 'GET':
-      // GET /api/scorer
-      // Get a nonce that a user must sign in order to submit their address for passport scoring
+      // GET /api/scorer/[userAddress]?chainId=31337
+      // Get [userAddress]'s passport score (might still be processing). Score must be submitted first.
       return getScore(req, res)
     default:
       res.status(405).json({
@@ -24,8 +24,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-// GET /api/scorer/[userAddress]?chainId=31337
-// Get [userAddress]'s passport score (might still be processing). Score must be submitted first.
 async function getScore(req: NextApiRequest, res: NextApiResponse<GetScoreResponse>) {
   const chainIdResult = z.number().safeParse(Number(req.query.chainId))
   if (!chainIdResult.success) {

@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-export async function getVoucherNonce(_req: NextApiRequest, res: NextApiResponse) {
+async function getVoucherNonce(_req: NextApiRequest, res: NextApiResponse) {
   const nonce = randomUUID()
   nonceStore.add(nonce)
 

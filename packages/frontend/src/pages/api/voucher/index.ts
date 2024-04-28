@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-export async function getVoucherWithJwt(req: NextApiRequest, res: NextApiResponse) {
+async function getVoucherWithJwt(req: NextApiRequest, res: NextApiResponse) {
   const voucherCodeJwt = req.cookies.voucherCodeJwt
   if (!voucherCodeJwt) {
     res.status(403).json({
@@ -65,7 +65,7 @@ export async function getVoucherWithJwt(req: NextApiRequest, res: NextApiRespons
   } satisfies GetVoucherResponse)
 }
 
-export async function getVoucherWithSig(req: NextApiRequest, res: NextApiResponse) {
+async function getVoucherWithSig(req: NextApiRequest, res: NextApiResponse) {
   const reqParseResult = GetVoucherWithSigRequestSchema.safeParse(req.body)
   if (!reqParseResult.success) {
     res.status(400).json({

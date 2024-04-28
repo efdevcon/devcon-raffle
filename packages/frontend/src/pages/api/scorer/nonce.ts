@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-export async function getPassportScorerNonce(_req: NextApiRequest, res: NextApiResponse) {
+async function getPassportScorerNonce(_req: NextApiRequest, res: NextApiResponse) {
   let gtcResult
   try {
     const gtcResponse = await fetch(new URL('/registry/v2/signing-message', environment.gtcScorerApiBaseUri).href, {

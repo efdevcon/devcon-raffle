@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-export async function submitAddressForScoring(req: NextApiRequest, res: NextApiResponse) {
+async function submitAddressForScoring(req: NextApiRequest, res: NextApiResponse) {
   const requestBodyResult = SubmitAddressForScoringRequestSchema.safeParse(req.body)
   if (!requestBodyResult.success) {
     res.status(400).json({
