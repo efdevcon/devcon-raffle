@@ -12,7 +12,8 @@
     "lint:ts": "tsc --noEmit",
     "lint:prettier": "prettier './{src,__tests__}/**/*.{ts,tsx,graphql}' --cache",
     "lint:eslint": "eslint './{src,__tests__}/**/*.{ts,tsx}' --cache",
-    "test:watch": "pnpm vitest"
+    "test:watch": "pnpm vitest",
+    "test": "pnpm vitest run"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.1.2",
