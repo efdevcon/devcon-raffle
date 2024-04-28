@@ -12,6 +12,7 @@ import { buildVoucherClaimMessage } from '@/utils/buildVoucherClaimMessage'
 import { GetVoucherResponse, GetVoucherWithSigRequestSchema } from '@/types/api/voucher'
 import { nonceStore } from '@/utils/nonceStore'
 import { ApiErrorResponse } from '@/types/api/error'
+import { ContractFunctionExecutionError } from 'viem'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -43,16 +44,24 @@ export async function getVoucherWithJwt(req: NextApiRequest, res: NextApiRespons
     requiredClaims: ['chainId', 'address'],
   })
 
-  const voucherCodeResult = await getVoucherCode(payload.chainId as number, payload.address as `0x${string}`)
-  if (!voucherCodeResult.isWinner) {
+  const winnerIndex = await getWinnerIndex(payload.chainId as number, payload.address as `0x${string}`)
+
+  if (winnerIndex === -1) {
     res.status(403).json({
-      error: `${payload.chainId}:${payload.address} did not win a ticket!`,
+      error: `${payload.chainId}:${payload.address} is not qualified for a voucher code.`,
+    } satisfies GetVoucherResponse)
+    return
+  }
+  const voucherCode = environment.voucherCodes[winnerIndex]
+  if (!voucherCode) {
+    res.status(500).json({
+      error: `Voucher not available for winner index ${winnerIndex}`,
     } satisfies GetVoucherResponse)
     return
   }
 
   res.status(200).json({
-    voucherCode: voucherCodeResult.voucherCode,
+    voucherCode,
   } satisfies GetVoucherResponse)
 }
 
@@ -94,10 +103,17 @@ export async function getVoucherWithSig(req: NextApiRequest, res: NextApiRespons
     return
   }
 
-  const voucherCodeResult = await getVoucherCode(chainId, userAddress)
-  if (!voucherCodeResult.isWinner) {
+  const winnerIndex = await getWinnerIndex(chainId, userAddress)
+  if (winnerIndex === -1) {
     res.status(403).json({
-      error: `${chainId}:${userAddress} did not win a ticket!`,
+      error: `${chainId}:${userAddress} is not qualified for a voucher code.`,
+    } satisfies GetVoucherResponse)
+    return
+  }
+  const voucherCode = environment.voucherCodes[winnerIndex]
+  if (!voucherCode) {
+    res.status(500).json({
+      error: `Voucher not available for winner index ${winnerIndex}`,
     } satisfies GetVoucherResponse)
     return
   }
@@ -108,11 +124,12 @@ export async function getVoucherWithSig(req: NextApiRequest, res: NextApiRespons
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .sign(environment.authSecret)
-  res.setHeader('Set-Cookie', `voucherCodeJwt=${jwt}; sameSite=none; secure=true;`)
-  res.status(200)
-  res.json({
-    voucherCode: voucherCodeResult.voucherCode,
-  } satisfies GetVoucherResponse)
+  res
+    .status(200)
+    .setHeader('Set-Cookie', `voucherCodeJwt=${jwt}; sameSite=none; secure=true;`)
+    .json({
+      voucherCode,
+    } satisfies GetVoucherResponse)
 }
 
 async function isContractSettled(chainId: number): Promise<boolean> {
@@ -126,25 +143,28 @@ async function isContractSettled(chainId: number): Promise<boolean> {
   return state === ContractState.RAFFLE_SETTLED
 }
 
-type GetVoucherCodeResult =
-  | {
-      isWinner: false
-    }
-  | {
-      isWinner: true
-      voucherCode: string
-    }
-
-async function getVoucherCode(chainId: number, userAddress: `0x${string}`): Promise<GetVoucherCodeResult> {
+async function getWinnerIndex(chainId: number, userAddress: `0x${string}`): Promise<number> {
   const client = getPublicClient(chainId)
 
   // Check if address was a winner
-  const { bidderID } = await client.readContract({
-    address: AUCTION_ADDRESSES[chainId as keyof typeof AUCTION_ADDRESSES],
-    abi: AUCTION_ABI,
-    functionName: 'getBid',
-    args: [userAddress],
-  })
+  let bidderID: bigint
+  try {
+    ;({ bidderID } = await client.readContract({
+      address: AUCTION_ADDRESSES[chainId as keyof typeof AUCTION_ADDRESSES],
+      abi: AUCTION_ABI,
+      functionName: 'getBid',
+      args: [userAddress],
+    }))
+  } catch (err: unknown) {
+    if (
+      err instanceof ContractFunctionExecutionError &&
+      err.shortMessage.includes('AuctionRaffle: no bid by given address')
+    ) {
+      return -1
+    } else {
+      throw err
+    }
+  }
   const winType = await client.readContract({
     address: AUCTION_ADDRESSES[chainId as keyof typeof AUCTION_ADDRESSES],
     abi: AUCTION_ABI,
@@ -152,9 +172,7 @@ async function getVoucherCode(chainId: number, userAddress: `0x${string}`): Prom
     args: [bidderID],
   })
   if (winType === WinType.LOSS) {
-    return {
-      isWinner: false,
-    }
+    return -1
   }
 
   // Get voucher code for address
@@ -171,13 +189,8 @@ async function getVoucherCode(chainId: number, userAddress: `0x${string}`): Prom
   const winnerIndex = auctionWinners.concat(raffleWinners).findIndex((id) => id === bidderID)
   if (winnerIndex === -1) {
     log.error(`Invariant violation: ${userAddress} is a winner but not present in winners list onchain`)
-    return {
-      isWinner: false,
-    }
+    return -1
   }
 
-  return {
-    isWinner: true,
-    voucherCode: environment.voucherCodes[winnerIndex],
-  }
+  return winnerIndex
 }

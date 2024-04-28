@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { testApiHandler } from 'next-test-api-route-handler' // ◄ Must be first import
-import { expect, test, describe } from 'vitest'
+import { expect, test, describe, assert } from 'vitest'
 import scorerNonceHandler from '@/pages/api/scorer/nonce'
 import scorerAddressHandler from '@/pages/api/scorer/[userAddress]'
 import submitScoreHandler from '@/pages/api/scorer/index'
@@ -29,8 +29,7 @@ describe('e2e: Gitcoin Passport Scorer flow', () => {
         const res = await fetch({ method: 'GET' })
         const body = await res.json()
         if ('error' in body) {
-          test.fails(`Unexpected error: ${body.error}`)
-          return
+          assert.fail(`Unexpected error: ${body.error}`)
         }
 
         ;({ nonce, message } = body)
@@ -49,7 +48,7 @@ describe('e2e: Gitcoin Passport Scorer flow', () => {
         if ('error' in body) {
           expect(body.error).to.include('Unable to get score')
         } else {
-          test.fails(`Score already submitted for address: ${user.address}`)
+          assert.fail(`Score already submitted for address: ${user.address}`)
         }
       },
     })
@@ -83,7 +82,7 @@ describe('e2e: Gitcoin Passport Scorer flow', () => {
         const res = await fetch({ method: 'GET' })
         const body = await res.json()
         if ('error' in body) {
-          test.fails(`Score not available for ${user.address}: ${body.error}`)
+          assert.fail(`Score not available for ${user.address}: ${body.error}`)
         } else {
           expect(res.status).to.be.oneOf([200, 202])
           expect(body.status).to.be.oneOf(['processing', 'done'])
