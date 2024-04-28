@@ -18,6 +18,11 @@ describe('Voucher code claim flow', () => {
       test: async ({ fetch }) => {
         const res = await fetch({ method: 'GET' })
         const body = await res.json()
+        if ('error' in body) {
+          test.fails(`Unexpected error: ${body.error}`)
+          return
+        }
+
         nonce = body.nonce
         // The same voucher nonce is returned in body
         expect(nonce).to.be.a('string')
@@ -61,6 +66,11 @@ describe('Voucher code claim flow', () => {
       test: async ({ fetch }) => {
         const res = await fetch({ method: 'GET' })
         const body = await res.json()
+        if ('error' in body) {
+          test.fails(`Unexpected error: ${body.error}`)
+          return
+        }
+
         nonce = body.nonce
         // The same voucher nonce is returned in body
         expect(nonce).to.be.a('string')
