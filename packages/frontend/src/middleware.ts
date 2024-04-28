@@ -2,21 +2,27 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import rateLimit from './utils/rateLimit'
 import { environment } from './config/environment'
+import log from './utils/log'
 
 export async function middleware(request: NextRequest) {
-  const response = NextResponse.next()
-  let rateLimitToken = request.cookies.get('rateLimitToken')?.value
-  if (!rateLimitToken) {
-    rateLimitToken = crypto.randomUUID()
-    response.cookies.set({
-      name: 'rateLimitToken',
-      value: rateLimitToken,
-      httpOnly: true,
-      maxAge: 60,
-      secure: true,
-    })
+  const requestIp = request.ip || request.headers.get('x-forwarded-for')
+  if (!requestIp) {
+    log.error(`Unable to get request IP`)
+    return NextResponse.json(
+      {
+        error: 'Unable to get request IP',
+      },
+      {
+        status: 500,
+      },
+    )
   }
-  const { isRateLimited, limit, remaining } = await rateLimit(response, environment.rateLimit.global, rateLimitToken)
+  const isNonceGetter = request.url.toLowerCase().endsWith('/nonce')
+  const rateLimitToken = isNonceGetter ? `${requestIp}-nonce` : requestIp
+  const rateLimitValue = isNonceGetter ? environment.rateLimit.nonce : environment.rateLimit.global
+
+  const response = NextResponse.next()
+  const { isRateLimited, limit, remaining } = await rateLimit(response, rateLimitValue, rateLimitToken)
   if (isRateLimited) {
     return NextResponse.json(
       {

@@ -10,7 +10,7 @@ import cookie from 'cookie'
 
 // Requires local hardhat node to be started and contract settled
 // cd packages/contracts; pnpm node:run; pnpm hardhat:settle
-describe('Voucher code claim flow', () => {
+describe('e2e: Voucher code claim flow', () => {
   test('happy path', async () => {
     let nonce: string
     await testApiHandler<GetVoucherNonceResponse>({

@@ -6,7 +6,7 @@ const tokenCache = new LRUCache({
   ttl: 60000, // 1min
 })
 
-export default function rateLimit(res: NextResponse, limit: number, token: string) {
+export default function rateLimit(_res: NextResponse, limit: number, token: string) {
   const tokenCount = (tokenCache.get(token) as number[]) || [0]
   if (tokenCount[0] === 0) {
     tokenCache.set(token, tokenCount)
