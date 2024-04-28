@@ -15,8 +15,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   switch (req.method) {
     case 'GET':
       // GET /api/scorer/analysis/[userAddress]
-      // Get [userAddress]'s passport score (might still be processing). Score must be submitted first.
-      return getScore(req, res)
+      // Get [userAddress]'s passport score from the new analysis endpoint
+      return getAnalysisScore(req, res)
     default:
       res.status(405).json({
         error: 'Method not allowed',
@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-async function getScore(req: NextApiRequest, res: NextApiResponse<GetScoreResponse>) {
+async function getAnalysisScore(req: NextApiRequest, res: NextApiResponse<GetScoreResponse>) {
   const chainIdResult = z.number().safeParse(Number(req.query.chainId))
   if (!chainIdResult.success) {
     return res.status(400).json({
