@@ -6,6 +6,7 @@ import { environment } from '@/config/environment'
 import { GetScoreResponse } from '@/types/api/scorer'
 import { ApiErrorResponse } from '@/types/api/error'
 import z from 'zod'
+import { RetrievePassportScoreResponseSchema } from '@/types/passport/scorer'
 
 const gtcScorerId = environment.gtcScorerId
 const gtcScorerApiBaseUri = environment.gtcScorerApiBaseUri
@@ -74,26 +75,36 @@ async function getScore(req: NextApiRequest, res: NextApiResponse<GetScoreRespon
     return
   }
 
-  // Parse && sum stamp scores
-  const { error, address, stamp_scores, status } = gtcResult
-  const rawScore = stamp_scores
-    ? Object.values(stamp_scores)
-        .map((value) => {
-          if (typeof value !== 'number') {
-            return 0
-          }
-          return value
-        })
-        .reduce((p, c) => p + c, 0)
-    : 0
-
-  if (error) {
-    log.error(error)
+  const parsedGtcResult = RetrievePassportScoreResponseSchema.safeParse(gtcResult)
+  if (!parsedGtcResult.success) {
+    log.error(`Could not parse Gitcoin Passport response: ${parsedGtcResult.error.message}`)
     res.status(500).json({
       status: 'error',
-      error,
+      error: 'There was an error while parsing the Passport analysis response',
     } satisfies GetScoreResponse)
-  } else if (status === 'PROCESSING' || status === 'BULK_PROCESSING') {
+    return
+  }
+  const analysisData = parsedGtcResult.data
+  if (analysisData.status === 'ERROR') {
+    log.error(analysisData.error)
+    res.status(500).json({
+      status: 'error',
+      error: analysisData.error,
+    } satisfies GetScoreResponse)
+    return
+  }
+
+  // Parse && sum stamp scores
+  const rawScore = Object.values(analysisData.stamp_scores)
+    .map((value) => {
+      if (typeof value !== 'number') {
+        return 0
+      }
+      return value
+    })
+    .reduce((p, c) => p + c, 0)
+
+  if (['PROCESSING', 'BULK_PROCESSING'].includes(analysisData.status)) {
     res.status(202).json({
       status: 'processing',
     } satisfies GetScoreResponse)
@@ -102,10 +113,10 @@ async function getScore(req: NextApiRequest, res: NextApiResponse<GetScoreRespon
     // Scale up to 8 decimals to be encoded as uint256
     const score = BigInt(Math.floor(rawScore * 10 ** 8))
     // Sign EIP-712 attestation
-    const { digest, signature } = await attestScore(chainId, address, score)
+    const { digest, signature } = await attestScore(chainId, userAddress, score)
     res.status(200).json({
       status: 'done',
-      address,
+      address: userAddress,
       score: String(score),
       digest,
       signature,
