@@ -4,6 +4,7 @@ import { BlockchainProviders } from '@/providers/wagmi'
 import { BidsProvider } from '@/providers/BidsProvider/provider'
 import { ReactNode } from 'react'
 import { TopBar } from '@/components/topBar/TopBar'
+import { Footer } from '@/components/footer/Footer'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -22,5 +23,6 @@ const Layout = ({ children }: { children: ReactNode }) => (
   <>
     <TopBar />
     <main>{children}</main>
+    <Footer />
   </>
 )
