@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Colors } from '@/styles/colors'
-import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerAddressLink'
+import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerLinks'
 import { Hex } from 'viem'
 
 interface Props {
