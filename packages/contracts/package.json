@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@ethereum-waffle/chai": "^3.4.3",
+    "@kevincharm/gfc-fpe": "^1.1.0",
     "@nomicfoundation/hardhat-verify": "^2.0.5",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",

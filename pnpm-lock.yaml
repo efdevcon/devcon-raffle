@@ -17,6 +17,9 @@ importers:
       '@ethereum-waffle/chai':
         specifier: ^3.4.3
         version: 3.4.4
+      '@kevincharm/gfc-fpe':
+        specifier: ^1.1.0
+        version: 1.1.0
       '@nomicfoundation/hardhat-verify':
         specifier: ^2.0.5
         version: 2.0.5(hardhat@2.19.4)
@@ -1187,6 +1190,10 @@ packages:
 
   /@kamilkisiela/fast-url-parser@1.1.4:
     resolution: {integrity: sha512-gbkePEBupNydxCelHCESvFSFM8XPh1Zs/OAVRW/rKpEqPAl5PbOM90Si8mv9bvnR53uPD2s/FiRxdvSejpRJew==}
+    dev: true
+
+  /@kevincharm/gfc-fpe@1.1.0:
+    resolution: {integrity: sha512-Kg9wOa3T1ttOVxqeomid3zqWcqXVWZA7l1nXhOLrn/NTKmaTIM873rComzuG/b3Xv1CogLTZgK/+HeVf3Fn0fg==}
     dev: true
 
   /@lit-labs/ssr-dom-shim@1.2.0:
