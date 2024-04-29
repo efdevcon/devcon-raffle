@@ -102,27 +102,19 @@ export const InfoAccordion = () => {
                   In the event there are:
                   <BulletList>
                     <li>
-                      <ListText>
-                        <Bold>1-80 participants:</Bold> All bidders win in the raffle.
-                      </ListText>
+                      <Bold>1-80 participants:</Bold> All bidders win in the raffle.
                     </li>
                     <li>
-                      <ListText>
-                        <Bold>81 participants:</Bold> Top 1 bidder wins in the auction. 80 remaining bidders win in the
-                        raffle.
-                      </ListText>
+                      <Bold>81 participants:</Bold> Top 1 bidder wins in the auction. 80 remaining bidders win in the
+                      raffle.
                     </li>
                     <li>
-                      <ListText>
-                        <Bold>101 participants:</Bold> Top 20 bidders win in the auction. Out of 81 remaining bidders,
-                        80 are randomly chosen to win in the raffle.
-                      </ListText>
+                      <Bold>101 participants:</Bold> Top 20 bidders win in the auction. Out of 81 remaining bidders, 80
+                      are randomly chosen to win in the raffle.
                     </li>
                     <li>
-                      <ListText>
-                        <Bold>120 participants:</Bold> Top 20 bidders win in the auction. Out of 100 remaining bidders,
-                        80 are randomly chosen to win in the raffle.
-                      </ListText>
+                      <Bold>120 participants:</Bold> Top 20 bidders win in the auction. Out of 100 remaining bidders, 80
+                      are randomly chosen to win in the raffle.
                     </li>
                   </BulletList>
                 </>
@@ -208,17 +200,19 @@ const Wrapper = styled.div`
   width: 100%;
   max-width: 1252px;
   margin: 0 auto;
-  padding: 68px 125px 68px 68px;
+  padding: 44px 90px 44px 32px;
 `
+
 const StyledHeader = styled(Accordion.Header)`
   width: 100%;
 `
+
 const StyledTrigger = styled(Accordion.AccordionTrigger)`
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 8px 4px 4px;
+  padding: 4px 10px 4px 4px;
   font-family: 'Space Mono', 'Roboto Mono', monospace;
   font-style: normal;
   border: none;
@@ -240,10 +234,10 @@ const StyledContent = styled(Accordion.AccordionContent)`
   display: flex;
   flex-direction: column;
   row-gap: 16px;
-  margin-top: 32px;
+  margin-top: 44px;
 
   &[data-state='open'] {
-    margin-bottom: 32px;
+    margin-bottom: 44px;
   }
 `
 
@@ -268,10 +262,5 @@ const Link = styled.a`
 `
 
 const BulletList = styled.ul`
-  color: ${Colors.Black};
   margin: 0;
-`
-
-const ListText = styled.span`
-  color: ${Colors.Black};
 `
