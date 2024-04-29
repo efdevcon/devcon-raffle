@@ -4,6 +4,13 @@ import { useEffect, useMemo, useState } from 'react'
 import { encryptVoucherCodes } from '@/utils/encryptVoucherCodes'
 import log from '@/utils/log'
 
+const voucherCodesPlaceholder = `ba6c54fde086a987
+4a90b64c32e2eec1
+4456f133d558f072
+c5baeed2585b3a1a
+15e2e282fe03a9f6
+d668bbbec3c7d3b6`
+
 export default function Bids() {
   const [secretKey, setSecretKey] = useState<string>('')
   const [rawVoucherCodes, setVoucherCodes] = useState<string>('')
@@ -51,6 +58,7 @@ export default function Bids() {
           Voucher codes, separated by newlines
           <Textarea
             value={rawVoucherCodes}
+            placeholder={voucherCodesPlaceholder}
             onChange={(event) => {
               setVoucherCodes(event.target.value)
             }}
