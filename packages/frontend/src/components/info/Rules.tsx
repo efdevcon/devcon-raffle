@@ -1,6 +1,5 @@
 import { ReactNode } from 'react'
 import styled from 'styled-components'
-import { Colors } from '@/styles/colors'
 
 interface RuleProps {
   heading: string
@@ -32,5 +31,4 @@ const RuleHeading = styled.h4`
 export const RuleText = styled.div`
   font-size: 16px;
   line-height: 24px;
-  color: ${Colors.Black};
 `
