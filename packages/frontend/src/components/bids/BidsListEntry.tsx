@@ -41,14 +41,12 @@ const BidsEntryRow = styled.div<{ $isUser?: boolean }>`
     css`
       &::before {
         content: '';
-        width: calc(100% + 48px);
+        width: calc(100% + 60px);
         height: calc(100% + 20px);
-        border-width: 2px;
-        border-style: solid;
-        border-image: linear-gradient(90deg, rgba(126, 193, 136, 1), rgba(101, 196, 232, 1), rgba(119, 121, 181, 1)) 1;
+        background: ${Colors.Pink};
         position: absolute;
         top: -10px;
-        left: -24px;
+        left: -30px;
         z-index: 1;
       }
     `};
@@ -57,6 +55,5 @@ const BidsEntryRow = styled.div<{ $isUser?: boolean }>`
 const AddressLink = styled.a`
   font-family: 'Space Mono', 'Roboto Mono', monospace;
   font-style: normal;
-  color: ${Colors.Black};
-  text-decoration: none;
+  text-decoration: underline;
 `

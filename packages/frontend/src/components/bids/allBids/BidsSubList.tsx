@@ -19,7 +19,7 @@ export const BidsSubList = ({ bids, title }: Props) => {
         <SubListHeader>{title}</SubListHeader>
       </TitleBanner>
       <BidsListContainer>
-        {bids.map((bid, index) => (
+        {bids.map((bid) => (
           <BidsListEntry key={bid.bidderId} bid={bid} isUser={address === bid.address} view="full" />
         ))}
       </BidsListContainer>

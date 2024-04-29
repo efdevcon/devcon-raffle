@@ -15,6 +15,7 @@ export const headerBackgroundStyles = css`
 
 export const HeaderBar = styled.header`
   display: flex;
+  align-items: flex-start;
   flex-shrink: 0;
   width: 100%;
   background: ${Colors.White};

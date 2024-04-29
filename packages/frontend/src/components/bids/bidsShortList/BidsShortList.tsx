@@ -91,10 +91,4 @@ const within = (...[lower, higher, value]: number[]) => value >= lower && value 
 const BidListText = styled.div`
   width: 100%;
   text-align: center;
-  background: linear-gradient(90deg, #7ec188 0%, #65c4e8 45.31%, #7779b5 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-  margin-top: -16px;
 `
