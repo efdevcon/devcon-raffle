@@ -5,7 +5,6 @@ import { Form, FormRow } from '.'
 import { formatEther } from 'viem'
 import { Button } from '../buttons'
 import { heading } from '../auction/AuctionTransaction'
-import { useUserSettledBid } from '@/blockchain/hooks/useUserSettledBid'
 
 const amountLabel = {
   [Transactions.Place]: 'Your Bid',
@@ -21,21 +20,13 @@ interface ReviewFormProps {
   setView: (state: TxFlowSteps) => void
 }
 
-export const ReviewForm = ({
-  action: { status, resetStatus, ...action },
-  amount,
-  impact,
-  view,
-  setView,
-}: ReviewFormProps) => {
+export const ReviewForm = ({ action: { status, ...action }, amount, impact, view, setView }: ReviewFormProps) => {
   const { address } = useAccount()
   const etherBalance = useBalance({ address }).data?.value
   const isPending = status === 'pending'
-  const { refetch: refetchUserBid } = useUserSettledBid()
 
   const sendTransaction = async () => {
     await action.send()
-    await refetchUserBid()
     setView(view + 1)
   }
 

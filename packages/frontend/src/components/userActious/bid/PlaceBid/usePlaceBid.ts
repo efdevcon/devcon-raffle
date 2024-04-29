@@ -33,5 +33,5 @@ export function usePlaceBid({ score, proof, value }: Props): TransactionAction {
     [writeContractAsync, chainId, score, proof, value],
   )
 
-  return { send, status, resetStatus: reset, type: Transactions.Place, transactionHash }
+  return { send, status, onBackHome: reset, type: Transactions.Place, transactionHash }
 }

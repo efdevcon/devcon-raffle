@@ -24,10 +24,10 @@ export const WinBidFlow = ({ userBid }: WinBidFlowProps) => {
 
   return (
     <>
-      {view == TxFlowSteps.Review ? (
-        <AuctionTransaction action={claimAction} amount={withdrawalAmount} view={view} setView={setView} />
-      ) : (
+      {view == TxFlowSteps.Placing ? (
         <WinForm userBid={userBid} withdrawalAmount={withdrawalAmount} setView={setView} />
+      ) : (
+        <AuctionTransaction action={claimAction} amount={withdrawalAmount} view={view} setView={setView} />
       )}
     </>
   )

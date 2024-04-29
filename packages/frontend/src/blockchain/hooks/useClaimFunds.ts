@@ -4,9 +4,15 @@ import { TransactionAction, Transactions } from '@/blockchain/transaction'
 import { useCallback, useState } from 'react'
 import { Hex } from 'viem'
 import { useChainId, useWriteContract } from 'wagmi'
+import { useUserSettledBid } from './useUserSettledBid'
 
 export function useClaimFunds(bidderId: bigint): TransactionAction {
   const { writeContractAsync, status, reset } = useWriteContract()
+  const { refetch } = useUserSettledBid()
+  const onBackHome = async () => {
+    reset()
+    refetch()
+  }
   const chainId = useChainId()
   const [transactionHash, setTransactionHash] = useState<Hex>()
   const send = useCallback(
@@ -26,5 +32,5 @@ export function useClaimFunds(bidderId: bigint): TransactionAction {
     [writeContractAsync, chainId, bidderId],
   )
 
-  return { send, status, resetStatus: reset, type: Transactions.Withdraw, transactionHash }
+  return { send, status, onBackHome, type: Transactions.Withdraw, transactionHash }
 }
