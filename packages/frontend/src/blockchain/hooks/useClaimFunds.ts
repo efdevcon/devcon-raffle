@@ -9,7 +9,7 @@ import { useUserSettledBid } from './useUserSettledBid'
 export function useClaimFunds(bidderId: bigint): TransactionAction {
   const { writeContractAsync, status, reset } = useWriteContract()
   const { refetch } = useUserSettledBid()
-  const onBackHome = async () => {
+  const onBackHome = () => {
     reset()
     refetch()
   }

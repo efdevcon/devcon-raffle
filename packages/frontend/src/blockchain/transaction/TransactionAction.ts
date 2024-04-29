@@ -6,6 +6,6 @@ export interface TransactionAction {
   type: Transactions
   send: () => Promise<Hex>
   status: MutationStatus
-  onBackHome: () => Promise<void> | void
+  onBackHome: () => void
   transactionHash: Hex | undefined
 }
