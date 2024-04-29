@@ -24,5 +24,5 @@ export function useBumpBid(value: bigint): TransactionAction {
     [writeContractAsync, chainId, value],
   )
 
-  return { send, status, resetStatus: reset, type: Transactions.Bump, transactionHash }
+  return { send, status, onBackHome: reset, type: Transactions.Bump, transactionHash }
 }
