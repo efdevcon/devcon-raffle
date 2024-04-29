@@ -201,6 +201,9 @@ importers:
       cookie:
         specifier: ^0.6.0
         version: 0.6.0
+      dotenv:
+        specifier: ^16.0.0
+        version: 16.0.3
       eslint:
         specifier: ^8.47.0
         version: 8.57.0
