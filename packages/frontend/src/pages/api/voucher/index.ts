@@ -13,6 +13,7 @@ import { GetVoucherResponse, GetVoucherWithSigRequestSchema } from '@/types/api/
 import { nonceStore } from '@/utils/nonceStore'
 import { ApiErrorResponse } from '@/types/api/error'
 import { ContractFunctionExecutionError } from 'viem'
+import { getVoucherCodes } from '@/utils/getVoucherCodes'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -52,7 +53,17 @@ async function getVoucherWithJwt(req: NextApiRequest, res: NextApiResponse) {
     } satisfies GetVoucherResponse)
     return
   }
-  const voucherCode = environment.voucherCodes[winnerIndex]
+
+  let voucherCodes: string[]
+  try {
+    voucherCodes = await getVoucherCodes()
+  } catch (err) {
+    res.status(500).json({
+      error: `Voucher not available for winner index ${winnerIndex}`,
+    } satisfies GetVoucherResponse)
+    return
+  }
+  const voucherCode = voucherCodes[winnerIndex]
   if (!voucherCode) {
     res.status(500).json({
       error: `Voucher not available for winner index ${winnerIndex}`,
@@ -110,7 +121,18 @@ async function getVoucherWithSig(req: NextApiRequest, res: NextApiResponse) {
     } satisfies GetVoucherResponse)
     return
   }
-  const voucherCode = environment.voucherCodes[winnerIndex]
+
+  let voucherCodes: string[]
+  try {
+    voucherCodes = await getVoucherCodes()
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({
+      error: `Voucher not available for winner index ${winnerIndex}`,
+    } satisfies GetVoucherResponse)
+    return
+  }
+  const voucherCode = voucherCodes[winnerIndex]
   if (!voucherCode) {
     res.status(500).json({
       error: `Voucher not available for winner index ${winnerIndex}`,

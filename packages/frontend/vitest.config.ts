@@ -11,6 +11,7 @@ export default defineConfig({
       RATE_LIMIT_GLOBAL: '100',
       RATE_LIMIT_NONCES: '5',
       NONCE_EXPIRY: '1000',
+      AUTH_SECRET: 'deadbeefdeadbeefdeadbeefdeadbeef',
     },
   },
 })

@@ -12,7 +12,6 @@ export const environment = {
   scoreAttestationVerifierVersion: process.env.SCORE_ATTESTATION_VERIFIER_VERSION || '1',
   scoreAttestorPrivateKey:
     process.env.SCORE_ATTESTOR_PRIVATE_KEY || '0x0000000000000000000000000000000000000000000000000000000000000000',
-  voucherCodes: getVoucherCodes(),
   authSecret: new TextEncoder().encode(process.env.AUTH_SECRET),
   rateLimit: {
     global: Number(process.env.RATE_LIMIT_GLOBAL),
@@ -23,16 +22,4 @@ export const environment = {
 
 function getDateEnv(envValue: string | undefined): number | undefined {
   return envValue ? Math.floor(new Date(envValue).getTime() / 1000) : undefined
-}
-
-function getVoucherCodes() {
-  if (typeof window !== 'undefined') {
-    return []
-  }
-
-  const voucherCodes = process.env.VOUCHER_CODES
-  if (typeof voucherCodes === 'undefined') {
-    throw new Error('VOUCHER_CODES not supplied!')
-  }
-  return voucherCodes.split(',')
 }
