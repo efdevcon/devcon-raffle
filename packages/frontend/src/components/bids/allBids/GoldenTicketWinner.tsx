@@ -60,6 +60,5 @@ const HeaderText = styled.h3`
 const AddressLink = styled.a`
   font-family: 'Space Mono', 'Roboto Mono', monospace;
   font-style: normal;
-  color: ${Colors.Black};
-  text-decoration: none;
+  text-decoration: underline;
 `

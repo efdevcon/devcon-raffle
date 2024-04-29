@@ -9,7 +9,9 @@ export const Header = () => {
 
   return (
     <StyledHeader>
-      <BackButton url="/" />
+      <ButtonWrapper>
+        <BackButton url="/" />
+      </ButtonWrapper>
       <Wrapper>
         <TitleColumn>
           <Title>Number of participants:</Title>
@@ -44,4 +46,12 @@ const TitleColumn = styled.div`
 const Title = styled.h2`
   background-color: ${Colors.White};
   padding: 4px 20px;
+`
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background: ${Colors.White};
 `
