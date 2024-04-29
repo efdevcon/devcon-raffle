@@ -1,11 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  compiler: {
-    styledComponents: true,
-  },
-  async headers() {
-    return [
+/** @type {import('next/dist/lib/load-custom-routes').Header[]} */
+const corsHeaders = process.env.WHITELISTED_ORIGINS
+  ? [
       {
         source: '/api/:path*',
         headers: [
@@ -19,6 +14,16 @@ const nextConfig = {
         ],
       },
     ]
+  : []
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  compiler: {
+    styledComponents: true,
+  },
+  async headers() {
+    return [...corsHeaders]
   },
 }
 
