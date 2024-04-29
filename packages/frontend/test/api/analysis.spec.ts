@@ -9,7 +9,7 @@ import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts'
 // GTC_SCORER_API_KEY
 // Get these from https://www.scorer.gitcoin.co/
 describe('e2e: Gitcoin Passport Analysis', () => {
-  test('happy path', async () => {
+  test('happy path', { timeout: 20_000 }, async () => {
     const user = privateKeyToAccount(generatePrivateKey())
 
     // Sanity: ensure that this wallet does not exist in the scorer yet
