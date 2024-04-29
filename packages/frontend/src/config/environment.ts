@@ -3,7 +3,6 @@ export const environment = {
   walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? '',
   infuraKey: process.env.NEXT_PUBLIC_INFURA_KEY,
   gitcoinRequiredScore: Number(process.env.NEXT_PUBLIC_GITCOIN_REQUIRED_SCORE),
-  gtcScorerApiBaseUri: process.env.GTC_SCORER_API_BASE_URI || 'https://api.scorer.gitcoin.co',
   // Get your scorer API & ID from https://scorer.gitcoin.co
   gtcScorerApiKey: process.env.GTC_SCORER_API_KEY as string,
   gtcScorerId: process.env.GTC_SCORER_ID as string,

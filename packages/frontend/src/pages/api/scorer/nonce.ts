@@ -3,6 +3,7 @@ import log from '@/utils/log'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { GetPassportScorerNonceResponse } from '@/types/api/scorer'
 import { ApiErrorResponse } from '@/types/api/error'
+import { urls } from '@/constants/urls'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -20,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 async function getPassportScorerNonce(_req: NextApiRequest, res: NextApiResponse) {
   let gtcResult
   try {
-    const gtcResponse = await fetch(new URL('/registry/v2/signing-message', environment.gtcScorerApiBaseUri).href, {
+    const gtcResponse = await fetch(new URL('/registry/v2/signing-message', urls.gtcScorerApiBaseUri).href, {
       method: 'GET',
       headers: {
         'X-API-KEY': environment.gtcScorerApiKey,

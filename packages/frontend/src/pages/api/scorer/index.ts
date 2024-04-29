@@ -3,6 +3,7 @@ import log from '@/utils/log'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { SubmitAddressForScoringRequestSchema, SubmitAddressForScoringResponse } from '@/types/api/scorer'
 import { ApiErrorResponse } from '@/types/api/error'
+import { urls } from '@/constants/urls'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -29,7 +30,7 @@ async function submitAddressForScoring(req: NextApiRequest, res: NextApiResponse
 
   let gtcResult
   try {
-    const gtcResponse = await fetch(new URL('/registry/v2/submit-passport', environment.gtcScorerApiBaseUri).href, {
+    const gtcResponse = await fetch(new URL('/registry/v2/submit-passport', urls.gtcScorerApiBaseUri).href, {
       method: 'POST',
       headers: {
         'X-API-KEY': environment.gtcScorerApiKey,

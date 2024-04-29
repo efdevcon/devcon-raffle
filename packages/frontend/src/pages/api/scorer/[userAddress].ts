@@ -3,13 +3,13 @@ import { attestScore } from '@/utils/attestScore'
 import log from '@/utils/log'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { environment } from '@/config/environment'
+import { urls } from '@/constants/urls'
 import { GetScoreResponse } from '@/types/api/scorer'
 import { ApiErrorResponse } from '@/types/api/error'
 import z from 'zod'
 import { RetrievePassportScoreResponseSchema } from '@/types/passport/scorer'
 
 const gtcScorerId = environment.gtcScorerId
-const gtcScorerApiBaseUri = environment.gtcScorerApiBaseUri
 const gtcScorerApiKey = environment.gtcScorerApiKey
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -46,7 +46,7 @@ async function getScore(req: NextApiRequest, res: NextApiResponse<GetScoreRespon
   let gtcResult
   try {
     const gtcResponse = await fetch(
-      new URL(`/registry/v2/score/${gtcScorerId}/${userAddress}`, gtcScorerApiBaseUri).href,
+      new URL(`/registry/v2/score/${gtcScorerId}/${userAddress}`, urls.gtcScorerApiBaseUri).href,
       {
         headers: {
           'X-API-KEY': gtcScorerApiKey,
