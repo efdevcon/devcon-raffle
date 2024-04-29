@@ -29,7 +29,7 @@ export const AuctionTransaction = ({ action, amount, impact, view, setView }: Au
       <TransactionWrapper>
         <TransactionHeading>
           {view !== TxFlowSteps.Confirmation && (
-            <BackButton view={view} setView={setView} resetState={action.resetStatus} />
+            <BackButton view={view} setView={setView} resetState={action.onBackHome} />
           )}
           <FormSubHeading>{heading[action.type]}</FormSubHeading>
         </TransactionHeading>
@@ -41,7 +41,7 @@ export const AuctionTransaction = ({ action, amount, impact, view, setView }: Au
             action={action.type}
             txHash={action.transactionHash}
             setView={setView}
-            resetStatus={action.resetStatus}
+            onBackHome={action.onBackHome}
           />
         )}
       </TransactionWrapper>

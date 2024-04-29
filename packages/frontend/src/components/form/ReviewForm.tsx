@@ -20,13 +20,7 @@ interface ReviewFormProps {
   setView: (state: TxFlowSteps) => void
 }
 
-export const ReviewForm = ({
-  action: { status, resetStatus, ...action },
-  amount,
-  impact,
-  view,
-  setView,
-}: ReviewFormProps) => {
+export const ReviewForm = ({ action: { status, ...action }, amount, impact, view, setView }: ReviewFormProps) => {
   const { address } = useAccount()
   const etherBalance = useBalance({ address }).data?.value
   const isPending = status === 'pending'

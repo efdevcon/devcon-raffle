@@ -5,6 +5,8 @@ import { WinType } from '@/types/winType'
 import { WinForm } from '@/components/userActious/claim/WinForm'
 import { TxFlowSteps } from '@/components/auction/TxFlowSteps'
 import { useAccount } from 'wagmi'
+import { AuctionTransaction } from '@/components/auction/AuctionTransaction'
+import { useClaimFunds } from '@/blockchain/hooks/useClaimFunds'
 
 interface WinBidFlowProps {
   userBid: UserBid
@@ -13,13 +15,22 @@ interface WinBidFlowProps {
 export const WinBidFlow = ({ userBid }: WinBidFlowProps) => {
   const { address } = useAccount()
   const minimumBid = useMinimumBid()
-  const [, setView] = useState<TxFlowSteps>(TxFlowSteps.Placing)
+  const [view, setView] = useState<TxFlowSteps>(TxFlowSteps.Placing)
+  const claimAction = useClaimFunds(userBid.bidderId)
 
   useEffect(() => setView(TxFlowSteps.Placing), [address])
 
   const withdrawalAmount = useMemo(() => calculateWithdrawalAmount(userBid, minimumBid), [userBid, minimumBid])
 
-  return <WinForm userBid={userBid} withdrawalAmount={withdrawalAmount} setView={setView} />
+  return (
+    <>
+      {view == TxFlowSteps.Placing ? (
+        <WinForm userBid={userBid} withdrawalAmount={withdrawalAmount} setView={setView} />
+      ) : (
+        <AuctionTransaction action={claimAction} amount={withdrawalAmount} view={view} setView={setView} />
+      )}
+    </>
+  )
 }
 
 function calculateWithdrawalAmount(userBid: UserBid, minimumBid: bigint) {

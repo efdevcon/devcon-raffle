@@ -4,9 +4,15 @@ import { TransactionAction, Transactions } from '@/blockchain/transaction'
 import { useCallback, useState } from 'react'
 import { Hex } from 'viem'
 import { useChainId, useWriteContract } from 'wagmi'
+import { useUserSettledBid } from './useUserSettledBid'
 
-export function useBumpBid(value: bigint): TransactionAction {
+export function useClaimFunds(bidderId: bigint): TransactionAction {
   const { writeContractAsync, status, reset } = useWriteContract()
+  const { refetch } = useUserSettledBid()
+  const onBackHome = () => {
+    reset()
+    refetch()
+  }
   const chainId = useChainId()
   const [transactionHash, setTransactionHash] = useState<Hex>()
   const send = useCallback(
@@ -16,13 +22,15 @@ export function useBumpBid(value: bigint): TransactionAction {
           chainId,
           abi: AUCTION_ABI,
           address: AUCTION_ADDRESSES[chainId],
-          functionName: 'bump',
-          value,
+          functionName: 'claim',
+          args: [bidderId],
         },
-        { onSuccess: setTransactionHash },
+        {
+          onSuccess: setTransactionHash,
+        },
       ),
-    [writeContractAsync, chainId, value],
+    [writeContractAsync, chainId, bidderId],
   )
 
-  return { send, status, onBackHome: reset, type: Transactions.Bump, transactionHash }
+  return { send, status, onBackHome, type: Transactions.Withdraw, transactionHash }
 }
