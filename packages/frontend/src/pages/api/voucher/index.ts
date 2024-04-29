@@ -126,7 +126,7 @@ async function getVoucherWithSig(req: NextApiRequest, res: NextApiResponse) {
   try {
     voucherCodes = await getVoucherCodes()
   } catch (err) {
-    console.log(err)
+    log.error(err)
     res.status(500).json({
       error: `Voucher not available for winner index ${winnerIndex}`,
     } satisfies GetVoucherResponse)
