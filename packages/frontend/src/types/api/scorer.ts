@@ -15,7 +15,7 @@ export type GetPassportScorerNonceResponse = z.infer<typeof GetPassportScorerNon
 
 export const SubmitAddressForScoringRequestSchema = z.object({
   userAddress: z.string(),
-  signature: z.string().regex(/^0x([0-9a-fA-F]{2})*$/),
+  signature: HexStringSchema,
   nonce: z.string(),
 })
 
