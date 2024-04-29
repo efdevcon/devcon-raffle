@@ -4,7 +4,7 @@ import rateLimit from './utils/rateLimit'
 import { environment } from './config/environment'
 import log from './utils/log'
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const requestIp = request.ip || request.headers.get('x-forwarded-for')
   if (!requestIp) {
     log.error(`Unable to get request IP`)
@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
   const rateLimitValue = isNonceGetter ? environment.rateLimit.nonce : environment.rateLimit.global
 
   const response = NextResponse.next()
-  const { isRateLimited, limit, remaining } = await rateLimit(response, rateLimitValue, rateLimitToken)
+  const { isRateLimited, limit, remaining } = rateLimit(response, rateLimitValue, rateLimitToken)
   if (isRateLimited) {
     return NextResponse.json(
       {

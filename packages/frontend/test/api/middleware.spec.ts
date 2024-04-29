@@ -10,10 +10,10 @@ describe('Middleware', () => {
       ip: '123.123.123.123',
     })
     for (let i = 0; i < environment.rateLimit.global - 1; i++) {
-      const response = await middleware(req)
+      const response = middleware(req)
       expect(response.status).to.eq(200)
     }
-    const response = await middleware(req)
+    const response = middleware(req)
     expect(response.status).to.eq(429)
   })
 
@@ -22,10 +22,10 @@ describe('Middleware', () => {
       ip: '123.123.123.123',
     })
     for (let i = 0; i < environment.rateLimit.nonce - 1; i++) {
-      const response = await middleware(req)
+      const response = middleware(req)
       expect(response.status).to.eq(200)
     }
-    const response = await middleware(req)
+    const response = middleware(req)
     expect(response.status).to.eq(429)
   })
 })
