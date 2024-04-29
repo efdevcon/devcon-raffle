@@ -1,5 +1,5 @@
 import { useContractState } from '@/blockchain/hooks/useAuctionState'
-import { ContractState } from '../abi/ContractState'
+import { ContractState } from '@/types/ContractState'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 
 export function useAuctionTime() {

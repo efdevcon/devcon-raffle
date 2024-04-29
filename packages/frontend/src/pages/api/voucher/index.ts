@@ -3,8 +3,8 @@ import { verifyMessage } from 'viem'
 import { getPublicClient } from '@/blockchain/publicClient'
 import { AUCTION_ADDRESSES } from '@/blockchain/auctionAddresses'
 import { AUCTION_ABI } from '@/blockchain/abi/auction'
-import { WinType } from '@/blockchain/abi/WinType'
-import { ContractState } from '@/blockchain/abi/ContractState'
+import { WinType } from '@/types/winType'
+import { ContractState } from '@/types/ContractState'
 import { environment } from '@/config/environment'
 import * as jose from 'jose'
 import log from '@/utils/log'
@@ -193,7 +193,7 @@ async function getWinnerIndex(chainId: number, userAddress: `0x${string}`): Prom
     functionName: 'getBidWinType',
     args: [bidderID],
   })
-  if (winType === WinType.LOSS) {
+  if (winType === WinType.Loss) {
     return -1
   }
 

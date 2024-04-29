@@ -1,8 +1,8 @@
 import { useAccount, useChainId, useReadContract } from 'wagmi'
 import { AUCTION_ABI } from '@/blockchain/abi/auction'
 import { AUCTION_ADDRESSES } from '@/blockchain/auctionAddresses'
+import { ContractState } from '@/types/ContractState'
 import { Hex } from 'viem'
-import { ContractState } from '../abi/ContractState'
 
 export type AuctionState =
   | 'AwaitingBidding'
