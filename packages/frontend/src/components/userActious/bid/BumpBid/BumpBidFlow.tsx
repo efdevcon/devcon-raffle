@@ -4,9 +4,9 @@ import { useAccount } from 'wagmi'
 import { TxFlowSteps } from '@/components/auction/TxFlowSteps'
 import { useBumpBid } from './useBumpBid'
 import { formatEther, parseEther } from 'viem'
-import { useMinimumIncrement } from '@/blockchain/hooks/useMinimumIncrement'
 import { AuctionTransaction } from '@/components/auction/AuctionTransaction'
 import { BumpBidForm } from './BumpBidForm'
+import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 
 export const BumpBidFlow = () => {
   const { address } = useAccount()
@@ -19,11 +19,7 @@ export const BumpBidFlow = () => {
   const newBidAmount = useMemo(() => userBid && userBid.amount + parsedBumpAmount, [parsedBumpAmount, userBid])
 
   useEffect(() => setView(TxFlowSteps.Placing), [address])
-
-  useEffect(() => {
-    setBumpAmount(formatEther(minimumIncrement))
-  }, [minimumIncrement])
-
+  useEffect(() => setBumpAmount(formatEther(minimumIncrement)), [minimumIncrement])
   useEffect(() => {
     if (bumpAction.status == 'success') {
       setBumpAmount(formatEther(minimumIncrement))
@@ -54,3 +50,5 @@ export const BumpBidFlow = () => {
     </>
   )
 }
+
+const useMinimumIncrement = () => useReadAuctionParams().minimumBidIncrement ?? BigInt(0)
