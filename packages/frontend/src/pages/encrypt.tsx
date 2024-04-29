@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Colors } from '@/styles/colors'
 import { useEffect, useMemo, useState } from 'react'
 import { encryptVoucherCodes } from '@/utils/encryptVoucherCodes'
+import log from '@/utils/log'
 
 export default function Bids() {
   const [secretKey, setSecretKey] = useState<string>('')
@@ -13,11 +14,10 @@ export default function Bids() {
   useEffect(() => {
     encryptVoucherCodes(voucherCodes, new TextEncoder().encode(secretKey))
       .then((encrypted) => {
-        console.log(secretKey, encrypted)
         setEncryptedVoucherCodes(encrypted)
       })
       .catch((err) => {
-        console.error(err)
+        log.error(err)
       })
   }, [voucherCodes, secretKey])
 
