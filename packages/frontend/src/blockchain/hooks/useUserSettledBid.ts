@@ -5,11 +5,11 @@ import { Hex } from 'viem'
 import { UserBid } from '@/types/bid'
 import { useUserBid } from '@/blockchain/hooks/useUserBid'
 
-export const useUserSettledBid = (): UserBid | undefined => {
+export const useUserSettledBid = () => {
   const chainId = useChainId()
   const bid = useUserBid()
 
-  const { data } = useReadContracts({
+  const { data, refetch } = useReadContracts({
     contracts: [
       {
         chainId,
@@ -32,13 +32,14 @@ export const useUserSettledBid = (): UserBid | undefined => {
     },
   })
 
-  if (!data || !bid) {
-    return undefined
-  }
+  const userBid: UserBid | undefined =
+    !data || !bid
+      ? undefined
+      : {
+          ...bid,
+          claimed: data[0].claimed,
+          winType: data[1],
+        }
 
-  return {
-    ...bid,
-    claimed: data[0].claimed,
-    winType: data[1],
-  }
+  return { userBid, refetch }
 }

@@ -5,6 +5,7 @@ import { Form, FormRow } from '.'
 import { formatEther } from 'viem'
 import { Button } from '../buttons'
 import { heading } from '../auction/AuctionTransaction'
+import { useUserSettledBid } from '@/blockchain/hooks/useUserSettledBid'
 
 const amountLabel = {
   [Transactions.Place]: 'Your Bid',
@@ -30,9 +31,11 @@ export const ReviewForm = ({
   const { address } = useAccount()
   const etherBalance = useBalance({ address }).data?.value
   const isPending = status === 'pending'
+  const { refetch: refetchUserBid } = useUserSettledBid()
 
   const sendTransaction = async () => {
     await action.send()
+    await refetchUserBid()
     setView(view + 1)
   }
 

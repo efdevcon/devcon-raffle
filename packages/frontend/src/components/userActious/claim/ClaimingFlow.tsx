@@ -3,7 +3,7 @@ import { WinBidFlow } from '@/components/userActious/claim/WinBidFlow'
 import { useUserSettledBid } from '@/blockchain/hooks/useUserSettledBid'
 
 export const ClaimingFlow = () => {
-  const userBid = useUserSettledBid()
+  const { userBid } = useUserSettledBid()
 
   return userBid ? <WinBidFlow userBid={userBid} /> : <NoBidding />
 }
