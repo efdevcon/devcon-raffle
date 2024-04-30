@@ -81,12 +81,6 @@ const handleBid = (bids: Map<Hex, RawBid>, eventArgs: BidEvent['args']) => {
   if (!eventArgs.bidder || !eventArgs.bidAmount || !eventArgs.bidderID) {
     return
   }
-  const existingBid = bids.get(eventArgs.bidder)
-  if (existingBid) {
-    existingBid.amount += eventArgs.bidAmount
-    bids.set(eventArgs.bidder, existingBid)
-    return
-  }
   bids.set(eventArgs.bidder, {
     address: eventArgs.bidder,
     bidderId: eventArgs.bidderID,
