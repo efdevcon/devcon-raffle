@@ -26,7 +26,7 @@ export const ClaimVoucherSection = ({ setVoucher }: ClaimVoucherSectionProps) =>
     <VoucherOption>
       {error && <ErrorNotifications error={error} onClick={mutate} reset={reset} />}
       <Button view="primary" wide onClick={mutate} isLoading={isPending}>
-        Claim voucher code
+        Get voucher code
       </Button>
       {state !== 'ClaimingClosed' && <VoucherTimeLeft />}
     </VoucherOption>

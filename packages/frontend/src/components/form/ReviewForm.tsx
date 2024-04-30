@@ -46,7 +46,7 @@ export const ReviewForm = ({ action: { status, ...action }, amount, impact, view
         <span>Wallet Balance</span>
         <span>{!!etherBalance && formatEther(etherBalance)} ETH</span>
       </FormRow>
-      <Button view="primary" isLoading={isPending} onClick={sendTransaction}>
+      <Button view="primary" isLoading={isPending} onClick={sendTransaction} wide>
         {heading[action.type]}
       </Button>
     </Form>

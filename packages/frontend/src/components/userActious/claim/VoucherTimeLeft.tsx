@@ -16,11 +16,17 @@ export const VoucherTimeLeft = () => {
 
   return (
     <TimeRow>
-      <b>{timeLeft}</b> <span>left to redeem your voucher code</span>
+      <h3>{timeLeft}</h3> <span>left to redeem your voucher code</span>
     </TimeRow>
   )
 }
 
 const TimeRow = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 16px;
+  width: 100%;
   color: ${Colors.Black};
 `

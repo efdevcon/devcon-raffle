@@ -12,7 +12,7 @@ interface Props<StepName extends string> {
 
 export const TransactionStepper = <StepName extends string>({ action, current, isFailed }: Props<StepName>) => {
   const steps = getTransactionSteps(action)
-  const currentStepIndex = steps.findIndex((step) => [step.default.name, step.failed?.name].includes(current))
+  const currentStepIndex = steps.findIndex((step) => [step.default.name, step.failed?.name].includes(current)) + 1
   return (
     <StepperContainer>
       <StepperHeader>Finalize {header[action]}</StepperHeader>

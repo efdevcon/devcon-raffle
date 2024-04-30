@@ -44,6 +44,7 @@ export const WinBidForm = ({ userBid, withdrawalAmount, setView, voucher, setVou
 }
 
 export const WinnerForm = styled(Form)`
+  max-width: 440px;
   row-gap: 20px;
   text-align: center;
 `
@@ -62,7 +63,7 @@ const winTypeToText: Record<WinType, ReactNode> = {
   ),
   [WinType.Raffle]: (
     <span>
-      You were chosen <b>in the raffle</b> and have successfully purchased a ticket!
+      You were chosen <b>in the raffle!</b>
     </span>
   ),
 }

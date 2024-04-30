@@ -22,7 +22,7 @@ export const FormWrapper = styled.div`
   flex-direction: column;
   row-gap: 16px;
   padding: 82px 0 82px;
-  width: 431px;
+  width: 440px;
 `
 
 export const FormSectionWrapper = styled(FormWrapper)`
