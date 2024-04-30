@@ -6,6 +6,7 @@ import { UserBid } from '@/types/bid'
 import { FormWrapper } from '@/components/form'
 import { WinBidForm } from '@/components/userActious/claim/WinBidForm'
 import { VoucherForm } from '@/components/userActious/claim/VoucherForm'
+import { WinType } from '@/types/winType'
 
 interface WinFormProps {
   userBid: UserBid
@@ -17,15 +18,17 @@ export const WinForm = ({ userBid, withdrawalAmount, setView }: WinFormProps) =>
   const { address } = useAccount()
   const [voucher, setVoucher] = useState<string>()
 
+  const twoColumns = !!voucher && userBid.winType !== WinType.Auction
+
   useEffect(() => {
     setVoucher(undefined)
   }, [address])
 
   return (
     <>
-      {!(userBid.claimed && voucher) && (
+      {((!userBid.claimed && userBid.winType !== WinType.Auction) || !voucher) && (
         <Wrapper>
-          <WinBidFormWrapper $hasVoucher={!!voucher}>
+          <WinBidFormWrapper $twoColumns={twoColumns}>
             <WinBidForm
               userBid={userBid}
               withdrawalAmount={withdrawalAmount}
@@ -38,16 +41,16 @@ export const WinForm = ({ userBid, withdrawalAmount, setView }: WinFormProps) =>
       )}
       {voucher && (
         <Wrapper>
-          <VoucherForm voucher={voucher} withdrawnBid={userBid.claimed} />
+          <VoucherForm voucher={voucher} />
         </Wrapper>
       )}
     </>
   )
 }
 
-const WinBidFormWrapper = styled(FormWrapper)<{ $hasVoucher?: boolean }>`
+const WinBidFormWrapper = styled(FormWrapper)<{ $twoColumns?: boolean }>`
   justify-content: center;
-  width: ${(props) => (props.$hasVoucher ? '289px' : '431px')};
+  width: ${(props) => (props.$twoColumns ? '289px' : '431px')};
 `
 
 const Wrapper = styled.div`
