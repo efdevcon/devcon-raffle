@@ -10,18 +10,15 @@ import { Colors } from '@/styles/colors'
 
 interface Props {
   voucher: string
-  withdrawnBid?: boolean
 }
 
-export const VoucherForm = ({ voucher, withdrawnBid = false }: Props) => {
+export const VoucherForm = ({ voucher }: Props) => {
   const redeemTimestamp = useVoucherRedeemDeadline()
   const isVoucherExpired = redeemTimestamp ? redeemTimestamp * BigInt(1000) > Date.now() : false
 
   return (
     <WinnerForm>
-      <VoucherFormHeading voucher={voucher} withdrawnBid={withdrawnBid}>
-        Here is your voucher code
-      </VoucherFormHeading>
+      <VoucherFormHeading>Here is your voucher code</VoucherFormHeading>
       <VoucherIdWrapper>
         <VoucherIdBox>
           <VoucherIdText>{voucher}</VoucherIdText>
@@ -63,9 +60,8 @@ const VoucherIdLabel = styled(InputLabel)<LabelProps>`
   color: ${({ $isVoucherExpired }) => ($isVoucherExpired ? Colors.Red : Colors.White)};
 `
 
-const VoucherFormHeading = styled(FormHeading)<Props>`
-  font-size: ${({ voucher, withdrawnBid }) => (voucher && !withdrawnBid ? '24px' : '40px')};
-  line-height: ${({ voucher, withdrawnBid }) => (voucher && !withdrawnBid ? 1 : 1.2)};
+const VoucherFormHeading = styled(FormHeading)`
+  font-size: 24px;
   margin-bottom: 16px;
   text-align: center;
 `
