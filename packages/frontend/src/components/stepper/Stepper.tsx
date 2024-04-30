@@ -53,7 +53,9 @@ const StepperListItem = ({ step, status, type }: ListItemProps) => (
       {type === 'failure' && <CrossIcon size={16} color={Colors.Red} />}
     </StepperBullet>
     <StepperItemName $next={status === 'next'}>{step.name}</StepperItemName>
-    <StepperItemDescription $current={status === 'current'}>{step.description}</StepperItemDescription>
+    <StepperItemDescription $current={status === 'current' || status === 'completed'}>
+      {step.description}
+    </StepperItemDescription>
   </StepperListItemContainer>
 )
 

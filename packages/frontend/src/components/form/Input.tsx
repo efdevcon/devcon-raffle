@@ -5,7 +5,7 @@ import { useAccount, useBalance } from 'wagmi'
 import { formatInputAmount } from './formatInputAmount'
 import { CloseCircleIcon, EtherIcon } from '../icons'
 import { Colors } from '@/styles/colors'
-import { formatEther } from 'viem'
+import { formatBalance } from '@/utils/formatters/formatBalance'
 
 interface InputProps {
   initialAmount: string
@@ -63,7 +63,7 @@ export const Input = ({ initialAmount, setAmount, notEnoughBalance, bidTooLow }:
 
   return (
     <InputWrapper $userHasBid={!!userBid}>
-      <InputLabel>Balance: {userBalance !== undefined ? formatEther(userBalance) : '-'} ETH</InputLabel>
+      <InputLabel>Balance: {formatBalance(userBalance)} ETH</InputLabel>
       <StyledInputWrapper $isBadAmount={notEnoughBalance || bidTooLow}>
         <TokenIconWrapper>
           <EtherIcon />

@@ -1,6 +1,7 @@
 import { useAccount, useChainId, useReadContract } from 'wagmi'
 import { AUCTION_ABI } from '@/blockchain/abi/auction'
 import { AUCTION_ADDRESSES } from '@/blockchain/auctionAddresses'
+import { ContractState } from '@/types/ContractState'
 import { Hex } from 'viem'
 
 export type AuctionState =
@@ -12,15 +13,6 @@ export type AuctionState =
   | 'ClaimingFlow'
   | 'ClaimingClosed'
   | 'GitcoinFlow'
-
-export enum ContractState {
-  AWAITING_BIDDING,
-  BIDDING_OPEN,
-  BIDDING_CLOSED,
-  AUCTION_SETTLED,
-  RAFFLE_SETTLED,
-  CLAIMING_CLOSED,
-}
 
 export function useAuctionState(): AuctionState | undefined {
   const { address, chainId: userChainId } = useAccount()

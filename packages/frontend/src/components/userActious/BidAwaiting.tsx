@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import { FormWideWrapper } from '@/components/form'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 import { formatDate } from '@/utils/formatters/formatDate'
@@ -6,12 +5,8 @@ import { formatDate } from '@/utils/formatters/formatDate'
 export const BidAwaiting = () => {
   const { biddingStartTime } = useReadAuctionParams()
   return (
-    <BidAwaitingWrapper>
+    <FormWideWrapper>
       <h2>Bidding starts on {formatDate(biddingStartTime)}</h2>
-    </BidAwaitingWrapper>
+    </FormWideWrapper>
   )
 }
-
-const BidAwaitingWrapper = styled(FormWideWrapper)`
-  padding: 0 54px;
-`

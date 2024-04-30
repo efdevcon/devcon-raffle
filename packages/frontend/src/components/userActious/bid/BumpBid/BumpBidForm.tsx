@@ -1,13 +1,14 @@
 import { TxFlowSteps } from '@/components/auction/TxFlowSteps'
 import { Form, FormHeading, FormRow, FormWrapper, Input } from '@/components/form'
 import { Bid } from '@/types/bid'
-import { Separator } from '@radix-ui/react-separator'
+import { Separator } from '@/components/common/Separator'
 import styled from 'styled-components'
 import { formatEther } from 'viem'
 import { useAccount, useBalance } from 'wagmi'
 import { getPositionAfterBump } from './getPositionAfterBump'
 import { Button } from '@/components/buttons'
 import { useBids } from '@/providers/BidsProvider'
+import { Colors } from '@/styles/colors'
 
 interface BumpBidProps {
   userBid?: Bid
@@ -56,7 +57,7 @@ export const BumpBidForm = ({
           <span>Min. increment of the bid</span>
           <span>{formatEther(minimumIncrement)} ETH</span>
         </FormRow>
-        <Separator />
+        <Separator color={Colors.GreyLight} />
         <FormRow>
           <span>Your bid after the bump</span>
           <span>{formatEther(newBidAmount)} ETH</span>
@@ -67,15 +68,14 @@ export const BumpBidForm = ({
             No. {userBid && (bidTooLow ? userBid.place : getPositionAfterBump(newBidAmount, userBid.bidderId, bids))}
           </span>
         </FormRow>
-        <Button
+        <BumpButton
           disabled={notEnoughBalance || bidTooLow}
           onClick={() => {
             setView(TxFlowSteps.Review)
           }}
-          wide
         >
           Bump your bid
-        </Button>
+        </BumpButton>
       </BumpForm>
     </FormWrapper>
   )
@@ -83,4 +83,8 @@ export const BumpBidForm = ({
 
 const BumpForm = styled(Form)`
   row-gap: 8px;
+`
+
+const BumpButton = styled(Button)`
+  margin-top: 8px;
 `
