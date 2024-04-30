@@ -5,6 +5,7 @@ import { Form, FormRow } from '.'
 import { formatEther } from 'viem'
 import { Button } from '../buttons'
 import { heading } from '../auction/AuctionTransaction'
+import { formatBalance } from '@/utils/formatters/formatBalance'
 
 const amountLabel = {
   [Transactions.Place]: 'Your Bid',
@@ -44,7 +45,7 @@ export const ReviewForm = ({ action: { status, ...action }, amount, impact, view
       )}
       <FormRow>
         <span>Wallet Balance</span>
-        <span>{!!etherBalance && formatEther(etherBalance)} ETH</span>
+        <span>{formatBalance(etherBalance)} ETH</span>
       </FormRow>
       <Button view="primary" isLoading={isPending} onClick={sendTransaction} wide>
         {heading[action.type]}
