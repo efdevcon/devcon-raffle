@@ -1,10 +1,9 @@
 import * as jose from 'jose'
 import { environment } from '@/config/environment'
 import { readFile } from 'node:fs/promises'
-import path from 'node:path'
 
 export async function getVoucherCodes() {
-  const encryptedVoucherCodes = await readFile(path.resolve(__dirname, `../voucherCodes.${process.env.NODE_ENV}`), {
+  const encryptedVoucherCodes = await readFile(process.cwd() + `/src/voucherCodes.${process.env.NODE_ENV}`, {
     encoding: 'utf-8',
   })
   return decryptVoucherCodes(encryptedVoucherCodes, environment.authSecret)
@@ -20,6 +19,5 @@ export async function getVoucherCodes() {
  */
 export async function decryptVoucherCodes(encryptedVoucherCodes: string, secretKey: Uint8Array) {
   const { plaintext } = await jose.compactDecrypt(encryptedVoucherCodes, secretKey.slice(0, 32))
-  const voucherCodes = new TextDecoder().decode(plaintext).split(',')
-  return voucherCodes
+  return new TextDecoder().decode(plaintext).split(',')
 }

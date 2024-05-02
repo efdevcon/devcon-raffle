@@ -35,7 +35,7 @@
     "react-dom": "^18",
     "styled-components": "^6.1.8",
     "viem": "^2.9.3",
-    "wagmi": "^2.5.13",
+    "wagmi": "^2.7.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
