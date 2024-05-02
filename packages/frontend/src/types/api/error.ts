@@ -5,3 +5,6 @@ export const ApiErrorResponseSchema = z.object({
 })
 
 export type ApiErrorResponse = z.infer<typeof ApiErrorResponseSchema>
+
+export const isApiErrorResponse = <T extends object>(data: ApiErrorResponse | T): data is ApiErrorResponse =>
+  'error' in data
