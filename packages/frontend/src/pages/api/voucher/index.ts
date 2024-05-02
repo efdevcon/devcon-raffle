@@ -148,7 +148,7 @@ async function getVoucherWithSig(req: NextApiRequest, res: NextApiResponse) {
     .sign(environment.authSecret)
   res
     .status(200)
-    .setHeader('Set-Cookie', `voucherCodeJwt=${jwt}; sameSite=none; secure=true;`)
+    .setHeader('Set-Cookie', `voucherCodeJwt=${jwt}; sameSite=none; secure=true; path=/`)
     .json({
       voucherCode,
     } satisfies GetVoucherResponse)
