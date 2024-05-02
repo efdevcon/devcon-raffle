@@ -20,7 +20,7 @@ export const useClaimVoucher = (setVoucher: (voucher: string) => void) => {
       const nonce = await getVoucherNonce()
       const signature = await signMessageAsync({ message: buildVoucherClaimMessage(chainId, address, nonce) })
       return await getVoucherCode({
-        nonce: nonce,
+        nonce,
         chainId,
         signature,
         userAddress: address,
