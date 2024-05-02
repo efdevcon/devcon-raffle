@@ -14,6 +14,7 @@ import { nonceStore } from '@/utils/nonceStore'
 import { ApiErrorResponse } from '@/types/api/error'
 import { ContractFunctionExecutionError } from 'viem'
 import { getVoucherCodes } from '@/utils/getVoucherCodes'
+import { voucherCodeJwt } from '@/constants/jwt'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -148,7 +149,7 @@ async function getVoucherWithSig(req: NextApiRequest, res: NextApiResponse) {
     .sign(environment.authSecret)
   res
     .status(200)
-    .setHeader('Set-Cookie', `voucherCodeJwt=${jwt}; sameSite=none; secure=true; path=/`)
+    .setHeader('Set-Cookie', `${voucherCodeJwt}=${jwt}; sameSite=none; secure=true; path=/`)
     .json({
       voucherCode,
     } satisfies GetVoucherResponse)

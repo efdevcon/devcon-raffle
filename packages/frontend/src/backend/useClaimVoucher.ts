@@ -3,6 +3,7 @@ import { GetVoucherNonceResponseSchema, GetVoucherResponseSchema, GetVoucherWith
 import { isApiErrorResponse } from '@/types/api/error'
 import { buildVoucherClaimMessage } from '@/utils/buildVoucherClaimMessage'
 import { useAccount, useChainId, useSignMessage } from 'wagmi'
+import { voucherCodeJwt } from '@/constants/jwt'
 
 export const useClaimVoucher = (setVoucher: (voucher: string) => void) => {
   const { address } = useAccount()
@@ -12,10 +13,12 @@ export const useClaimVoucher = (setVoucher: (voucher: string) => void) => {
   return useMutation({
     mutationFn: async () => {
       if (!address) throw new Error('Wallet not connected')
+      if (getVoucherCodeJwt()) {
+        return await getVoucherCodeUsingJwt()
+      }
+
       const nonce = await getVoucherNonce()
-
       const signature = await signMessageAsync({ message: buildVoucherClaimMessage(chainId, address, nonce) })
-
       return await getVoucherCode({
         nonce: nonce,
         chainId,
@@ -43,8 +46,28 @@ const getVoucherCode = async (requestData: GetVoucherWithSigRequest): Promise<st
     },
     body: JSON.stringify(requestData),
   })
-  const voucherResponse = GetVoucherResponseSchema.parse(await voucherFetchResponse.json())
+  return parseVoucherCodeResponse(await voucherFetchResponse.json())
+}
+
+const getVoucherCodeUsingJwt = async () => {
+  const voucherFetchResponse = await fetch('/api/voucher')
+  return parseVoucherCodeResponse(await voucherFetchResponse.json())
+}
+
+const parseVoucherCodeResponse = (response: unknown) => {
+  const voucherResponse = GetVoucherResponseSchema.parse(response)
   if (isApiErrorResponse(voucherResponse)) throw new Error(voucherResponse.error)
 
   return voucherResponse.voucherCode
+}
+
+const getVoucherCodeJwt = () => {
+  const cookies = document.cookie.split(';')
+  for (const cookie of cookies) {
+    const [key, value] = cookie.split('=')
+    if (key === voucherCodeJwt) {
+      return value
+    }
+  }
+  return undefined
 }
