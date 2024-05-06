@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react'
 import { Hex } from 'viem'
 import { useChainId, useWriteContract } from 'wagmi'
 import { useUserSettledBid } from './useUserSettledBid'
+import { handleWriteContract } from '../handleWriteContract'
 
 export function useClaimFunds(bidderId: bigint): TransactionAction {
   const { writeContractAsync, status, reset } = useWriteContract()
@@ -17,17 +18,19 @@ export function useClaimFunds(bidderId: bigint): TransactionAction {
   const [transactionHash, setTransactionHash] = useState<Hex>()
   const send = useCallback(
     () =>
-      writeContractAsync(
-        {
-          chainId,
-          abi: AUCTION_ABI,
-          address: AUCTION_ADDRESSES[chainId],
-          functionName: 'claim',
-          args: [bidderId],
-        },
-        {
-          onSuccess: setTransactionHash,
-        },
+      handleWriteContract(
+        writeContractAsync(
+          {
+            chainId,
+            abi: AUCTION_ABI,
+            address: AUCTION_ADDRESSES[chainId],
+            functionName: 'claim',
+            args: [bidderId],
+          },
+          {
+            onSuccess: setTransactionHash,
+          },
+        ),
       ),
     [writeContractAsync, chainId, bidderId],
   )

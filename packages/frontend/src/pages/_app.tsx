@@ -5,6 +5,7 @@ import { BidsProvider } from '@/providers/BidsProvider/provider'
 import { ReactNode } from 'react'
 import { TopBar } from '@/components/topBar/TopBar'
 import { Footer } from '@/components/footer/Footer'
+import { Toaster } from 'sonner'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -14,6 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <Layout>
           <Component {...pageProps} />
         </Layout>
+        <Toaster richColors />
       </BidsProvider>
     </BlockchainProviders>
   )

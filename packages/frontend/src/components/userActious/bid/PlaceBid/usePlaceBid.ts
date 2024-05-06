@@ -1,5 +1,6 @@
 import { AUCTION_ABI } from '@/blockchain/abi/auction'
 import { AUCTION_ADDRESSES } from '@/blockchain/auctionAddresses'
+import { handleWriteContract } from '@/blockchain/handleWriteContract'
 import { TransactionAction, Transactions } from '@/blockchain/transaction'
 import { useCallback, useState } from 'react'
 import { Hex } from 'viem'
@@ -17,18 +18,20 @@ export function usePlaceBid({ score, proof, value }: Props): TransactionAction {
   const [transactionHash, setTransactionHash] = useState<Hex>()
   const send = useCallback(
     () =>
-      writeContractAsync(
-        {
-          chainId,
-          abi: AUCTION_ABI,
-          address: AUCTION_ADDRESSES[chainId],
-          functionName: 'bid',
-          args: [score, proof],
-          value,
-        },
-        {
-          onSuccess: setTransactionHash,
-        },
+      handleWriteContract(
+        writeContractAsync(
+          {
+            chainId,
+            abi: AUCTION_ABI,
+            address: AUCTION_ADDRESSES[chainId],
+            functionName: 'bid',
+            args: [score, proof],
+            value,
+          },
+          {
+            onSuccess: setTransactionHash,
+          },
+        ),
       ),
     [writeContractAsync, chainId, score, proof, value],
   )

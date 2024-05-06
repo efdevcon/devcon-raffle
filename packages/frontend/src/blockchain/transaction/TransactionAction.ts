@@ -4,7 +4,7 @@ import { Hex } from 'viem'
 
 export interface TransactionAction {
   type: Transactions
-  send: () => Promise<Hex>
+  send: () => Promise<Hex | undefined>
   status: MutationStatus
   onBackHome: () => void
   transactionHash: Hex | undefined
