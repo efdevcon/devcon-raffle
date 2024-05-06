@@ -18,7 +18,7 @@ const corsHeaders = process.env.WHITELISTED_ORIGINS
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   compiler: {
     styledComponents: true,
   },

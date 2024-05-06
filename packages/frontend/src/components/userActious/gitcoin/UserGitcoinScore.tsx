@@ -2,14 +2,12 @@ import { SufficientUserScore } from '@/components/userActious/gitcoin/Sufficient
 import { InsufficientUserScore } from '@/components/userActious/gitcoin/InsufficientUserScore'
 import { environment } from '@/config/environment'
 
-const userScore = 17
-
 export interface UserScoreProps {
-  userScore: number
+  userScore?: number
 }
 
-export const UserGitcoinScore = () => {
-  const isSufficientScore = userScore >= environment.gitcoinRequiredScore
+export const UserGitcoinScore = ({ userScore }: UserScoreProps) => {
+  const isSufficientScore = userScore && userScore >= environment.gitcoinRequiredScore
   return isSufficientScore ? (
     <SufficientUserScore userScore={userScore} />
   ) : (
