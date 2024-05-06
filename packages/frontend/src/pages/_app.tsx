@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <Layout>
           <Component {...pageProps} />
         </Layout>
-        <Toaster richColors />
+        <Toaster richColors duration={5000} />
       </BidsProvider>
     </BlockchainProviders>
   )
