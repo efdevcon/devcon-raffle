@@ -78,7 +78,7 @@ export const CheckGitcoinScore = ({
         <span>It will take about 1 minute. Please stay on this page.</span>
       </FormRow>
       <Stepper steps={gitcoinScoreSteps} currentStep={step} isFailed={gitcoinRequestError} />
-      <Button onClick={onSignAgainClick}>Sign Again</Button>
+      <Button disabled={!gitcoinRequestError} onClick={onSignAgainClick}>Sign Again</Button>
     </Wrapper>
   )
 }
