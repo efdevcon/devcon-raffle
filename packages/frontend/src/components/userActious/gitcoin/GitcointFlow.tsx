@@ -16,9 +16,10 @@ enum GitcoinState {
 interface Props {
   setGitcoinCredentials: (credentials: GetScoreResponseSuccess) => void
   gitcoinCredentials: GetScoreResponseSuccess | undefined
+  gitcoinSettled: () => void
 }
 
-export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials }: Props) => {
+export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoinSettled }: Props) => {
   const [gitcoinState, setGitcoinState] = useState<GitcoinState>(GitcoinState.INITIAL_PAGE)
   const { mutateAsync, isSuccess, isError } = useSendForScoring()
 
@@ -48,7 +49,13 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials }: Props
         />
       )
     case GitcoinState.YOUR_SCORE:
-      return <UserGitcoinScore userScore={Number(gitcoinCredentials?.score)} />
+      return (
+        <UserGitcoinScore
+          userScore={Number(gitcoinCredentials?.score) / 100000000}
+          gitcoinSettled={gitcoinSettled}
+          getBackToScoring={onCheckScoreClick}
+        />
+      )
     case GitcoinState.MISSING_PASSPORT:
       return <MissingGitcoinPassport afterCreateClick={() => setGitcoinState(GitcoinState.INITIAL_PAGE)} />
 

@@ -10,6 +10,7 @@ export const BidFlow = () => {
   const [isTransactionViewLock, setTransactionViewLock] = useState(false)
   const userBidExists = !!userBid
   const [gitcoinCredentials, setGitcoinCredentials] = useState<GetScoreResponseSuccess | undefined>()
+  const [gitcoinSettled, setGitcoinSettled] = useState<boolean>(false)
 
   const [isInitialBid, setIsInitialBid] = useState<boolean>(!userBidExists)
   useEffect(() => {
@@ -18,8 +19,14 @@ export const BidFlow = () => {
     }
   }, [isTransactionViewLock, userBidExists])
 
-  if (!gitcoinCredentials) {
-    return <GitcoinFlow setGitcoinCredentials={setGitcoinCredentials} gitcoinCredentials={gitcoinCredentials} />
+  if (!gitcoinCredentials || !gitcoinSettled) {
+    return (
+      <GitcoinFlow
+        setGitcoinCredentials={setGitcoinCredentials}
+        gitcoinCredentials={gitcoinCredentials}
+        gitcoinSettled={() => setGitcoinSettled(true)}
+      />
+    )
   }
 
   return isInitialBid ? <PlaceBidFlow setTransactionViewLock={setTransactionViewLock} /> : <BumpBidFlow />

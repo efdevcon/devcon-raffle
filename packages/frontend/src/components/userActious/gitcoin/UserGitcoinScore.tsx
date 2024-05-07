@@ -4,13 +4,15 @@ import { environment } from '@/config/environment'
 
 export interface UserScoreProps {
   userScore?: number
+  gitcoinSettled?: () => void
+  getBackToScoring?: () => void
 }
 
-export const UserGitcoinScore = ({ userScore }: UserScoreProps) => {
+export const UserGitcoinScore = ({ userScore, gitcoinSettled, getBackToScoring }: UserScoreProps) => {
   const isSufficientScore = userScore && userScore >= environment.gitcoinRequiredScore
   return isSufficientScore ? (
-    <SufficientUserScore userScore={userScore} />
+    <SufficientUserScore userScore={userScore} gitcoinSettled={gitcoinSettled} />
   ) : (
-    <InsufficientUserScore userScore={userScore} />
+    <InsufficientUserScore userScore={userScore} getBackToScoring={getBackToScoring} />
   )
 }
