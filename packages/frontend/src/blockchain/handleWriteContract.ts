@@ -2,11 +2,11 @@ import { toast } from 'sonner'
 import { BaseError as WagmiBaseError } from 'wagmi'
 import { BaseError as ViemBaseError, Hex } from 'viem'
 
-export const handleWriteContract = async (promise: Promise<Hex>) => {
+export async function handleWriteContract(promise: Promise<Hex>) {
   toast.promise(promise, {
     loading: 'Sending transaction...',
     success: (data) => `Transaction hash: ${data}`,
-    error: (error) => getWagmiErrorMessage(error),
+    error: getWagmiErrorMessage,
   })
   return promise.catch(() => undefined)
 }

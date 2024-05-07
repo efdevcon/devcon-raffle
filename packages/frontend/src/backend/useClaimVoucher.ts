@@ -4,13 +4,15 @@ import { isApiErrorResponse } from '@/types/api/error'
 import { buildVoucherClaimMessage } from '@/utils/buildVoucherClaimMessage'
 import { useAccount, useChainId, useSignMessage } from 'wagmi'
 import { voucherCodeJwt } from '@/constants/jwt'
+import { useCallback } from 'react'
+import { handleBackendRequest } from './handleBackendRequest'
 
 export const useClaimVoucher = (setVoucher: (voucher: string) => void) => {
   const { address } = useAccount()
   const chainId = useChainId()
   const { signMessageAsync } = useSignMessage()
 
-  return useMutation({
+  const { isPending, mutateAsync } = useMutation({
     mutationFn: async () => {
       if (!address) throw new Error('Wallet not connected')
       if (getVoucherCodeJwt()) {
@@ -28,6 +30,9 @@ export const useClaimVoucher = (setVoucher: (voucher: string) => void) => {
     },
     onSuccess: setVoucher,
   })
+
+  const claimVoucher = useCallback(() => handleBackendRequest(mutateAsync()), [mutateAsync])
+  return { claimVoucher, isPending }
 }
 
 const getVoucherNonce = async (): Promise<string> => {
