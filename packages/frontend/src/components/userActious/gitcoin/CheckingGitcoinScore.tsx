@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useAccount, useChainId } from 'wagmi'
 import { Hex } from 'viem'
-import { getGitcoinScore, useSendForScoring } from '@/backend/getPassportScore'
+import { getGitcoinScore } from '@/backend/getPassportScore'
 import { GetScoreResponseSuccess } from '@/types/api/scorer'
 
 const gitcoinScoreSteps = [
@@ -39,25 +39,21 @@ const gitcoinScoreSteps = [
 
 interface CheckGitcoinScoreProps {
   setGitcoinCredentials: (credentials: GetScoreResponseSuccess) => void
+  gitcoinRequestSettled: boolean
 }
 
-export const CheckGitcoinScore = ({ setGitcoinCredentials }: CheckGitcoinScoreProps) => {
+export const CheckGitcoinScore = ({ setGitcoinCredentials, gitcoinRequestSettled }: CheckGitcoinScoreProps) => {
   const { address } = useAccount()
   const chainId = useChainId()
-  const { mutate, requestSettled } = useSendForScoring()
 
   const { data } = useQuery({
     queryKey: ['gitcoinScore', address, chainId],
     queryFn: () => getGitcoinScore(address as Hex, chainId),
-    enabled: !!(requestSettled && address),
+    enabled: !!(gitcoinRequestSettled && address),
     retry: true,
     retryDelay: 5000,
   })
-  const step = requestSettled ? 2 : 1
-
-  useEffect(() => {
-    mutate()
-  }, [mutate])
+  const step = gitcoinRequestSettled ? 2 : 1
 
   useEffect(() => {
     if (data && data.status == 'done') {
