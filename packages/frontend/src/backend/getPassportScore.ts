@@ -14,23 +14,21 @@ export const useSendForScoring = () => {
   const chainId = useChainId()
   const { signMessageAsync } = useSignMessage()
 
-  return {
-    ...useMutation({
-      mutationFn: async () => {
-        if (!address) {
-          throw new Error('No address')
-        }
+  return useMutation({
+    mutationFn: async () => {
+      if (!address) {
+        throw new Error('No address')
+      }
 
-        try {
-          return await getGitcoinScore(address, chainId)
-        } catch (error) {}
+      try {
+        return await getGitcoinScore(address, chainId)
+      } catch (error) {}
 
-        const nonceData = await getGitcoinNonce()
-        const signature = await signMessageAsync({ message: nonceData.message })
-        await sendForScoring({ userAddress: address as Hex, signature, nonce: nonceData.nonce })
-      },
-    }),
-  }
+      const nonceData = await getGitcoinNonce()
+      const signature = await signMessageAsync({ message: nonceData.message })
+      await sendForScoring({ userAddress: address as Hex, signature, nonce: nonceData.nonce })
+    },
+  })
 }
 
 export const getGitcoinScore = async (userAddress: Hex, chainId: number) => {
