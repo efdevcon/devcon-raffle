@@ -20,18 +20,33 @@ interface Props {
 
 export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials }: Props) => {
   const [gitcoinState, setGitcoinState] = useState<GitcoinState>(GitcoinState.INITIAL_PAGE)
-  const { mutate, requestSettled } = useSendForScoring()
+  const { mutateAsync, requestSettled, signatureError } = useSendForScoring()
+
+  const sendForScoring = async () => {
+    const data = await mutateAsync()
+    if (data?.status === 'done') {
+      setGitcoinCredentials(data)
+      setGitcoinState(GitcoinState.YOUR_SCORE)
+    }
+  }
 
   const onClickCheckScore = () => {
     setGitcoinState(GitcoinState.CHECKING_SCORE)
-    mutate()
+    sendForScoring()
   }
 
   switch (gitcoinState) {
     case GitcoinState.INITIAL_PAGE:
       return <CheckGitcoinPassword onClickCheckScore={onClickCheckScore} />
     case GitcoinState.CHECKING_SCORE:
-      return <CheckGitcoinScore setGitcoinCredentials={setGitcoinCredentials} gitcoinRequestSettled={requestSettled} />
+      return (
+        <CheckGitcoinScore
+          setGitcoinCredentials={setGitcoinCredentials}
+          gitcoinRequestSettled={requestSettled}
+          gitcoinRequestError={signatureError}
+          onSignAgainClick={sendForScoring}
+        />
+      )
     case GitcoinState.YOUR_SCORE:
       return <UserGitcoinScore userScore={Number(gitcoinCredentials?.score)} />
     case GitcoinState.MISSING_PASSPORT:

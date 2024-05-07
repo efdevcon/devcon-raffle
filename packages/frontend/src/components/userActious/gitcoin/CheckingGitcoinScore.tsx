@@ -40,9 +40,16 @@ const gitcoinScoreSteps = [
 interface CheckGitcoinScoreProps {
   setGitcoinCredentials: (credentials: GetScoreResponseSuccess) => void
   gitcoinRequestSettled: boolean
+  gitcoinRequestError: boolean
+  onSignAgainClick: () => void
 }
 
-export const CheckGitcoinScore = ({ setGitcoinCredentials, gitcoinRequestSettled }: CheckGitcoinScoreProps) => {
+export const CheckGitcoinScore = ({
+  setGitcoinCredentials,
+  gitcoinRequestSettled,
+  gitcoinRequestError,
+  onSignAgainClick,
+}: CheckGitcoinScoreProps) => {
   const { address } = useAccount()
   const chainId = useChainId()
 
@@ -70,8 +77,8 @@ export const CheckGitcoinScore = ({ setGitcoinCredentials, gitcoinRequestSettled
       <FormRow>
         <span>It will take about 1 minute. Please stay on this page.</span>
       </FormRow>
-      <Stepper steps={gitcoinScoreSteps} currentStep={step} isFailed={false} />
-      <Button>Sign Again</Button>
+      <Stepper steps={gitcoinScoreSteps} currentStep={step} isFailed={gitcoinRequestError} />
+      <Button onClick={onSignAgainClick}>Sign Again</Button>
     </Wrapper>
   )
 }

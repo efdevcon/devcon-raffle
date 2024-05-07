@@ -15,6 +15,7 @@ export const useSendForScoring = () => {
   const chainId = useChainId()
   const { signMessageAsync } = useSignMessage()
   const [requestSettled, setRequestSettled] = useState(false)
+  const [signatureError, setSignatureError] = useState(false)
 
   return {
     ...useMutation({
@@ -24,21 +25,21 @@ export const useSendForScoring = () => {
         }
 
         try {
-          await getGitcoinScore(address, chainId)
-          setRequestSettled(true)
-          return
+          return await getGitcoinScore(address, chainId)
         } catch (error) {}
 
         const nonceData = await getGitcoinNonce()
-        const signature = await signMessageAsync({ message: nonceData.message })
-        if (!signature) {
-          throw new Error('Signature not signed')
+        try {
+          const signature = await signMessageAsync({ message: nonceData.message })
+          await sendForScoring({ userAddress: address as Hex, signature, nonce: nonceData.nonce })
+          setRequestSettled(true)
+        } catch (error) {
+          setSignatureError(true)
         }
-        await sendForScoring({ userAddress: address as Hex, signature, nonce: nonceData.nonce })
-        setRequestSettled(true)
       },
     }),
     requestSettled,
+    signatureError,
   }
 }
 
