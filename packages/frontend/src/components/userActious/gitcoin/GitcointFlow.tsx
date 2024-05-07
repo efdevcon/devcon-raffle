@@ -30,14 +30,14 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials }: Props
     }
   }
 
-  const onClickCheckScore = () => {
+  const onCheckScoreClick = () => {
     setGitcoinState(GitcoinState.CHECKING_SCORE)
     sendForScoring()
   }
 
   switch (gitcoinState) {
     case GitcoinState.INITIAL_PAGE:
-      return <CheckGitcoinPassword onClickCheckScore={onClickCheckScore} />
+      return <CheckGitcoinPassword onCheckScoreClick={onCheckScoreClick} />
     case GitcoinState.CHECKING_SCORE:
       return (
         <CheckGitcoinScore
@@ -53,6 +53,6 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials }: Props
       return <MissingGitcoinPassport afterCreateClick={() => setGitcoinState(GitcoinState.INITIAL_PAGE)} />
 
     default:
-      return <CheckGitcoinPassword onClickCheckScore={onClickCheckScore} />
+      return <CheckGitcoinPassword onCheckScoreClick={onCheckScoreClick} />
   }
 }
