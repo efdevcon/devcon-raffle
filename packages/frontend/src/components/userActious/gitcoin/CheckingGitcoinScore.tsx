@@ -52,11 +52,11 @@ export const CheckGitcoinScore = ({
 }: CheckGitcoinScoreProps) => {
   const { address } = useAccount()
   const chainId = useChainId()
-
+  const queryEnabled = !!(gitcoinRequestSettled && address)
   const { data } = useQuery({
     queryKey: ['gitcoinScore', address, chainId],
     queryFn: () => getGitcoinScore(address as Hex, chainId),
-    enabled: !!(gitcoinRequestSettled && address),
+    enabled: queryEnabled,
     retry: true,
     retryDelay: 5000,
   })
@@ -78,7 +78,7 @@ export const CheckGitcoinScore = ({
         <span>It will take about 1 minute. Please stay on this page.</span>
       </FormRow>
       <Stepper steps={gitcoinScoreSteps} currentStep={step} isFailed={gitcoinRequestError} />
-      <Button disabled={!gitcoinRequestError} onClick={onSignAgainClick}>
+      <Button isLoading={queryEnabled} disabled={!gitcoinRequestError} onClick={onSignAgainClick}>
         Sign Again
       </Button>
     </Wrapper>
