@@ -6,7 +6,6 @@ import {
   SubmitAddressForScoringResponseSchema,
 } from '@/types/api/scorer'
 import { useMutation } from '@tanstack/react-query'
-import { useState } from 'react'
 import { Hex } from 'viem'
 import { useAccount, useChainId, useSignMessage } from 'wagmi'
 
@@ -14,14 +13,12 @@ export const useSendForScoring = () => {
   const { address } = useAccount()
   const chainId = useChainId()
   const { signMessageAsync } = useSignMessage()
-  const [requestSettled, setRequestSettled] = useState(false)
-  const [signatureError, setSignatureError] = useState(false)
 
   return {
     ...useMutation({
       mutationFn: async () => {
-        if (requestSettled || !address) {
-          return
+        if (!address) {
+          throw new Error('No address')
         }
 
         try {
@@ -29,17 +26,10 @@ export const useSendForScoring = () => {
         } catch (error) {}
 
         const nonceData = await getGitcoinNonce()
-        try {
-          const signature = await signMessageAsync({ message: nonceData.message })
-          await sendForScoring({ userAddress: address as Hex, signature, nonce: nonceData.nonce })
-          setRequestSettled(true)
-        } catch (error) {
-          setSignatureError(true)
-        }
+        const signature = await signMessageAsync({ message: nonceData.message })
+        await sendForScoring({ userAddress: address as Hex, signature, nonce: nonceData.nonce })
       },
     }),
-    requestSettled,
-    signatureError,
   }
 }
 

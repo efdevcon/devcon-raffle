@@ -20,7 +20,7 @@ interface Props {
 
 export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials }: Props) => {
   const [gitcoinState, setGitcoinState] = useState<GitcoinState>(GitcoinState.INITIAL_PAGE)
-  const { mutateAsync, requestSettled, signatureError } = useSendForScoring()
+  const { mutateAsync, isSuccess, isError } = useSendForScoring()
 
   const sendForScoring = async () => {
     const data = await mutateAsync()
@@ -42,8 +42,8 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials }: Props
       return (
         <CheckGitcoinScore
           setGitcoinCredentials={setGitcoinCredentials}
-          gitcoinRequestSettled={requestSettled}
-          gitcoinRequestError={signatureError}
+          gitcoinRequestSettled={isSuccess}
+          gitcoinRequestError={isError}
           onSignAgainClick={sendForScoring}
         />
       )
