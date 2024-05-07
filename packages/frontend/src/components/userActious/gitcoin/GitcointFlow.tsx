@@ -23,6 +23,11 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoin
   const [gitcoinState, setGitcoinState] = useState<GitcoinState>(GitcoinState.INITIAL_PAGE)
   const { mutateAsync, isSuccess, isError } = useSendForScoring()
 
+  const setCredentials = (credentials: GetScoreResponseSuccess) => {
+    setGitcoinCredentials(credentials)
+    setGitcoinState(GitcoinState.YOUR_SCORE)
+  }
+
   const sendForScoring = async () => {
     const data = await mutateAsync()
     if (data?.status === 'done') {
@@ -42,7 +47,7 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoin
     case GitcoinState.CHECKING_SCORE:
       return (
         <CheckGitcoinScore
-          setGitcoinCredentials={setGitcoinCredentials}
+          setGitcoinCredentials={setCredentials}
           gitcoinRequestSettled={isSuccess}
           gitcoinRequestError={isError}
           onSignAgainClick={sendForScoring}
