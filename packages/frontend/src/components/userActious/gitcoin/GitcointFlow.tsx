@@ -3,8 +3,9 @@ import { CheckGitcoinPassword } from './CheckGitcoinPassword'
 import { CheckGitcoinScore } from './CheckingGitcoinScore'
 import { UserGitcoinScore } from '@/components/userActious/gitcoin/UserGitcoinScore'
 import { MissingGitcoinPassport } from './MissingGitcoinPassport'
-import { GetScoreResponseSuccess } from '@/types/api/scorer'
 import { useSendForScoring } from '@/backend/getPassportScore'
+import { GitcoinCredentials } from '@/types/passport/GticoinCredentials'
+import { GetScoreResponseSuccess } from '@/types/api/scorer'
 
 enum GitcoinState {
   INITIAL_PAGE,
@@ -13,9 +14,11 @@ enum GitcoinState {
   YOUR_SCORE,
 }
 
+const ScoreMultiplier = 100000000
+
 interface Props {
-  setGitcoinCredentials: (credentials: GetScoreResponseSuccess) => void
-  gitcoinCredentials: GetScoreResponseSuccess | undefined
+  setGitcoinCredentials: (credentials: GitcoinCredentials) => void
+  gitcoinCredentials: GitcoinCredentials | undefined
   gitcoinSettled: () => void
 }
 
@@ -24,15 +27,17 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoin
   const { mutateAsync, isSuccess, isError } = useSendForScoring()
 
   const setCredentials = (credentials: GetScoreResponseSuccess) => {
-    setGitcoinCredentials(credentials)
+    setGitcoinCredentials({
+      score: BigInt(credentials?.score),
+      proof: credentials.signature,
+    })
     setGitcoinState(GitcoinState.YOUR_SCORE)
   }
 
   const sendForScoring = async () => {
     const data = await mutateAsync()
     if (data?.status === 'done') {
-      setGitcoinCredentials(data)
-      setGitcoinState(GitcoinState.YOUR_SCORE)
+      setCredentials(data)
     }
   }
 
@@ -56,7 +61,7 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoin
     case GitcoinState.YOUR_SCORE:
       return (
         <UserGitcoinScore
-          userScore={Number(gitcoinCredentials?.score) / 100000000}
+          userScore={Number(gitcoinCredentials?.score) / ScoreMultiplier}
           gitcoinSettled={gitcoinSettled}
           getBackToScoring={onCheckScoreClick}
         />
