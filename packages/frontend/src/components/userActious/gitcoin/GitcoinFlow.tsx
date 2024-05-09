@@ -14,7 +14,8 @@ enum GitcoinState {
   YOUR_SCORE,
 }
 
-const ScoreMultiplier = 100000000
+const ScoreDecimals = 8
+const ScoreMultiplier = 10 ** ScoreDecimals
 
 interface Props {
   setGitcoinCredentials: (credentials: GitcoinCredentials) => void

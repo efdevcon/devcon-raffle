@@ -22,7 +22,11 @@ export const useSendForScoring = () => {
 
       try {
         return await getGitcoinScore(address, chainId)
-      } catch (error) {}
+      } catch (error) {
+        if (!(error instanceof ErrorWithStatus) || error.status != 404) {
+          throw error
+        }
+      }
 
       const nonceData = await getGitcoinNonce()
       const signature = await signMessageAsync({ message: nonceData.message })
@@ -31,10 +35,16 @@ export const useSendForScoring = () => {
   })
 }
 
+class ErrorWithStatus extends Error {
+  constructor(message: string, public status: number) {
+    super(message)
+  }
+}
+
 export const getGitcoinScore = async (userAddress: Hex, chainId: number) => {
   const result = await fetch(`/api/scorer/${userAddress}?chainId=${chainId}`)
   const data = GetResponseSchema.parse(await result.json())
-  if (isApiErrorResponse(data)) throw new Error(data.error)
+  if (isApiErrorResponse(data)) throw new ErrorWithStatus(data.error, result.status)
   return data
 }
 

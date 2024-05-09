@@ -2,7 +2,7 @@ import { useUserBid } from '@/blockchain/hooks/useUserBid'
 import { useEffect, useState } from 'react'
 import { PlaceBidFlow } from './PlaceBid/PlaceBidFlow'
 import { BumpBidFlow } from './BumpBid/BumpBidFlow'
-import { GitcoinFlow } from '../gitcoin/GitcointFlow'
+import { GitcoinFlow } from '../gitcoin/GitcoinFlow'
 import { GitcoinCredentials } from '@/types/passport/GticoinCredentials'
 
 export const BidFlow = () => {
