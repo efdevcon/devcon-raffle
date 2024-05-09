@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CheckGitcoinPassword } from './CheckGitcoinPassword'
+import { CheckGitcoinPassport } from './CheckGitcoinPassport'
 import { CheckGitcoinScore } from './CheckingGitcoinScore'
 import { UserGitcoinScore } from '@/components/userActious/gitcoin/UserGitcoinScore'
 import { MissingGitcoinPassport } from './MissingGitcoinPassport'
@@ -49,7 +49,7 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoin
 
   switch (gitcoinState) {
     case GitcoinState.INITIAL_PAGE:
-      return <CheckGitcoinPassword onCheckScoreClick={onCheckScoreClick} />
+      return <CheckGitcoinPassport onCheckScoreClick={onCheckScoreClick} />
     case GitcoinState.CHECKING_SCORE:
       return (
         <CheckGitcoinScore
@@ -71,6 +71,6 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoin
       return <MissingGitcoinPassport afterCreateClick={() => setGitcoinState(GitcoinState.INITIAL_PAGE)} />
 
     default:
-      return <CheckGitcoinPassword onCheckScoreClick={onCheckScoreClick} />
+      return <CheckGitcoinPassport onCheckScoreClick={onCheckScoreClick} />
   }
 }

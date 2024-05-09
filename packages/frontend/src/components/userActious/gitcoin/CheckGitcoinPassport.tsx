@@ -7,7 +7,7 @@ interface Props {
   onCheckScoreClick: () => void
 }
 
-export const CheckGitcoinPassword = ({ onCheckScoreClick }: Props) => {
+export const CheckGitcoinPassport = ({ onCheckScoreClick }: Props) => {
   return (
     <Wrapper>
       <FormHeading>Check Gitcoin Passport</FormHeading>
