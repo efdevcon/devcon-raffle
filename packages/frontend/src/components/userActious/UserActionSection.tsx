@@ -3,7 +3,6 @@ import { Colors } from '@/styles/colors'
 import { ReactElement } from 'react'
 import styled from 'styled-components'
 import { ConnectWalletWarning } from './ConnectWalletWarning'
-import { GitcoinFlow } from './gitcoin/GitcointFlow'
 import { BidFlow } from './bid/BidFlow'
 import { AwaitingResults } from '@/components/userActious/claim/AwaitingResults'
 import { ClaimingClosed } from '@/components/userActious/claim/ClaimingClosed'
@@ -19,7 +18,6 @@ const UserActions: Record<AuctionState, () => ReactElement> = {
   AwaitingResults: AwaitingResults,
   ClaimingFlow: ClaimingFlow,
   ClaimingClosed: ClaimingClosed,
-  GitcoinFlow: GitcoinFlow,
 }
 
 export const UserActionSection = () => {

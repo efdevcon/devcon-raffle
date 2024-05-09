@@ -1,7 +1,7 @@
 import { useUserBid } from '@/blockchain/hooks/useUserBid'
 import { useEffect, useState } from 'react'
-import { PlaceBidFlow } from './PlaceBid/PlaceBidFlow'
 import { BumpBidFlow } from './BumpBid/BumpBidFlow'
+import { InitialBidFlow } from './InitialBidFlow'
 
 export const BidFlow = () => {
   const userBid = useUserBid()
@@ -15,9 +15,5 @@ export const BidFlow = () => {
     }
   }, [isTransactionViewLock, userBidExists])
 
-  return isInitialBid ? <PlaceBidFlow setTransactionViewLock={setTransactionViewLock} /> : <BumpBidFlow />
-}
-
-export interface FlowProps {
-  setTransactionViewLock: (value: boolean) => void
+  return isInitialBid ? <InitialBidFlow setTransactionViewLock={setTransactionViewLock} /> : <BumpBidFlow />
 }

@@ -42,7 +42,9 @@ const GetScoreResponseSuccessSchema = z.object({
   signature: HexStringSchema,
 })
 
-const GetResponseSchema = z.union([
+export type GetScoreResponseSuccess = z.infer<typeof GetScoreResponseSuccessSchema>
+
+export const GetResponseSchema = z.union([
   ErrorResponseSchema,
   GetScoreResponseProcessingSchema,
   GetScoreResponseSuccessSchema,

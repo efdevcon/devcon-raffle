@@ -5,7 +5,7 @@ import { environment } from '@/config/environment'
 import styled from 'styled-components'
 import { Colors } from '@/styles/colors'
 
-export const SufficientUserScore = ({ userScore }: UserScoreProps) => {
+export const SufficientUserScore = ({ userScore, gitcoinSettled }: UserScoreProps) => {
   return (
     <FormWrapper>
       <FormHeading>
@@ -20,7 +20,7 @@ export const SufficientUserScore = ({ userScore }: UserScoreProps) => {
       <FormRow>
         <h4>You can place your bid now!</h4>
       </FormRow>
-      <Button>Continue</Button>
+      <Button onClick={gitcoinSettled}>Continue</Button>
     </FormWrapper>
   )
 }
