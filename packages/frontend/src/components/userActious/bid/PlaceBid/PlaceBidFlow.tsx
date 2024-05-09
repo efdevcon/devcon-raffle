@@ -1,5 +1,4 @@
 import { useAccount } from 'wagmi'
-import { FlowProps } from '../BidFlow'
 import { TxFlowSteps } from '@/components/auction/TxFlowSteps'
 import { useEffect, useMemo, useState } from 'react'
 import { useMinimumBid } from '@/blockchain/hooks/useMinimumBid'
@@ -7,6 +6,12 @@ import { PlaceBidForm } from './PlaceBidForm'
 import { formatEther, parseEther } from 'viem'
 import { AuctionTransaction } from '@/components/auction/AuctionTransaction'
 import { usePlaceBid } from './usePlaceBid'
+import { GitcoinCredentials } from '@/types/passport/GticoinCredentials'
+
+interface FlowProps {
+  setTransactionViewLock: (value: boolean) => void
+  gitcoinCredentials: GitcoinCredentials
+}
 
 export const PlaceBidFlow = ({ setTransactionViewLock, gitcoinCredentials }: FlowProps) => {
   const { address } = useAccount()
