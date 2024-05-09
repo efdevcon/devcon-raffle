@@ -7,7 +7,7 @@ import { urls } from '@/constants/urls'
 import { UserScoreProps } from '@/components/userActious/gitcoin/UserGitcoinScore'
 import { environment } from '@/config/environment'
 
-export const InsufficientUserScore = ({ userScore }: UserScoreProps) => {
+export const InsufficientUserScore = ({ userScore, getBackToScoring }: UserScoreProps) => {
   return (
     <FormWrapper>
       <FormHeading>
@@ -32,7 +32,7 @@ export const InsufficientUserScore = ({ userScore }: UserScoreProps) => {
           </p>
         </div>
       </FormRow>
-      <Button>Recalculate Score</Button>
+      <Button onClick={getBackToScoring}>Recalculate Score</Button>
     </FormWrapper>
   )
 }

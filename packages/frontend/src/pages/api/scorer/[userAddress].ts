@@ -61,7 +61,7 @@ async function getScore(req: NextApiRequest, res: NextApiResponse<GetScoreRespon
   } catch (err: any) {
     // The scorer will return a 400 when the score has not been submitted for querying
     if (err.message.startsWith('Unable to get score')) {
-      res.status(500).json({
+      res.status(404).json({
         status: 'error',
         error: `Unable to get score for ${userAddress}. Submit the score before querying.`,
       } satisfies GetScoreResponse)

@@ -3,14 +3,20 @@ import { FormHeading, FormRow, FormWrapper } from '../../form'
 import { Button } from '../../buttons'
 import { SeparatorWithText } from '@/components/common/Separator'
 
-export const CheckGitcoinPassword = () => {
+interface Props {
+  onCheckScoreClick: () => void
+}
+
+export const CheckGitcoinPassport = ({ onCheckScoreClick }: Props) => {
   return (
     <Wrapper>
       <FormHeading>Check Gitcoin Passport</FormHeading>
       <FormRow>
         <span>To place a bid we need to check your score. By verifying your score we checking if you are a human.</span>
       </FormRow>
-      <Button wide>Check Score</Button>
+      <Button wide onClick={onCheckScoreClick}>
+        Check Score
+      </Button>
       <SeparatorWithText text="Or" />
       <FormRow>
         <span>

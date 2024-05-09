@@ -12,7 +12,6 @@ export type AuctionState =
   | 'AwaitingResults'
   | 'ClaimingFlow'
   | 'ClaimingClosed'
-  | 'GitcoinFlow'
 
 export function useAuctionState(): AuctionState | undefined {
   const { address, chainId: userChainId } = useAccount()
