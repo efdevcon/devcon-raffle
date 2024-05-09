@@ -6,15 +6,17 @@ import {
   SubmitAddressForScoringResponseSchema,
 } from '@/types/api/scorer'
 import { useMutation } from '@tanstack/react-query'
+import { useCallback } from 'react'
 import { Hex } from 'viem'
 import { useAccount, useChainId, useSignMessage } from 'wagmi'
+import { handleBackendRequest } from './handleBackendRequest'
 
-export const useSendForScoring = () => {
+export const useRequestScore = () => {
   const { address } = useAccount()
   const chainId = useChainId()
   const { signMessageAsync } = useSignMessage()
 
-  return useMutation({
+  const { mutateAsync, isSuccess, isError } = useMutation({
     mutationFn: async () => {
       if (!address) {
         throw new Error('No address')
@@ -33,6 +35,8 @@ export const useSendForScoring = () => {
       await sendForScoring({ userAddress: address as Hex, signature, nonce: nonceData.nonce })
     },
   })
+  const requestScore = useCallback(() => handleBackendRequest(mutateAsync()), [mutateAsync])
+  return { requestScore, isSuccess, isError }
 }
 
 class ErrorWithStatus extends Error {
