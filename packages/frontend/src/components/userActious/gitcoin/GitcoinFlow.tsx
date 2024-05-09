@@ -3,7 +3,7 @@ import { CheckGitcoinPassport } from './CheckGitcoinPassport'
 import { CheckGitcoinScore } from './CheckingGitcoinScore'
 import { UserGitcoinScore } from '@/components/userActious/gitcoin/UserGitcoinScore'
 import { MissingGitcoinPassport } from './MissingGitcoinPassport'
-import { useSendForScoring } from '@/backend/getPassportScore'
+import { useRequestScore } from '@/backend/getPassportScore'
 import { GitcoinCredentials } from '@/types/passport/GticoinCredentials'
 import { GetScoreResponseSuccess } from '@/types/api/scorer'
 
@@ -25,7 +25,7 @@ interface Props {
 
 export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoinSettled }: Props) => {
   const [gitcoinState, setGitcoinState] = useState<GitcoinState>(GitcoinState.INITIAL_PAGE)
-  const { mutateAsync, isSuccess, isError } = useSendForScoring()
+  const { requestScore, isSuccess, isError } = useRequestScore()
 
   const setCredentials = (credentials: GetScoreResponseSuccess) => {
     setGitcoinCredentials({
@@ -36,7 +36,7 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoin
   }
 
   const sendForScoring = async () => {
-    const data = await mutateAsync()
+    const data = await requestScore()
     if (data?.status === 'done') {
       setCredentials(data)
     }

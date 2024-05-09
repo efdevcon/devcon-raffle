@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { VoucherTimeLeft } from './VoucherTimeLeft'
 import { useAuctionState } from '@/blockchain/hooks/useAuctionState'
 import { Button } from '@/components/buttons'
-import { ErrorNotifications } from '@/components/notifications/ErrorNotifications'
 import { Colors } from '@/styles/colors'
 import { useClaimVoucher } from '@/backend/useClaimVoucher'
 
@@ -13,12 +12,11 @@ interface ClaimVoucherSectionProps {
 
 export const ClaimVoucherSection = ({ setVoucher }: ClaimVoucherSectionProps) => {
   const state = useAuctionState()
-  const { mutate, isPending, error, reset } = useClaimVoucher(setVoucher)
+  const { claimVoucher, isPending } = useClaimVoucher(setVoucher)
 
   return (
     <VoucherOption>
-      {error && <ErrorNotifications error={error} onClick={mutate} reset={reset} />}
-      <Button view="primary" wide onClick={mutate} isLoading={isPending}>
+      <Button view="primary" wide onClick={claimVoucher} isLoading={isPending}>
         Get voucher code
       </Button>
       {state !== 'ClaimingClosed' && <VoucherTimeLeft />}

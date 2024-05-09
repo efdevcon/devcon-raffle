@@ -27,8 +27,8 @@ export const ReviewForm = ({ action: { status, ...action }, amount, impact, view
   const isPending = status === 'pending'
 
   const sendTransaction = async () => {
-    await action.send()
-    setView(view + 1)
+    const transactionHash = await action.send()
+    transactionHash && setView(view + 1)
   }
 
   return (
