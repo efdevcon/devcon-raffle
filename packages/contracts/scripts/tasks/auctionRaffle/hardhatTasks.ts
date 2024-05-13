@@ -82,6 +82,22 @@ task('fulfill-vrf', 'Fulfill VRF request').setAction(async (taskArgs, hre) => {
   console.log(`Fulfilled VRF request with: ${randomWords}`)
 })
 
+task('transfer-eth', 'Transfers ether from DEPLOYER account to desired account')
+  .addParam('amount', 'ETH amount to send', '1', types.string, true)
+  .addParam('account', 'ETH amount to send', undefined, types.string, false)
+  .setAction(async ({ amount, account }: { amount: string, account: string }, hre) => {
+    const [deployer] = await hre.ethers.getSigners()
+    console.log('account: ', account)
+
+    const amountToSend = parseEther(amount)
+    const tx = await deployer.sendTransaction({
+      to: account,
+      value: amountToSend,
+    })
+    await tx.wait()
+    console.log(`Sent ${formatEther(amountToSend)} to ${account}`)
+  })
+
 function logBid(address: string, bidAmount: BigNumberish) {
   console.log(`Account ${address} bid ${formatEther(bidAmount)}`)
 }
