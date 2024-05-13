@@ -36,7 +36,7 @@ export const BidsShortList = () => {
         {bidsShortList.map((bid) => (
           <BidsListEntry key={bid.address} bid={bid} isUser={userBid && userBid.address === bid.address} view="short" />
         ))}
-        {!participatesInAuction && userBid && (
+        {userBid && auctionWinnersCount && userBid.place > auctionWinnersCount && (
           <>
             <Separator color={Colors.Grey} />
             <BidsListEntry bid={userBid} isUser view="short" />
