@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { FormHeading, FormRow, FormWrapper } from '../../form'
 import { Button } from '../../buttons'
 import { SeparatorWithText } from '@/components/common/Separator'
+import { urls } from '@/constants/urls'
 
 interface Props {
   onCheckScoreClick: () => void
@@ -23,7 +24,7 @@ export const CheckGitcoinPassport = ({ onCheckScoreClick }: Props) => {
           If you don’t have a <b>Gitcoin Passport</b>, please create one.
         </span>
       </FormRow>
-      <Button onClick={() => window.open('https://passport.gitcoin.co/', '_blank')} wide>
+      <Button onClick={() => window.open(urls.gitcoin, '_blank')} wide>
         Create a Gitcoin Passport
       </Button>
     </Wrapper>
