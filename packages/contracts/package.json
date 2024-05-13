@@ -31,6 +31,7 @@
     "hardhat:settle-auction": "hardhat --network localhost settle-auction",
     "hardhat:settle-raffle": "hardhat --network localhost settle-raffle",
     "hardhat:fulfill-vrf": "hardhat --network localhost fulfill-vrf",
+    "hardhat:transfer-eth": "hardhat --network localhost transfer-eth",
     "hardhat:settle": "pnpm node:increase-time && pnpm hardhat:settle-auction && pnpm hardhat:settle-raffle && pnpm hardhat:fulfill-vrf",
     "rinkeby:generate-dotenv": "hardhat generate-dotenv",
     "rinkeby:transfer-ether": "hardhat --network rinkeby transfer-ether",

@@ -14,7 +14,7 @@ interface Props {
 
 export const VoucherForm = ({ voucher }: Props) => {
   const redeemTimestamp = useVoucherRedeemDeadline()
-  const isVoucherExpired = redeemTimestamp ? redeemTimestamp * BigInt(1000) > Date.now() : false
+  const isVoucherExpired = redeemTimestamp ? Date.now() > redeemTimestamp * BigInt(1000) : false
 
   return (
     <WinnerForm>
@@ -57,7 +57,7 @@ const VoucherIdLabel = styled(InputLabel)<LabelProps>`
   justify-content: center;
   line-height: 14px;
   margin-bottom: 8px;
-  color: ${({ $isVoucherExpired }) => ($isVoucherExpired ? Colors.Red : Colors.White)};
+  color: ${({ $isVoucherExpired }) => ($isVoucherExpired ? Colors.Red : Colors.Black)};
 `
 
 const VoucherFormHeading = styled(FormHeading)`
