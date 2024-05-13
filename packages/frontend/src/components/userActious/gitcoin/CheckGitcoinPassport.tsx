@@ -23,7 +23,9 @@ export const CheckGitcoinPassport = ({ onCheckScoreClick }: Props) => {
           If you don’t have a <b>Gitcoin Passport</b>, please create one.
         </span>
       </FormRow>
-      <Button wide>Create a Gitcoin Passport</Button>
+      <Button onClick={() => window.open('https://passport.gitcoin.co/', '_blank')} wide>
+        Create a Gitcoin Passport
+      </Button>
     </Wrapper>
   )
 }
