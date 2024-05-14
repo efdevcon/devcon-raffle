@@ -35,16 +35,16 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoin
     setGitcoinState(GitcoinState.YOUR_SCORE)
   }
 
-  const sendForScoring = async () => {
-    const data = await requestScore()
+  const sendForScoring = async (shouldRefresh?: boolean) => {
+    const data = await requestScore(shouldRefresh)
     if (data?.status === 'done') {
       setCredentials(data)
     }
   }
 
-  const onCheckScoreClick = () => {
+  const onCheckScoreClick = (shouldRefresh?: boolean) => {
     setGitcoinState(GitcoinState.CHECKING_SCORE)
-    sendForScoring()
+    sendForScoring(shouldRefresh)
   }
 
   switch (gitcoinState) {
@@ -64,7 +64,7 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoin
         <UserGitcoinScore
           userScore={Number(gitcoinCredentials?.score) / ScoreMultiplier}
           gitcoinSettled={gitcoinSettled}
-          getBackToScoring={onCheckScoreClick}
+          getBackToScoring={() => onCheckScoreClick(true)}
         />
       )
     case GitcoinState.MISSING_PASSPORT:

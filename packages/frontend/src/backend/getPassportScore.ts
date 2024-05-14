@@ -17,16 +17,18 @@ export const useRequestScore = () => {
   const { signMessageAsync } = useSignMessage()
 
   const { mutateAsync, isSuccess, isError } = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (shouldRefresh?: boolean) => {
       if (!address) {
         throw new Error('No address')
       }
 
-      try {
-        return await getGitcoinScore(address, chainId)
-      } catch (error) {
-        if (!(error instanceof ErrorWithStatus) || error.status != 404) {
-          throw error
+      if (!shouldRefresh) {
+        try {
+          return await getGitcoinScore(address, chainId)
+        } catch (error) {
+          if (!(error instanceof ErrorWithStatus) || error.status != 404) {
+            throw error
+          }
         }
       }
 
@@ -35,7 +37,10 @@ export const useRequestScore = () => {
       await sendForScoring({ userAddress: address as Hex, signature, nonce: nonceData.nonce })
     },
   })
-  const requestScore = useCallback(() => handleBackendRequest(mutateAsync()), [mutateAsync])
+  const requestScore = useCallback(
+    (shouldRefresh?: boolean) => handleBackendRequest(mutateAsync(shouldRefresh)),
+    [mutateAsync],
+  )
   return { requestScore, isSuccess, isError }
 }
 
