@@ -9,7 +9,7 @@ export interface UserScoreProps {
 }
 
 export const UserGitcoinScore = ({ userScore, gitcoinSettled, getBackToScoring }: UserScoreProps) => {
-  const isSufficientScore = userScore && userScore >= environment.gitcoinRequiredScore
+  const isSufficientScore = userScore !== undefined && userScore >= environment.gitcoinRequiredScore
   return isSufficientScore ? (
     <SufficientUserScore userScore={userScore} gitcoinSettled={gitcoinSettled} />
   ) : (
