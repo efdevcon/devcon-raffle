@@ -56,4 +56,5 @@ const AddressLink = styled.a`
   font-family: 'Space Mono', 'Roboto Mono', monospace;
   font-style: normal;
   text-decoration: underline;
+  color: ${Colors.Black};
 `
