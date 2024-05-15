@@ -5,7 +5,7 @@ import { UserGitcoinScore } from '@/components/userActious/gitcoin/UserGitcoinSc
 import { MissingGitcoinPassport } from './MissingGitcoinPassport'
 import { useRequestScore } from '@/backend/getPassportScore'
 import { GitcoinCredentials } from '@/types/passport/GticoinCredentials'
-import { GetScoreResponseSuccess } from '@/types/api/scorer'
+import { GetScoreResponse } from '@/types/api/scorer'
 
 enum GitcoinState {
   INITIAL_PAGE,
@@ -25,26 +25,24 @@ interface Props {
 
 export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoinSettled }: Props) => {
   const [gitcoinState, setGitcoinState] = useState<GitcoinState>(GitcoinState.INITIAL_PAGE)
-  const { requestScore, isSuccess, isError } = useRequestScore()
 
-  const setCredentials = (credentials: GetScoreResponseSuccess) => {
+  const setCredentials = (data: GetScoreResponse | undefined) => {
+    if (data?.status !== "done") {
+      return
+    }
+
     setGitcoinCredentials({
-      score: BigInt(credentials?.score),
-      proof: credentials.signature,
+      score: BigInt(data.score),
+      proof: data.signature,
     })
     setGitcoinState(GitcoinState.YOUR_SCORE)
   }
 
-  const sendForScoring = async () => {
-    const data = await requestScore()
-    if (data?.status === 'done') {
-      setCredentials(data)
-    }
-  }
+  const { requestScore, isSuccess, isError } = useRequestScore(setCredentials)
 
-  const onCheckScoreClick = () => {
+  const onCheckScoreClick = async () => {
     setGitcoinState(GitcoinState.CHECKING_SCORE)
-    sendForScoring()
+    await requestScore()
   }
 
   switch (gitcoinState) {
@@ -56,7 +54,7 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoin
           setGitcoinCredentials={setCredentials}
           gitcoinRequestSettled={isSuccess}
           gitcoinRequestError={isError}
-          onSignAgainClick={sendForScoring}
+          onSignAgainClick={requestScore}
         />
       )
     case GitcoinState.YOUR_SCORE:

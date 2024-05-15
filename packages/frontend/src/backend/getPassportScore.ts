@@ -1,7 +1,7 @@
 import { isApiErrorResponse } from '@/types/api/error'
 import {
   GetPassportScorerNonceResponseSchema,
-  GetResponseSchema,
+  GetResponseSchema, GetScoreResponse, GetScoreResponseSuccess,
   SubmitAddressForScoringRequest,
   SubmitAddressForScoringResponseSchema,
 } from '@/types/api/scorer'
@@ -11,7 +11,7 @@ import { Hex } from 'viem'
 import { useAccount, useChainId, useSignMessage } from 'wagmi'
 import { handleBackendRequest } from './handleBackendRequest'
 
-export const useRequestScore = () => {
+export const useRequestScore = (onSuccess: (data: GetScoreResponse | undefined) => void) => {
   const { address } = useAccount()
   const chainId = useChainId()
   const { signMessageAsync } = useSignMessage()
@@ -34,6 +34,7 @@ export const useRequestScore = () => {
       const signature = await signMessageAsync({ message: nonceData.message })
       await sendForScoring({ userAddress: address as Hex, signature, nonce: nonceData.nonce })
     },
+    onSuccess,
   })
   const requestScore = useCallback(() => handleBackendRequest(mutateAsync()), [mutateAsync])
   return { requestScore, isSuccess, isError }
