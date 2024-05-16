@@ -2,6 +2,7 @@ import { isApiErrorResponse } from '@/types/api/error'
 import {
   GetPassportScorerNonceResponseSchema,
   GetResponseSchema,
+  GetScoreResponse,
   SubmitAddressForScoringRequest,
   SubmitAddressForScoringResponseSchema,
 } from '@/types/api/scorer'
@@ -11,19 +12,21 @@ import { Hex } from 'viem'
 import { useAccount, useChainId, useSignMessage } from 'wagmi'
 import { handleBackendRequest } from './handleBackendRequest'
 
-export const useRequestScore = () => {
+export const useRequestScore = (onSuccess: (data: GetScoreResponse | undefined) => void) => {
   const { address } = useAccount()
   const chainId = useChainId()
   const { signMessageAsync } = useSignMessage()
 
-  const { mutateAsync, isSuccess, isError } = useMutation({
-    mutationFn: async () => {
+  const { mutateAsync, isSuccess, isError, reset } = useMutation({
+    mutationFn: async (isRecalculating: boolean) => {
       if (!address) {
         throw new Error('No address')
       }
 
       try {
-        return await getGitcoinScore(address, chainId)
+        if (!isRecalculating) {
+          return await getGitcoinScore(address, chainId)
+        }
       } catch (error) {
         if (!(error instanceof ErrorWithStatus) || error.status != 404) {
           throw error
@@ -34,9 +37,13 @@ export const useRequestScore = () => {
       const signature = await signMessageAsync({ message: nonceData.message })
       await sendForScoring({ userAddress: address as Hex, signature, nonce: nonceData.nonce })
     },
+    onSuccess,
   })
-  const requestScore = useCallback(() => handleBackendRequest(mutateAsync()), [mutateAsync])
-  return { requestScore, isSuccess, isError }
+  const requestScore = useCallback(
+    (isRecalculating: boolean = false) => handleBackendRequest(mutateAsync(isRecalculating)),
+    [mutateAsync],
+  )
+  return { requestScore, isSuccess, isError, reset }
 }
 
 class ErrorWithStatus extends Error {
