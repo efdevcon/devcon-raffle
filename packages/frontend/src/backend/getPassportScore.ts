@@ -39,7 +39,10 @@ export const useRequestScore = (onSuccess: (data: GetScoreResponse | undefined) 
     },
     onSuccess,
   })
-  const requestScore = useCallback((isRecalculating: boolean = false) => handleBackendRequest(mutateAsync(isRecalculating)), [mutateAsync])
+  const requestScore = useCallback(
+    (isRecalculating: boolean = false) => handleBackendRequest(mutateAsync(isRecalculating)),
+    [mutateAsync],
+  )
   return { requestScore, isSuccess, isError, reset }
 }
 

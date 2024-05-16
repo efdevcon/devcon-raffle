@@ -6,7 +6,7 @@ import { MissingGitcoinPassport } from './MissingGitcoinPassport'
 import { useRequestScore } from '@/backend/getPassportScore'
 import { GitcoinCredentials } from '@/types/passport/GticoinCredentials'
 import { GetScoreResponse } from '@/types/api/scorer'
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from '@tanstack/react-query'
 
 enum GitcoinState {
   INITIAL_PAGE,
@@ -27,17 +27,20 @@ interface Props {
 export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoinSettled }: Props) => {
   const [gitcoinState, setGitcoinState] = useState<GitcoinState>(GitcoinState.INITIAL_PAGE)
 
-  const setCredentials = useCallback((data: GetScoreResponse | undefined) => {
-    if (data?.status !== "done") {
-      return
-    }
+  const setCredentials = useCallback(
+    (data: GetScoreResponse | undefined) => {
+      if (data?.status !== 'done') {
+        return
+      }
 
-    setGitcoinCredentials({
-      score: BigInt(data.score),
-      proof: data.signature,
-    })
-    setGitcoinState(GitcoinState.YOUR_SCORE)
-  }, [setGitcoinCredentials, setGitcoinState])
+      setGitcoinCredentials({
+        score: BigInt(data.score),
+        proof: data.signature,
+      })
+      setGitcoinState(GitcoinState.YOUR_SCORE)
+    },
+    [setGitcoinCredentials, setGitcoinState],
+  )
 
   const { requestScore, isSuccess, isError, reset } = useRequestScore(setCredentials)
 
@@ -48,7 +51,7 @@ export const GitcoinFlow = ({ gitcoinCredentials, setGitcoinCredentials, gitcoin
   const queryClient = useQueryClient()
 
   const onRecalculate = async () => {
-    await queryClient.invalidateQueries({queryKey: ['gitcoinScore']})
+    await queryClient.invalidateQueries({ queryKey: ['gitcoinScore'] })
     reset()
     setGitcoinCredentials(undefined)
     setGitcoinState(GitcoinState.CHECKING_SCORE)
