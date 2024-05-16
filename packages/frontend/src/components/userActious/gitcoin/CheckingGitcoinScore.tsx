@@ -63,10 +63,10 @@ export const CheckGitcoinScore = ({
   const step = gitcoinRequestSettled ? 2 : 1
 
   useEffect(() => {
-    if (data && data.status == 'done') {
+    if (queryEnabled && data && data.status == 'done') {
       setGitcoinCredentials(data)
     }
-  }, [data, setGitcoinCredentials])
+  }, [data, setGitcoinCredentials, queryEnabled])
 
   return (
     <Wrapper>
