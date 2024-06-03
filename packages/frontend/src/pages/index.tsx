@@ -26,9 +26,7 @@ export default function Home({ metadata }: InferGetServerSidePropsType<typeof ge
 export const getServerSideProps = async function getServerSideProps() {
   return {
     props: {
-      metadata: await fetchMetadata(
-        new URL('/api/frames', process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'),
-      ),
+      metadata: await fetchMetadata(new URL('/api/frames', process.env.URL ?? 'http://localhost:3000')),
     },
   }
 } satisfies GetServerSideProps<{
