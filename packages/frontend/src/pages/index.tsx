@@ -24,7 +24,7 @@ export default function Home({ metadata }: InferGetServerSidePropsType<typeof ge
 }
 
 export const getServerSideProps = async function getServerSideProps() {
-  const baseUrl = process.env.URL ?? 'http://localhost:3000'
+  const baseUrl = process.env.SITE_URL ?? process.env.URL ?? 'http://localhost:3000'
   // eslint-disable-next-line no-console
   console.log(`[DEBUG] Fetching metadata from: ${baseUrl}`)
 
