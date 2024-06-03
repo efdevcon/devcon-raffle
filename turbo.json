@@ -20,6 +20,7 @@
         "RATE_LIMIT_GLOBAL",
         "RATE_LIMIT_NONCES",
         "NONCE_EXPIRY",
+        "SITE_URL",
         "URL"
       ],
       "dependsOn": ["^build"],
