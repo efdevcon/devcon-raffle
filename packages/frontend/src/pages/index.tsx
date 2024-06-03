@@ -24,9 +24,13 @@ export default function Home({ metadata }: InferGetServerSidePropsType<typeof ge
 }
 
 export const getServerSideProps = async function getServerSideProps() {
+  console.log('Fetching metadata...')
+  const baseUrl = process.env.URL ?? 'http://localhost:3000'
+  console.log(`[DEBUG] BaseUrl is ${baseUrl}`)
+
   return {
     props: {
-      metadata: await fetchMetadata(new URL('/api/frames', process.env.URL ?? 'http://localhost:3000')),
+      metadata: await fetchMetadata(new URL('/api/frames', baseUrl)),
     },
   }
 } satisfies GetServerSideProps<{
