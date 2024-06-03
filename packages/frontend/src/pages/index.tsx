@@ -1,13 +1,16 @@
+import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { Info } from '@/components/info/Info'
 import styled from 'styled-components'
 import { Auction } from '@/components/auction/Auction'
+import { fetchMetadata, metadataToMetaTags } from 'frames.js/next/pages-router/client'
 
-export default function Home() {
+export default function Home({ metadata }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
       <Head>
         <title>Devcon 7 Auction & Raffle</title>
+        {metadataToMetaTags(metadata)}
         <meta name="description" content="On-chain Auction & Raffle to sell a portion of Devcon tickets" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -19,6 +22,18 @@ export default function Home() {
     </>
   )
 }
+
+export const getServerSideProps = async function getServerSideProps() {
+  return {
+    props: {
+      metadata: await fetchMetadata(
+        new URL('/api/frames', process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'),
+      ),
+    },
+  }
+} satisfies GetServerSideProps<{
+  metadata: Awaited<ReturnType<typeof fetchMetadata>>
+}>
 
 const PageContainer = styled.div`
   display: flex;
