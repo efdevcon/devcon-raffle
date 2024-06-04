@@ -3,8 +3,9 @@ import { DotsIcon } from '@/components/icons'
 import { formatDate } from '@/utils/formatters/formatDate'
 import { formatTimeLeft } from '@/utils/formatters/formatTimeLeft'
 import { createFrames, Button } from 'frames.js/next/pages-router/server'
-import moment from 'moment'
 import { renderToStaticMarkup } from 'react-dom/server'
+import { arbitrum, arbitrumSepolia } from 'viem/chains'
+import moment from 'moment'
 
 export const config = {
   title: 'Devcon 7',
@@ -14,6 +15,7 @@ export const config = {
   endDate: '2024-06-30T23:59:59Z',
   withdrawDate: '2024-07-31T23:59:59Z',
   url: 'https://devcon-raffle.netlify.app',
+  chain: process.env.NODE_ENV === 'development' ? arbitrumSepolia : arbitrum,
 }
 
 const frames = createFrames({
@@ -21,6 +23,7 @@ const frames = createFrames({
 })
 
 const handleRequest = frames(async (req) => {
+  const svg = encodeURIComponent(renderToStaticMarkup(<DotsIcon />))
   const start = moment.utc(config.startDate)
   const end = moment.utc(config.endDate)
   const withdraw = moment.utc(config.withdrawDate)
@@ -28,14 +31,12 @@ const handleRequest = frames(async (req) => {
     ? `Till start ${formatTimeLeft(BigInt(start.unix()))}`
     : `Time left ${formatTimeLeft(BigInt(end.unix()))}`
 
-  const svg = encodeURIComponent(renderToStaticMarkup(<DotsIcon />))
-
   // Withdrawal period ended
   if (moment().isAfter(withdraw)) {
     return {
       image: (
         <div tw="flex flex-col justify-between w-full h-full justify-center items-center text-center bg-[#FADAFA]">
-          <span tw='text-6xl'>Withdraw period ended ⌛️</span>
+          <span tw="text-6xl">Withdraw period ended ⌛️</span>
         </div>
       ),
       buttons: [
