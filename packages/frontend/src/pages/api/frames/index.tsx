@@ -16,6 +16,7 @@ export const config = {
   withdrawDate: '2024-07-31T23:59:59Z',
   url: 'https://devcon-raffle.netlify.app',
   chain: process.env.NODE_ENV === 'development' ? arbitrumSepolia : arbitrum,
+  maxTickets: 200,
 }
 
 const frames = createFrames({
@@ -114,7 +115,7 @@ const handleRequest = frames(async (req) => {
       </div>
     ),
     buttons: [
-      <Button action="link" target={`${config.url}/bids`}>
+      <Button action="post_redirect" target={`${config.url}/bids`}>
         View Bids
       </Button>,
       <Button action="link" target={config.url}>

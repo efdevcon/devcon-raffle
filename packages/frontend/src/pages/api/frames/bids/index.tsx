@@ -21,6 +21,11 @@ const handleRequest = frames(async (req) => {
   const svg = encodeURIComponent(renderToStaticMarkup(<DotsIcon />))
   const bids = await getBids()
 
+  const totalNrOfParticipants = bids.length
+  const numberOfWinners = config.maxTickets
+  const probability =
+    bids.length < config.maxTickets ? 100 : ((totalNrOfParticipants - numberOfWinners) / totalNrOfParticipants) * 100
+
   return {
     image: (
       <div
@@ -38,13 +43,16 @@ const handleRequest = frames(async (req) => {
 
         <div tw="flex flex-col">
           <p tw="p-0 m-0">
-            <span tw="bg-white m-0 p-4">{bids.length} Bids</span>
+            <span tw="bg-white m-0 p-4">{bids.length} Bids / {config.maxTickets} tickets</span>
+          </p>
+          <p tw="p-0 m-0">
+            <span tw="bg-white  m-0 p-4">Current win chance {probability}%</span>
           </p>
         </div>
       </div>
     ),
     buttons: [
-      <Button action="link" target={config.url}>
+      <Button action="post_redirect" target={config.url}>
         Go Back
       </Button>,
       <Button action="link" target={config.url}>
