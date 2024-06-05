@@ -35,7 +35,6 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
     uint256[] _raffleParticipants;
 
     uint256[] _auctionWinners;
-    uint256[] _raffleWinners;
 
     bool _proceedsClaimed;
 
