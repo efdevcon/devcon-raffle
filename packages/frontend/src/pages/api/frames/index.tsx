@@ -15,7 +15,7 @@ export const config = {
   endDate: '2024-06-30T23:59:59Z',
   withdrawDate: '2024-07-31T23:59:59Z',
   url: 'https://devcon-raffle.netlify.app',
-  chain: process.env.NODE_ENV === 'development' ? arbitrumSepolia : arbitrum,
+  chain: arbitrumSepolia,
   maxTickets: 200,
 }
 
