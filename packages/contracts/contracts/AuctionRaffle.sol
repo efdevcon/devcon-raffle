@@ -175,7 +175,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
      * @notice Allows a bidder to claim their funds after the raffle is settled.
      * Golden Ticket winner can withdraw the full bid amount.
      * Raffle winner can withdraw the bid amount minus `_reservePrice`.
-     * Non-winning bidder can withdraw the bid amount minus 2% fee.
+     * Non-winning bidder can withdraw the full bid amount.
      * Auction winner pays the full bid amount and is not entitled to any withdrawal.
      */
     function claim(uint256 bidderID) external onlyInState(State.RAFFLE_SETTLED) {
