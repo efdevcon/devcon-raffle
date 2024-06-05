@@ -2,15 +2,19 @@ import styled from 'styled-components'
 import { Colors } from '@/styles/colors'
 import { Header } from '@/components/bids/allBids/Header'
 import { AllBids } from '@/components/bids/allBids/AllBids'
-import { fetchMetadata } from 'frames.js/next/pages-router/client'
-import { GetServerSideProps } from 'next'
+import { fetchMetadata, metadataToMetaTags } from 'frames.js/next/pages-router/client'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import Head from 'next/head'
 
-export default function Bids() {
+export default function Bids({ metadata }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <Body>
-      <Header />
-      <AllBids />
-    </Body>
+    <>
+      <Head>{metadataToMetaTags(metadata)}</Head>
+      <Body>
+        <Header />
+        <AllBids />
+      </Body>
+    </>
   )
 }
 
