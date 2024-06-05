@@ -4,7 +4,7 @@ import { formatDate } from '@/utils/formatters/formatDate'
 import { formatTimeLeft } from '@/utils/formatters/formatTimeLeft'
 import { createFrames, Button } from 'frames.js/next/pages-router/server'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { arbitrum, arbitrumSepolia } from 'viem/chains'
+import { arbitrumSepolia } from 'viem/chains'
 import moment from 'moment'
 
 export const config = {
