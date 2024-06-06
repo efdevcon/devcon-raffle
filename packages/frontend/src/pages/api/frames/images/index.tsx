@@ -24,14 +24,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const totalNrOfParticipants = bids.length
   const numberOfWinners = frameConfig.maxTickets
   const probability =
-    bids.length < frameConfig.maxTickets ? 100 : ((totalNrOfParticipants - numberOfWinners) / totalNrOfParticipants) * 100
+    bids.length < frameConfig.maxTickets
+      ? 100
+      : ((totalNrOfParticipants - numberOfWinners) / totalNrOfParticipants) * 100
 
   // Withdrawal period ended
   if (moment().isAfter(withdraw)) {
     return new ImageResponse(
       (
         <div tw="flex flex-col justify-between w-full h-full justify-center items-center text-center bg-[#FADAFA]">
-          <span tw="text-6xl">Withdraw period ended ⌛️</span>
+          <p tw="text-8xl">Devcon Raffle</p>
+          <p tw="text-6xl">has ended ⌛️</p>
         </div>
       ),
       imageOptions,
@@ -55,12 +58,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             </p>
           </div>
 
-          <div tw="flex flex-col">
+          <div tw="flex flex-col text-4xl">
             <p tw="p-0 m-0">
-              <span tw="bg-white m-0 p-4">Ended on {formatDate(BigInt(end.unix()))}</span>
+              <span tw="bg-white m-0 p-4">Raffle has ended ⌛️</span>
             </p>
             <p tw="p-0 m-0">
-              <span tw="bg-white m-0 p-4">Check the winners</span>
+              <span tw="bg-white m-0 p-2">
+                Claim ticket before {formatDate(BigInt(moment.utc(frameConfig.withdrawDate).unix()))}
+              </span>
             </p>
           </div>
         </div>
@@ -72,7 +77,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   return new ImageResponse(
     (
       <div
-        tw="flex flex-col justify-between w-full h-full p-12"
+        tw="flex flex-col bg-white justify-between w-full h-full p-12"
         style={{ backgroundImage: `url("data:image/svg+xml,${svg}")`, backgroundSize: '100% 100%' }}
       >
         <div tw="flex flex-col">
@@ -84,7 +89,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           </p>
         </div>
 
-        <div tw="flex flex-row justify-between text-2xl">
+        <div tw="flex flex-row justify-between text-4xl">
           <div tw="flex flex-col">
             <p tw="p-0 m-0">
               <span tw="bg-white m-0 p-2">{timer}</span>
@@ -93,16 +98,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               <span tw="bg-white m-0 p-2">Ends on {formatDate(BigInt(moment.utc(frameConfig.endDate).unix()))}</span>
             </p>
           </div>
-          <div tw="flex flex-col">
-            <p tw="p-0 m-0 justify-end text-right">
-              <span tw="bg-white m-0 p-2">
-                {bids.length} Bids / {frameConfig.maxTickets} tickets
-              </span>
-            </p>
-            <p tw="p-0 m-0 justify-end text-right">
-              <span tw="bg-white  m-0 p-2">Current win chance {probability}%</span>
-            </p>
-          </div>
+          {moment().isAfter(start) && (
+            <div tw="flex flex-col">
+              <p tw="p-0 m-0 justify-end text-right">
+                <span tw="bg-white m-0 p-2">
+                  {bids.length} Bids / {frameConfig.maxTickets} tickets
+                </span>
+              </p>
+              <p tw="p-0 m-0 justify-end text-right">
+                <span tw="bg-white  m-0 p-2">Current win chance {probability}%</span>
+              </p>
+            </div>
+          )}
         </div>
       </div>
     ),
