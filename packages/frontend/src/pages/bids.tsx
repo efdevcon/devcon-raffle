@@ -23,7 +23,7 @@ export const getServerSideProps = async function getServerSideProps() {
 
   return {
     props: {
-      metadata: await fetchMetadata(new URL('/api/frames/bids', baseUrl)),
+      metadata: await fetchMetadata(new URL('/api/frames', baseUrl)),
     },
   }
 } satisfies GetServerSideProps<{
