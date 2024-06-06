@@ -6,6 +6,7 @@ import { setIntervalImmediately } from '@/utils/setIntervalImmediately'
 import { useAuctionState } from '@/blockchain/hooks/useAuctionState'
 import { useAuctionTime } from '@/blockchain/hooks/useAuctionTime'
 import { Colors } from '@/styles/colors'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export const TimeLeft = () => {
   const timestamp = useAuctionTime()
@@ -44,6 +45,11 @@ const TimeRow = styled.div`
   column-gap: 8px;
   padding: 5px 10px;
   background-color: ${Colors.White};
+
+  ${MediaQueries.medium} {
+    padding: 0 10px;
+    font-size: 14px;
+  }
 `
 
 export const RemainingTime = styled.span`

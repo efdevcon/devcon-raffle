@@ -6,6 +6,7 @@ import { Rule, RuleText } from '@/components/info/Rules'
 import { formatDate } from '@/utils/formatters/formatDate'
 import { useVoucherRedeemDeadline } from '@/blockchain/hooks/useVoucherRedeemDeadline'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export const InfoAccordion = () => {
   const { auctionWinnersCount, raffleWinnersCount } = useReadAuctionParams()
@@ -201,6 +202,10 @@ const Wrapper = styled.div`
   max-width: 1252px;
   margin: 0 auto;
   padding: 44px 90px 44px 32px;
+
+  ${MediaQueries.medium} {
+    padding: 32px;
+  }
 `
 
 const StyledHeader = styled(Accordion.Header)`
@@ -221,6 +226,10 @@ const StyledTrigger = styled(Accordion.AccordionTrigger)`
   font-size: 20px;
   line-height: 1.5;
 
+  ${MediaQueries.medium} {
+    font-size: 14px;
+  }
+
   &[data-state='open'] {
     font-weight: 700;
   }
@@ -236,8 +245,17 @@ const StyledContent = styled(Accordion.AccordionContent)`
   row-gap: 16px;
   margin-top: 44px;
 
+  ${MediaQueries.medium} {
+    margin-top: 16px;
+    font-size: 14px;
+  }
+
   &[data-state='open'] {
     margin-bottom: 44px;
+
+    ${MediaQueries.medium} {
+      margin-bottom: 16px;
+    }
   }
 `
 

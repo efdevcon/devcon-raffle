@@ -9,6 +9,7 @@ import { getPositionAfterBump } from './getPositionAfterBump'
 import { Button } from '@/components/buttons'
 import { useBids } from '@/providers/BidsProvider'
 import { Colors } from '@/styles/colors'
+import { useResponsiveHelpers } from '@/hooks/useResponsiveHelper'
 
 interface BumpBidProps {
   userBid?: Bid
@@ -31,6 +32,7 @@ export const BumpBidForm = ({
 }: BumpBidProps) => {
   const { address } = useAccount()
   const { bidList: bids } = useBids()
+  const { isMobileWidth } = useResponsiveHelpers()
   const userBalance = useBalance({ address }).data?.value
   const notEnoughBalance = userBalance !== undefined && parsedBumpAmount > userBalance
   const bidTooLow = parsedBumpAmount < minimumIncrement
@@ -73,6 +75,7 @@ export const BumpBidForm = ({
           onClick={() => {
             setView(TxFlowSteps.Review)
           }}
+          wide={isMobileWidth}
         >
           Bump your bid
         </BumpButton>
