@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const timer = moment().isBefore(start)
     ? `Till start ${formatTimeLeft(BigInt(start.unix()))}`
     : `Time left ${formatTimeLeft(BigInt(end.unix()))}`
-  const imageOptions = { width: 1146, height: 600, headers: { 'Cache-Control': 'public, max-age=60' } }
+  const imageOptions = { width: 1910, height: 1000, headers: { 'Cache-Control': 'public, max-age=0' } }
 
   const bids = await getBids()
 
