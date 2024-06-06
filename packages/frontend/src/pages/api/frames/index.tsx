@@ -11,7 +11,7 @@ const handleRequest = frames(async (req) => {
   // Withdrawal period ended
   if (moment().isAfter(frameConfig.withdrawDate)) {
     return {
-      image: `${frameConfig.url}/api/frames/images`,
+      image: `/images`,
       buttons: [
         <Button action="link" target={`${frameConfig.url}/bids`}>
           🏆 View Winners
@@ -26,7 +26,7 @@ const handleRequest = frames(async (req) => {
   // Bidding ended
   if (moment().isAfter(frameConfig.endDate)) {
     return {
-      image: `${frameConfig.url}/api/frames/images`,
+      image: `/images`,
       buttons: [
         <Button action="link" target={`${frameConfig.url}/bids`}>
           🏆 View Winners
@@ -39,7 +39,7 @@ const handleRequest = frames(async (req) => {
   }
 
   return {
-    image: `${frameConfig.url}/api/frames/images`,
+    image: `/images`,
     buttons: [
       <Button action="link" target={`${frameConfig.url}/bids`}>
         🏆 View Bids
