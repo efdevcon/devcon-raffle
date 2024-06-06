@@ -122,7 +122,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
      * @notice Draws auction winners and changes contract state to AUCTION_SETTLED.
      * @dev Removes highest bids from the heap, sets their WinType to AUCTION and adds them to _auctionWinners array.
      * Temporarily adds auction winner bidderIDs to a separate heap and then retrieves them in descending order.
-     * This is done to efficiently remove auction winners from _raffleParticipants array as they no longer take part
+     * This is to efficiently remove auction winners from _raffleParticipants array as they no longer take part
      * in the raffle.
      */
     function settleAuction() external onlyInState(State.BIDDING_CLOSED) {
