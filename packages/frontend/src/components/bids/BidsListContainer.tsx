@@ -1,3 +1,4 @@
+import { MediaQueries } from '@/styles/mediaQueries'
 import styled from 'styled-components'
 
 export const BidsListContainer = styled.div`
@@ -7,4 +8,8 @@ export const BidsListContainer = styled.div`
   width: 100%;
   margin: 0;
   padding: 0;
+
+  ${MediaQueries.medium} {
+    row-gap: 24px;
+  }
 `

@@ -4,6 +4,7 @@ import { SearchIcon } from '@/components/icons'
 import { Colors } from '@/styles/colors'
 import { CloseButton } from '@/components/buttons/CloseButton'
 import { useDebounceValue } from '@/hooks/useDebounce'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 interface Props {
   setSearch: (search: string) => void
@@ -37,6 +38,10 @@ const SearchInputWrapper = styled.div`
   border-color: ${Colors.GreyLight};
   background-color: ${Colors.White};
   transition: all 0.25s ease;
+
+  ${MediaQueries.medium} {
+    margin-bottom: 0;
+  }
 `
 
 const StyledInput = styled.input`
