@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Logo } from '@/components/icons'
 import { Colors } from '@/styles/colors'
 import { AccountButton } from '@/components/topBar/AccountButton'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export const TopBar = () => {
   return (
@@ -24,6 +25,11 @@ const TopBarContainer = styled.div`
   position: sticky;
   top: 0;
   z-index: 99;
+
+  ${MediaQueries.medium} {
+    padding: 12px 32px;
+    gap: 40px;
+  }
 `
 const HomeLink = styled.a`
   line-height: 1;

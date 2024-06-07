@@ -1,4 +1,5 @@
 import { Colors } from '@/styles/colors'
+import { MediaQueries } from '@/styles/mediaQueries'
 import styled from 'styled-components'
 
 export const FormRow = styled.div`
@@ -11,10 +12,18 @@ export const FormRow = styled.div`
 
 export const FormHeading = styled.h2`
   color: ${Colors.Black};
+
+  ${MediaQueries.medium} {
+    font-size: 20px;
+  }
 `
 
 export const FormSubHeading = styled.h3`
   color: ${Colors.Black};
+
+  ${MediaQueries.medium} {
+    font-size: 20px;
+  }
 `
 
 export const FormWrapper = styled.div`
@@ -23,6 +32,12 @@ export const FormWrapper = styled.div`
   row-gap: 16px;
   padding: 82px 0 82px;
   width: 440px;
+
+  ${MediaQueries.medium} {
+    padding: 0;
+    width: 100%;
+    max-width: 440px;
+  }
 `
 
 export const FormSectionWrapper = styled(FormWrapper)`

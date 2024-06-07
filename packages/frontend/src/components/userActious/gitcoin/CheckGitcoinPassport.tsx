@@ -3,6 +3,7 @@ import { FormHeading, FormRow, FormWrapper } from '../../form'
 import { Button } from '../../buttons'
 import { SeparatorWithText } from '@/components/common/Separator'
 import { urls } from '@/constants/urls'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 interface Props {
   onCheckScoreClick: () => void
@@ -33,4 +34,8 @@ export const CheckGitcoinPassport = ({ onCheckScoreClick }: Props) => {
 
 const Wrapper = styled(FormWrapper)`
   width: 390px;
+
+  ${MediaQueries.medium} {
+    width: 100%;
+  }
 `
