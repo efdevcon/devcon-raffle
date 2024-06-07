@@ -6,6 +6,7 @@ import { FormSubHeading, FormWrapper } from '../form'
 import { TransactionStepper } from '../stepper/TransactionStepper'
 import { ReviewForm } from '../form/ReviewForm'
 import { TransactionSuccess } from './TransactionSuccess'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export const heading = {
   [Transactions.Place]: 'Place bid',
@@ -57,6 +58,12 @@ export const AuctionTransaction = ({ action, amount, impact, view, setView }: Au
 const Transaction = styled.div`
   display: flex;
   width: 100%;
+
+  ${MediaQueries.medium} {
+    flex-direction: column-reverse;
+    align-items: center;
+    row-gap: 16px;
+  }
 `
 
 const TransactionWrapper = styled(FormWrapper)`
@@ -64,6 +71,11 @@ const TransactionWrapper = styled(FormWrapper)`
   row-gap: 24px;
   padding: 82px 54px;
   width: fit-content;
+
+  ${MediaQueries.medium} {
+    width: 100%;
+    padding: 0;
+  }
 `
 const TransactionHeading = styled.div`
   display: flex;
