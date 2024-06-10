@@ -23,7 +23,7 @@ export const BidsListEntry = ({ bid, isUser, view = 'full' }: Props) => {
       </BidColumn>
       <AddressColumn>
         <AddressLink href={explorerAddressLink} target="_blank" rel="noopener noreferrer">
-          {view === 'short' ? shortenHexString(bid.address) : bid.address}
+          {view === 'short' ? shortenHexString(bid.address, 4) : bid.address}
         </AddressLink>
       </AddressColumn>
     </BidsEntryRow>

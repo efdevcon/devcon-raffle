@@ -14,7 +14,7 @@ export const AccountButton = () => {
       {address ? (
         <>
           <Button view="secondary" onClick={() => setIsModalOpen(!isModalOpen)}>
-            {shortenHexString(address)}
+            {shortenHexString(address, 4)}
           </Button>
           {isModalOpen && <AccountDetailModal isShown={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />}
         </>
