@@ -4,6 +4,7 @@ import { useVoucherRedeemDeadline } from '@/blockchain/hooks/useVoucherRedeemDea
 import { formatTimeLeft } from '@/utils/formatters/formatTimeLeft'
 import { setIntervalImmediately } from '@/utils/setIntervalImmediately'
 import { Colors } from '@/styles/colors'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export const VoucherTimeLeft = () => {
   const redeemDeadline = useVoucherRedeemDeadline()
@@ -29,4 +30,10 @@ const TimeRow = styled.div`
   column-gap: 16px;
   width: 100%;
   color: ${Colors.Black};
+
+  ${MediaQueries.medium} {
+    h3 {
+      font-size: 20px;
+    }
+  }
 `

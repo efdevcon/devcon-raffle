@@ -8,6 +8,7 @@ import { formatEther } from 'viem'
 import { Colors } from '@/styles/colors'
 import { ReactNode } from 'react'
 import { ClaimVoucherSection } from '@/components/userActious/claim/ClaimVoucherSection'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 const withdrawText = {
   [WinType.Loss]: `You can withdraw all your funds.`,
@@ -47,6 +48,11 @@ export const WinnerForm = styled(Form)`
   max-width: 440px;
   row-gap: 20px;
   text-align: center;
+
+  ${MediaQueries.medium} {
+    row-gap: 16px;
+    text-align: start;
+  }
 `
 
 const winTypeToText: Record<WinType, ReactNode> = {
@@ -78,4 +84,8 @@ export const WinOption = styled.div`
 
 const WinFormHeading = styled(FormHeading)<{ $voucher?: string }>`
   font-size: ${({ $voucher }) => ($voucher ? '24px' : '40px')};
+
+  ${MediaQueries.medium} {
+    font-size: 24px;
+  }
 `
