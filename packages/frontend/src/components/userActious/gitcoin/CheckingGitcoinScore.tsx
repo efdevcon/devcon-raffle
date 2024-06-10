@@ -9,6 +9,7 @@ import { useAccount, useChainId } from 'wagmi'
 import { Hex } from 'viem'
 import { getGitcoinScore } from '@/backend/getPassportScore'
 import { GetScoreResponseSuccess } from '@/types/api/scorer'
+import { useResponsiveHelpers } from '@/hooks/useResponsiveHelper'
 
 const gitcoinScoreSteps = [
   {
@@ -52,6 +53,7 @@ export const CheckGitcoinScore = ({
 }: CheckGitcoinScoreProps) => {
   const { address } = useAccount()
   const chainId = useChainId()
+  const { isMobileWidth } = useResponsiveHelpers()
   const queryEnabled = !!(gitcoinRequestSettled && address)
   const { data } = useQuery({
     queryKey: ['gitcoinScore', address, chainId],
@@ -78,7 +80,7 @@ export const CheckGitcoinScore = ({
         <span>It will take about 1 minute. Please stay on this page.</span>
       </FormRow>
       <Stepper steps={gitcoinScoreSteps} currentStep={step} isFailed={gitcoinRequestError} />
-      <Button isLoading={queryEnabled} disabled={!gitcoinRequestError} onClick={onSignAgainClick}>
+      <Button isLoading={queryEnabled} disabled={!gitcoinRequestError} onClick={onSignAgainClick} wide={isMobileWidth}>
         Retry
       </Button>
     </Wrapper>

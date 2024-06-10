@@ -4,6 +4,7 @@ import { Colors } from '@/styles/colors'
 import { BackButton } from '@/components/buttons/BackButton'
 import { Form, FormRow, FormWrapper, Row } from '@/components/form'
 import { urls } from '@/constants/urls'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 interface Props {
   afterCreateClick: () => void
@@ -24,7 +25,9 @@ export const MissingGitcoinPassport = ({ afterCreateClick }: Props) => {
           <FormRow>
             <span>To finish placing a bid, please create a Gitcoin Passport.</span>
           </FormRow>
-          <Button onClick={onCreateClick}>Create a Gitcoin Passport</Button>
+          <Button onClick={onCreateClick} wide>
+            Create a Gitcoin Passport
+          </Button>
         </Form>
       </BackButtonRow>
     </Wrapper>
@@ -33,6 +36,11 @@ export const MissingGitcoinPassport = ({ afterCreateClick }: Props) => {
 
 const BackButtonRow = styled(Row)`
   gap: 32px;
+
+  ${MediaQueries.medium} {
+    flex-direction: column;
+    gap: 16px;
+  }
 `
 
 const Wrapper = styled(FormWrapper)`
@@ -41,4 +49,8 @@ const Wrapper = styled(FormWrapper)`
 
 const WarningHeader = styled.h2`
   color: ${Colors.Red};
+
+  ${MediaQueries.medium} {
+    font-size: 24px;
+  }
 `
