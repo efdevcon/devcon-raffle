@@ -36,7 +36,7 @@ export const TransactionSuccess = ({ txHash, action, setView, onBackHome }: Prop
       <TransactionIdWrapper>
         <TransactionIdLabel>Your transaction hash</TransactionIdLabel>
         <TransactionIdBox>
-          <TransactionIdText>{shortenHexString(txHash, 12)}</TransactionIdText>
+          <TransactionIdText>{shortenHexString(txHash, 6, 12)}</TransactionIdText>
           <CopyButton value={txHash} side="top" text="Copy transaction hash" />
           <RedirectButton link={transactionLink} side="top" tooltip="View on Arbiscan" />
         </TransactionIdBox>
