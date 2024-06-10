@@ -10,6 +10,7 @@ import { Hex } from 'viem'
 import { getGitcoinScore } from '@/backend/getPassportScore'
 import { GetScoreResponseSuccess } from '@/types/api/scorer'
 import { useResponsiveHelpers } from '@/hooks/useResponsiveHelper'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 const gitcoinScoreSteps = [
   {
@@ -89,6 +90,11 @@ export const CheckGitcoinScore = ({
 
 const Wrapper = styled(FormWrapper)`
   width: 530px;
+
+  ${MediaQueries.medium} {
+    width: 100%;
+    padding: 0;
+  }
 `
 
 const Row = styled.div`
