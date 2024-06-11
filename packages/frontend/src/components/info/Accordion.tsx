@@ -203,7 +203,7 @@ const Wrapper = styled.div`
   margin: 0 auto;
   padding: 44px 90px 44px 32px;
 
-  ${MediaQueries.medium} {
+  ${MediaQueries.large} {
     padding: 32px;
   }
 `

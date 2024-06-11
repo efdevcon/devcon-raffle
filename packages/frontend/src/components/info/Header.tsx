@@ -40,6 +40,10 @@ const StyledHeader = styled(HeaderBar)`
   height: 225px;
   padding: 16px 68px;
 
+  ${MediaQueries.large} {
+    padding: 16px 32px;
+  }
+
   ${MediaQueries.medium} {
     height: 128px;
     padding: 12px 32px 8px;
@@ -76,6 +80,10 @@ const TitleWrapper = styled.div`
 const Title = styled.h1`
   background-color: ${Colors.White};
   padding: 0 10px;
+
+  ${MediaQueries.large} {
+    font-size: 40px;
+  }
 
   ${MediaQueries.medium} {
     font-size: 20px;

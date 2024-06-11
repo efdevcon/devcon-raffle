@@ -65,8 +65,14 @@ const StepperContainer = styled.div`
   padding: 82px 20px 82px 0;
   background-color: ${Colors.Pink};
 
+  ${MediaQueries.large} {
+    width: 50%;
+    padding: 64px 0;
+  }
+
   ${MediaQueries.medium} {
     width: 100%;
+    max-width: 440px;
     padding: 0;
   }
 `

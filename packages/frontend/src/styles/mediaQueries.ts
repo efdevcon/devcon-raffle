@@ -2,7 +2,7 @@ export const breakPoints = {
   extraSmall: 320,
   small: 360,
   medium: 768,
-  large: 1024,
+  large: 1100,
   extraLarge: 1440,
 } as const
 

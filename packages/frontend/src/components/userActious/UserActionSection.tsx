@@ -47,6 +47,12 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 
+  ${MediaQueries.large} {
+    width: calc(100% + 96px);
+    margin-left: -48px;
+    padding: 0 40px;
+  }
+
   ${MediaQueries.medium} {
     width: 100%;
     height: 100%;

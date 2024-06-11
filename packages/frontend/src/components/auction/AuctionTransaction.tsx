@@ -59,6 +59,10 @@ const Transaction = styled.div`
   display: flex;
   width: 100%;
 
+  ${MediaQueries.large} {
+    gap: 24px;
+  }
+
   ${MediaQueries.medium} {
     flex-direction: column-reverse;
     align-items: center;
@@ -68,9 +72,13 @@ const Transaction = styled.div`
 
 const TransactionWrapper = styled(FormWrapper)`
   flex: 1;
-  row-gap: 24px;
+  gap: 24px;
   padding: 82px 54px;
   width: fit-content;
+
+  ${MediaQueries.large} {
+    padding: 64px 0px;
+  }
 
   ${MediaQueries.medium} {
     width: 100%;

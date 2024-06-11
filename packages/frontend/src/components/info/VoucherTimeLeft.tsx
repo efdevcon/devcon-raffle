@@ -32,7 +32,7 @@ const VoucherTimeBox = styled.div<TimeProps>`
   padding: 8px 24px 8px 68px;
   background: ${({ isPeriodExpired }) => (isPeriodExpired ? Colors.Red : Colors.Black)};
 
-  ${MediaQueries.medium} {
+  ${MediaQueries.large} {
     width: 100%;
     padding: 32px;
   }
