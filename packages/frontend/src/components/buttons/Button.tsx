@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import { Colors } from '@/styles/colors'
 import { LoadingIcon } from '@/components/icons'
 import { TransientProps } from '@/styles/transientProps'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export interface ButtonProps {
   children: ReactNode
@@ -49,6 +50,10 @@ const commonButtonStyles = css<ButtonTransientProps>`
   outline: none;
   overflow: hidden;
   transition: all 0.25s ease;
+
+  ${MediaQueries.medium} {
+    width: 100%;
+  }
 
   &:disabled {
     opacity: 0.5;
