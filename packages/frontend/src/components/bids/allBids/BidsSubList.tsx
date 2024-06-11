@@ -4,6 +4,8 @@ import { Colors } from '@/styles/colors'
 import { BidsListContainer } from '@/components/bids/BidsListContainer'
 import { BidsListEntry } from '@/components/bids/BidsListEntry'
 import { useAccount } from 'wagmi'
+import { useResponsiveHelpers } from '@/hooks/useResponsiveHelper'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 interface Props {
   bids: Bid[]
@@ -12,6 +14,7 @@ interface Props {
 
 export const BidsSubList = ({ bids, title }: Props) => {
   const { address } = useAccount()
+  const { isMobileWidth } = useResponsiveHelpers()
 
   return (
     <>
@@ -20,7 +23,12 @@ export const BidsSubList = ({ bids, title }: Props) => {
       </TitleBanner>
       <BidsListContainer>
         {bids.map((bid) => (
-          <BidsListEntry key={bid.bidderId} bid={bid} isUser={address === bid.address} view="full" />
+          <BidsListEntry
+            key={bid.bidderId}
+            bid={bid}
+            isUser={address === bid.address}
+            view={isMobileWidth ? 'short' : 'full'}
+          />
         ))}
       </BidsListContainer>
     </>
@@ -39,4 +47,8 @@ const TitleBanner = styled.div`
 const SubListHeader = styled.h3`
   font-size: 20px;
   line-height: 150%;
+
+  ${MediaQueries.medium} {
+    font-size: 16px;
+  }
 `

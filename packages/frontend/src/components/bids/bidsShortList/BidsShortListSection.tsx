@@ -35,7 +35,7 @@ export const BidsShortListSection = () => {
         <>
           <ListHeader>
             <FormSubHeading>Number of participants:</FormSubHeading>
-            <HeaderText>{bidList.length}</HeaderText>
+            <FormSubHeading>{bidList.length}</FormSubHeading>
           </ListHeader>
           <ListContainer>
             <BidsListHeaders />
