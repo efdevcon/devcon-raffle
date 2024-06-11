@@ -6,11 +6,8 @@ import { InfoIcon } from '@/components/icons'
 import { urls } from '@/constants/urls'
 import { UserScoreProps } from '@/components/userActious/gitcoin/UserGitcoinScore'
 import { environment } from '@/config/environment'
-import { useResponsiveHelpers } from '@/hooks/useResponsiveHelper'
 
 export const InsufficientUserScore = ({ userScore, getBackToScoring }: UserScoreProps) => {
-  const { isMobileWidth } = useResponsiveHelpers()
-
   return (
     <FormWrapper>
       <FormHeading>
@@ -35,9 +32,7 @@ export const InsufficientUserScore = ({ userScore, getBackToScoring }: UserScore
           </p>
         </div>
       </FormRow>
-      <Button onClick={getBackToScoring} wide={isMobileWidth}>
-        Recalculate Score
-      </Button>
+      <Button onClick={getBackToScoring}>Recalculate Score</Button>
     </FormWrapper>
   )
 }

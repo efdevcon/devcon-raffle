@@ -4,12 +4,9 @@ import { UserScoreProps } from '@/components/userActious/gitcoin/UserGitcoinScor
 import { environment } from '@/config/environment'
 import styled from 'styled-components'
 import { Colors } from '@/styles/colors'
-import { useResponsiveHelpers } from '@/hooks/useResponsiveHelper'
 import { MediaQueries } from '@/styles/mediaQueries'
 
 export const SufficientUserScore = ({ userScore, gitcoinSettled }: UserScoreProps) => {
-  const { isMobileWidth } = useResponsiveHelpers()
-
   return (
     <FormWrapper>
       <FormHeading>
@@ -24,9 +21,7 @@ export const SufficientUserScore = ({ userScore, gitcoinSettled }: UserScoreProp
       <FormRow>
         <FormRowHeading>You can place your bid now!</FormRowHeading>
       </FormRow>
-      <Button onClick={gitcoinSettled} wide={isMobileWidth}>
-        Continue
-      </Button>
+      <Button onClick={gitcoinSettled}>Continue</Button>
     </FormWrapper>
   )
 }

@@ -5,7 +5,6 @@ import { formatEther } from 'viem'
 import { useAccount, useBalance } from 'wagmi'
 import { getPositionAfterBid } from '../getPositionAfterBid'
 import { useBids } from '@/providers/BidsProvider'
-import { useResponsiveHelpers } from '@/hooks/useResponsiveHelper'
 
 interface PlaceBidFormProps {
   bid: string
@@ -18,7 +17,6 @@ interface PlaceBidFormProps {
 export const PlaceBidForm = ({ bid, parsedBid, setBid, minimumBid, setView }: PlaceBidFormProps) => {
   const { address } = useAccount()
   const { bidList } = useBids()
-  const { isMobileWidth } = useResponsiveHelpers()
   const userBalance = useBalance({ address }).data?.value
   const notEnoughBalance = userBalance !== undefined && parsedBid > userBalance
   const bidTooLow = parsedBid < minimumBid
@@ -36,11 +34,7 @@ export const PlaceBidForm = ({ bid, parsedBid, setBid, minimumBid, setView }: Pl
           <span>Your place in the raffle after the bid</span>
           <span>No. {getPositionAfterBid(parsedBid, bidList)}</span>
         </FormRow>
-        <Button
-          disabled={notEnoughBalance || bidTooLow}
-          onClick={() => setView(TxFlowSteps.Review)}
-          wide={isMobileWidth}
-        >
+        <Button disabled={notEnoughBalance || bidTooLow} onClick={() => setView(TxFlowSteps.Review)}>
           Place bid
         </Button>
       </Form>
