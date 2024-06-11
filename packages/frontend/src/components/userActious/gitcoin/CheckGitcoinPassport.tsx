@@ -16,7 +16,7 @@ export const CheckGitcoinPassport = ({ onCheckScoreClick }: Props) => {
       <FormRow>
         <span>To place a bid we need to check your score. By verifying your score we checking if you are a human.</span>
       </FormRow>
-      <Button wide onClick={onCheckScoreClick}>
+      <Button onClick={onCheckScoreClick} wide>
         Check Score
       </Button>
       <SeparatorWithText text="Or" />
