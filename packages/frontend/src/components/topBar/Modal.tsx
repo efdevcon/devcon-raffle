@@ -3,6 +3,7 @@ import { ReactNode, useCallback } from 'react'
 import styled from 'styled-components'
 import { CloseButton } from '@/components/buttons/CloseButton'
 import { Colors, hexOpacity } from '@/styles/colors'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export interface ModalProps {
   isShown: boolean | undefined
@@ -51,6 +52,13 @@ const Content = styled(Dialog.Content)`
   width: 408px;
   padding: 24px;
   background-color: ${Colors.White};
+
+  ${MediaQueries.small} {
+    width: 100%;
+    height: 100%;
+    padding: 48px 24px 32px;
+    row-gap: 32px;
+  }
 `
 
 const Header = styled.div`
