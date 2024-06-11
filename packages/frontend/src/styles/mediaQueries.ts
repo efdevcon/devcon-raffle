@@ -1,6 +1,6 @@
 export const breakPoints = {
-  extraSmall: 320,
-  small: 360,
+  extraSmall: 360,
+  small: 430,
   medium: 768,
   large: 1024,
   extraLarge: 1440,
