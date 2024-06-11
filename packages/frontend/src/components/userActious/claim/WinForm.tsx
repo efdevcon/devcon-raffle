@@ -26,7 +26,7 @@ export const WinForm = ({ userBid, withdrawalAmount, setView }: WinFormProps) =>
   }, [address])
 
   return (
-    <>
+    <WinFormWrapper>
       {((!userBid.claimed && userBid.winType !== WinType.Auction) || !voucher) && (
         <Wrapper>
           <WinBidFormWrapper $twoColumns={twoColumns}>
@@ -45,13 +45,23 @@ export const WinForm = ({ userBid, withdrawalAmount, setView }: WinFormProps) =>
           <VoucherForm voucher={voucher} />
         </Wrapper>
       )}
-    </>
+    </WinFormWrapper>
   )
 }
+
+const WinFormWrapper = styled.div`
+  display: flex;
+
+  ${MediaQueries.medium} {
+    flex-direction: column;
+    gap: 32px;
+  }
+`
 
 const WinBidFormWrapper = styled(FormWrapper)<{ $twoColumns?: boolean }>`
   justify-content: center;
   width: ${(props) => (props.$twoColumns ? '289px' : '431px')};
+  padding: 0;
 
   ${MediaQueries.medium} {
     width: 100%;
