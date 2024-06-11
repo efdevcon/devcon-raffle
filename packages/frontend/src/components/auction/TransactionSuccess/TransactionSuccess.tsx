@@ -10,6 +10,7 @@ import { Form, InputLabel } from '@/components/form'
 import { Colors } from '@/styles/colors'
 import { shortenHexString } from '@/utils/formatters/shortenHexString'
 import { Hex } from 'viem'
+import { useResponsiveHelpers } from '@/hooks/useResponsiveHelper'
 
 interface Props {
   txHash: Hex | undefined
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export const TransactionSuccess = ({ txHash, action, setView, onBackHome }: Props) => {
+  const { isMobileWidth } = useResponsiveHelpers()
   const transactionLink = useExplorerTxLink(txHash ?? '0x')
 
   const goHome = async () => {
@@ -41,7 +43,7 @@ export const TransactionSuccess = ({ txHash, action, setView, onBackHome }: Prop
           <RedirectButton link={transactionLink} side="top" tooltip="View on Arbiscan" />
         </TransactionIdBox>
       </TransactionIdWrapper>
-      <Button view="primary" onClick={goHome}>
+      <Button view="primary" onClick={goHome} wide={isMobileWidth}>
         Back to home
       </Button>
     </Container>

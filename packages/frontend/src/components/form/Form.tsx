@@ -14,7 +14,7 @@ export const FormHeading = styled.h2`
   color: ${Colors.Black};
 
   ${MediaQueries.medium} {
-    font-size: 20px;
+    font-size: 24px;
   }
 `
 

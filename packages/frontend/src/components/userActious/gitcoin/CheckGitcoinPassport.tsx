@@ -37,5 +37,6 @@ const Wrapper = styled(FormWrapper)`
 
   ${MediaQueries.medium} {
     width: 100%;
+    padding: 0;
   }
 `

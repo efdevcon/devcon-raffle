@@ -7,6 +7,7 @@ import { FormWrapper } from '@/components/form'
 import { WinBidForm } from '@/components/userActious/claim/WinBidForm'
 import { VoucherForm } from '@/components/userActious/claim/VoucherForm'
 import { WinType } from '@/types/winType'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 interface WinFormProps {
   userBid: UserBid
@@ -51,8 +52,16 @@ export const WinForm = ({ userBid, withdrawalAmount, setView }: WinFormProps) =>
 const WinBidFormWrapper = styled(FormWrapper)<{ $twoColumns?: boolean }>`
   justify-content: center;
   width: ${(props) => (props.$twoColumns ? '289px' : '431px')};
+
+  ${MediaQueries.medium} {
+    width: 100%;
+  }
 `
 
 const Wrapper = styled.div`
   padding: 0 35px;
+
+  ${MediaQueries.medium} {
+    padding: 0;
+  }
 `

@@ -1,4 +1,5 @@
 import { FormHeading, FormText, FormWideWrapper } from '@/components/form'
+import { MediaQueries } from '@/styles/mediaQueries'
 import { styled } from 'styled-components'
 
 export const AwaitingResults = () => (
@@ -10,4 +11,8 @@ export const AwaitingResults = () => (
 
 const BidAwaitingWrapper = styled(FormWideWrapper)`
   width: 460px;
+
+  ${MediaQueries.medium} {
+    width: 100%;
+  }
 `
