@@ -52,6 +52,10 @@ export const WinForm = ({ userBid, withdrawalAmount, setView }: WinFormProps) =>
 const WinFormWrapper = styled.div`
   display: flex;
 
+  ${MediaQueries.large} {
+    gap: 16px;
+  }
+
   ${MediaQueries.medium} {
     flex-direction: column;
     gap: 32px;
@@ -63,6 +67,10 @@ const WinBidFormWrapper = styled(FormWrapper)<{ $twoColumns?: boolean }>`
   width: ${(props) => (props.$twoColumns ? '289px' : '431px')};
   padding: 0;
 
+  ${MediaQueries.large} {
+    width: ${(props) => (props.$twoColumns ? 'fit-content' : '431px')};
+  }
+
   ${MediaQueries.medium} {
     width: 100%;
   }
@@ -71,7 +79,7 @@ const WinBidFormWrapper = styled(FormWrapper)<{ $twoColumns?: boolean }>`
 const Wrapper = styled.div`
   padding: 0 35px;
 
-  ${MediaQueries.medium} {
+  ${MediaQueries.large} {
     padding: 0;
   }
 `

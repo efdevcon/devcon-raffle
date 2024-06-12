@@ -65,11 +65,16 @@ const StepperContainer = styled.div`
   padding: 82px 20px 82px 0;
   background-color: ${Colors.Pink};
 
-  ${MediaQueries.medium} {
+  ${MediaQueries.large} {
     width: 100%;
+    max-width: 440px;
     padding: 0;
   }
 `
 const StepperHeader = styled.h3`
   margin: 0 0 24px 24px;
+
+  ${MediaQueries.large} {
+    margin: 0 0 16px 24px;
+  }
 `

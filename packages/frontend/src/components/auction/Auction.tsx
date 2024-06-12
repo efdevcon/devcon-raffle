@@ -20,6 +20,11 @@ const Wrapper = styled.div`
   padding: 0 115px;
   background: ${Colors.GreyLight};
 
+  ${MediaQueries.large} {
+    width: 60%;
+    padding: 0 48px;
+  }
+
   ${MediaQueries.medium} {
     width: 100%;
     padding: 0;

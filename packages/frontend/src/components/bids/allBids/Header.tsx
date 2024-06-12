@@ -64,9 +64,17 @@ const Title = styled.h2`
   background-color: ${Colors.White};
   padding: 4px 20px;
 
+  ${MediaQueries.large} {
+    font-size: 32px;
+  }
+
   ${MediaQueries.medium} {
-    font-size: 20px;
+    font-size: 24px;
     padding: 0 10px;
+  }
+
+  ${MediaQueries.small} {
+    font-size: 20px;
   }
 `
 
