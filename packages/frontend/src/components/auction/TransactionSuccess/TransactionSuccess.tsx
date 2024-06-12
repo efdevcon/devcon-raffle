@@ -11,6 +11,7 @@ import { Colors } from '@/styles/colors'
 import { shortenHexString } from '@/utils/formatters/shortenHexString'
 import { Hex } from 'viem'
 import { useResponsiveHelpers } from '@/hooks/useResponsiveHelper'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 interface Props {
   txHash: Hex | undefined
@@ -52,6 +53,10 @@ export const TransactionSuccess = ({ txHash, action, setView, onBackHome }: Prop
 
 const Container = styled(Form)`
   row-gap: 24px;
+
+  ${MediaQueries.large} {
+    row-gap: 16px;
+  }
 `
 
 const TransactionIdWrapper = styled.div`

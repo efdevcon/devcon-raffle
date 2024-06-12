@@ -60,12 +60,12 @@ const Transaction = styled.div`
   width: 100%;
 
   ${MediaQueries.large} {
+    flex-direction: column-reverse;
+    align-items: center;
     gap: 24px;
   }
 
   ${MediaQueries.medium} {
-    flex-direction: column-reverse;
-    align-items: center;
     row-gap: 16px;
   }
 `
@@ -77,11 +77,8 @@ const TransactionWrapper = styled(FormWrapper)`
   width: fit-content;
 
   ${MediaQueries.large} {
-    padding: 64px 0px;
-  }
-
-  ${MediaQueries.medium} {
     width: 100%;
+    max-width: 440px;
     padding: 0;
   }
 `

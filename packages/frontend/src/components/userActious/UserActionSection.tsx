@@ -49,6 +49,7 @@ const Wrapper = styled.div`
 
   ${MediaQueries.large} {
     width: calc(100% + 96px);
+    height: 500px;
     margin-left: -48px;
     padding: 0 40px;
   }
