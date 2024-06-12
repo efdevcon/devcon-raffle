@@ -61,7 +61,7 @@ const PageContainer = styled.div`
   padding: 28px 0 56px;
   background-color: ${Colors.White};
 
-  ${MediaQueries.medium} {
+  ${MediaQueries.large} {
     padding: 24px 32px;
     row-gap: 16px;
   }
