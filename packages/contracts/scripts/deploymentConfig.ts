@@ -19,11 +19,11 @@ export const scoreAttestationVerifierConfig = {
 }
 
 export const vrfConfig = {
-  // arb1
-  vrfCoordinator: '0x3c0ca683b403e37668ae3dc4fb62f4b29b6f7a3e',
+  // arb1, VRF 2.0 (not 2.5!)
+  vrfCoordinator: '0x41034678D6C633D8a95c75e1138A360a28bA15d1',
   linkToken: '0xf97f4df75117a78c1a5a0dbb814af92458539fb4',
   linkPremium: parseEther('0.005'),
-  gasLaneKeyHash: '0xe9f223d7d83ec85c4f78042a4845af3a1c8df7757b4997b815ce4b8d07aca68c', // 150 gwei
+  gasLaneKeyHash: '0x68d24f9a037a649944964c2a1ebd0b2918f4a243d2a99701cc22b548cf2daff0', // 150 gwei
   callbackGasLimit: 2_500_000, // maximum
   minConfirmations: 1, // minimum
   subId: 150,
