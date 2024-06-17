@@ -35,7 +35,7 @@ export const config: DeploymentConfig = {
   biddingEndTime: 1720569540, // 2024-07-09T23:59:00Z
   claimingEndTime: 1722470340, // 2024-07-31T23:59:00Z
   auctionWinnersCount: 20,
-  raffleWinnersCount: 180,
+  raffleWinnersCount: 184,
   reservePrice: utils.parseEther('0.08'),
   minBidIncrement: utils.parseEther('0.003'),
 }
