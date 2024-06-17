@@ -10,34 +10,32 @@ interface DeploymentConfig {
   raffleWinnersCount: BigNumberish
   reservePrice: BigNumberish
   minBidIncrement: BigNumberish
-  bidVerifier: string
 }
 
 export const scoreAttestationVerifierConfig = {
   version: '1',
-  initialAttestor: '0x0b657D6E696974a0DDfa6266d512A50339c2a968',
-  initialRequiredScore: 10,
+  initialAttestor: '0x527974D1270283BA158934b64f8a91C0E1F62024',
+  initialRequiredScore: 20,
 }
 
 export const vrfConfig = {
-  // arb sepolia
-  vrfCoordinator: '0x50d47e4142598E3411aA864e08a44284e471AC6f',
-  linkToken: '0xb1D4538B4571d411F07960EF2838Ce337FE1E80E',
+  // arb1
+  vrfCoordinator: '0x3c0ca683b403e37668ae3dc4fb62f4b29b6f7a3e',
+  linkToken: '0xf97f4df75117a78c1a5a0dbb814af92458539fb4',
   linkPremium: parseEther('0.005'),
-  gasLaneKeyHash: '0x027f94ff1465b3525f9fc03e9ff7d6d2c0953482246dd6ae07570c45d6631414', // 50 gwei
+  gasLaneKeyHash: '0xe9f223d7d83ec85c4f78042a4845af3a1c8df7757b4997b815ce4b8d07aca68c', // 150 gwei
   callbackGasLimit: 2_500_000, // maximum
   minConfirmations: 1, // minimum
-  subId: 235,
+  subId: 150,
 }
 
 export const config: DeploymentConfig = {
-  initialOwner: '0x511ECC4c955626DDaD88f20493E39E71be8133B6',
-  biddingStartTime: 1710956968, // 2024-03-20T17:49:28.000Z
-  biddingEndTime: 1711561768, // 2024-03-27T17:49:28.000Z
-  claimingEndTime: 1712166568, // 2024-04-03T17:49:28.000Z
+  initialOwner: '0x8AE57CE9eC11a53Ca655E02B36482C0cB406ACee',
+  biddingStartTime: 1718721000, // 2024-06-18T14:30:00Z
+  biddingEndTime: 1720569540, // 2024-07-09T23:59:00Z
+  claimingEndTime: 1722470340, // 2024-07-31T23:59:00Z
   auctionWinnersCount: 20,
-  raffleWinnersCount: 80,
-  reservePrice: utils.parseEther('0.25'),
-  minBidIncrement: utils.parseEther('0.01'),
-  bidVerifier: '0x0b657D6E696974a0DDfa6266d512A50339c2a968',
+  raffleWinnersCount: 180,
+  reservePrice: utils.parseEther('0.08'),
+  minBidIncrement: utils.parseEther('0.003'),
 }
