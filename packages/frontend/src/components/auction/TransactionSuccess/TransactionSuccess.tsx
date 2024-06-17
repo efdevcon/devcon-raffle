@@ -11,6 +11,8 @@ import { Colors } from '@/styles/colors'
 import { shortenHexString } from '@/utils/formatters/shortenHexString'
 import { Hex } from 'viem'
 import { MediaQueries } from '@/styles/mediaQueries'
+import { shareText } from '@/constants/shareText'
+import { TwitterIcon } from '@/components/icons'
 
 interface Props {
   txHash: Hex | undefined
@@ -42,6 +44,18 @@ export const TransactionSuccess = ({ txHash, action, setView, onBackHome }: Prop
           <RedirectButton link={transactionLink} side="top" tooltip="View on Arbiscan" />
         </TransactionIdBox>
       </TransactionIdWrapper>
+      {action === Transactions.Place && (
+        <>
+          <Button
+            onClick={() => window.open(`https://twitter.com/intent/tweet?text=${shareText}`, '_blank')}
+            className="twitter-share-button"
+            wide
+            icon={TwitterIcon}
+          >
+            Share on X
+          </Button>
+        </>
+      )}
       <Button view="primary" onClick={goHome}>
         Back to home
       </Button>
