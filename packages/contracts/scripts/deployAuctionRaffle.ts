@@ -62,6 +62,9 @@ export async function deployAuctionRaffle(opts?: {
       ...vrfConfig,
       ...opts?.vrfConfig,
     },
+    {
+      gasLimit: 10_000_000,
+    },
   ]
 
   const auctionRaffle = await new AuctionRaffle__factory(deployer).deploy(...auctionRaffleArgs)
@@ -86,7 +89,7 @@ export async function deployAuctionRaffle(opts?: {
     })
     await run('verify:verify', {
       address: auctionRaffle.address,
-      constructorArguments: auctionRaffleArgs,
+      constructorArguments: auctionRaffleArgs.slice(0, -1),
     })
   }
 
