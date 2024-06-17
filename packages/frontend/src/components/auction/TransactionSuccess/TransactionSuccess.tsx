@@ -44,7 +44,7 @@ export const TransactionSuccess = ({ txHash, action, setView, onBackHome }: Prop
           <RedirectButton link={transactionLink} side="top" tooltip="View on Arbiscan" />
         </TransactionIdBox>
       </TransactionIdWrapper>
-      {action === Transactions.Place && (
+      {action === Transactions.Bump && (
         <>
           <Button
             onClick={() => window.open(`https://warpcast.com/~/compose?text=${shareText}`, '_blank')}
@@ -63,7 +63,7 @@ export const TransactionSuccess = ({ txHash, action, setView, onBackHome }: Prop
           </Button>
         </>
       )}
-      <Button view="primary" onClick={goHome}>
+      <Button view="secondary" onClick={goHome} wide>
         Back to home
       </Button>
     </Container>
