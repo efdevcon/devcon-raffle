@@ -12,7 +12,7 @@ import { shortenHexString } from '@/utils/formatters/shortenHexString'
 import { Hex } from 'viem'
 import { MediaQueries } from '@/styles/mediaQueries'
 import { shareText } from '@/constants/shareText'
-import { TwitterIcon } from '@/components/icons'
+import { FarcasterIcon, TwitterIcon } from '@/components/icons'
 
 interface Props {
   txHash: Hex | undefined
@@ -46,6 +46,13 @@ export const TransactionSuccess = ({ txHash, action, setView, onBackHome }: Prop
       </TransactionIdWrapper>
       {action === Transactions.Place && (
         <>
+          <Button
+            onClick={() => window.open(`https://warpcast.com/~/compose?text=${shareText}`, '_blank')}
+            wide
+            icon={FarcasterIcon}
+          >
+            Share on Farcaster
+          </Button>
           <Button
             onClick={() => window.open(`https://twitter.com/intent/tweet?text=${shareText}`, '_blank')}
             className="twitter-share-button"
