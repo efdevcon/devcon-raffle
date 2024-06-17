@@ -15,7 +15,7 @@ interface DeploymentConfig {
 
 export const scoreAttestationVerifierConfig = {
   version: '1',
-  initialAttestor: '0x0b657D6E696974a0DDfa6266d512A50339c2a968',
+  initialAttestor: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
   initialRequiredScore: 10,
 }
 
@@ -31,13 +31,13 @@ export const vrfConfig = {
 }
 
 export const config: DeploymentConfig = {
-  initialOwner: '0x511ECC4c955626DDaD88f20493E39E71be8133B6',
-  biddingStartTime: 1710956968, // 2024-03-20T17:49:28.000Z
-  biddingEndTime: 1711561768, // 2024-03-27T17:49:28.000Z
-  claimingEndTime: 1712166568, // 2024-04-03T17:49:28.000Z
+  initialOwner: '0x876e4Da8C4eb1475a87046940c54Aa0ec6DdC49e',
+  biddingStartTime: 1718652000, // 2024-03-20T17:49:28.000Z
+  biddingEndTime: 1718713200, // 2024-03-27T17:49:28.000Z
+  claimingEndTime: 1718799600, // 2024-04-03T17:49:28.000Z
   auctionWinnersCount: 20,
-  raffleWinnersCount: 80,
-  reservePrice: utils.parseEther('0.25'),
-  minBidIncrement: utils.parseEther('0.01'),
-  bidVerifier: '0x0b657D6E696974a0DDfa6266d512A50339c2a968',
+  raffleWinnersCount: 184,
+  reservePrice: utils.parseEther('0.08'),
+  minBidIncrement: utils.parseEther('0.003'),
+  bidVerifier: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
 }
