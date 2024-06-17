@@ -2,7 +2,6 @@ import { Transactions } from '@/blockchain/transaction'
 import { Stepper } from './Stepper'
 import { heading } from '../auction/AuctionTransaction'
 import { styled } from 'styled-components'
-import { Colors } from '@/styles/colors'
 import { useResponsiveHelpers } from '@/hooks/useResponsiveHelper'
 import { MediaQueries } from '@/styles/mediaQueries'
 
@@ -63,7 +62,6 @@ const StepperContainer = styled.div`
   flex-direction: column;
   width: 313px;
   padding: 82px 20px 82px 0;
-  background-color: ${Colors.Pink};
 
   ${MediaQueries.large} {
     width: 100%;
