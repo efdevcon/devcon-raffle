@@ -8,7 +8,7 @@ export const frameConfig = {
   title: 'Devcon 7',
   description: 'Auction & Raffle Tickets',
   website: 'https://devcon.org/',
-  startDate: 1718722800000,
+  startDate: 1718721000000,
   endDate: 1720569540000,
   withdrawDate: 1722470340000,
   url: process.env.SITE_URL ?? process.env.URL ?? 'http://localhost:3000',
