@@ -58,11 +58,11 @@ export const InfoAccordion = () => {
                 Gitcoin Passport
               </Link>
               . Once you prove your humanity with a Passport score of 20+, submit a bid for a ticket based on the amount
-              you would value a Devcon ticket. Bid high to compete for the 20 tickets distributed in the auction, or bid
-              the reserve price to be entered into the raffle. You need to bid at least the reserve price, which is set
-              to the price of a Devcon Builder ticket at time of publication: <Bold>0.08 ETH</Bold>. Please note that
-              you will need to submit your name at the time of check-out, as we will check IDs at Devcon to verify that
-              the participant is the ticket holder.
+              you would value a Devcon ticket. Bid high to compete for the {auctionWinnersCount} tickets distributed in
+              the auction, or bid the reserve price to be entered into the raffle. You need to bid at least the reserve
+              price, which is set to the price of a Devcon Builder ticket at time of publication:{' '}
+              <Bold>{reservePrice} ETH</Bold>. Please note that you will need to submit your name at the time of
+              check-out, as we will check IDs at Devcon to verify that the participant is the ticket holder.
             </span>
           </StyledContent>
         </Accordion.Item>
@@ -80,24 +80,24 @@ export const InfoAccordion = () => {
                 </Link>
               </li>
               <li>
-                Determine how much you would like to bid. The reserve price is 0.08 ETH. At any point you can top-up
-                your bid.
+                Determine how much you would like to bid. The reserve price is {reservePrice} ETH. At any point you can
+                top-up your bid.
                 <ol type="a">
                   <li>
-                    If you bid at the reserve price (0.08 ETH), you will be automatically entered into the raffle to win
-                    one of 184 tickets.
+                    If you bid at the reserve price ({reservePrice} ETH), you will be automatically entered into the
+                    raffle to win one of 184 tickets.
                   </li>
                   <li>
-                    If you bid more than 0.08 ETH, you have the chance to win a ticket in the auction.
+                    If you bid more than {reservePrice} ETH, you have the chance to win a ticket in the auction.
                     <ol type="i">
                       <li>
-                        If your bid is in the top 20 highest bids, you will win one of the 20 tickets allocated to the
-                        auction.
+                        If your bid is in the top {auctionWinnersCount} highest bids, you will win one of the{' '}
+                        {auctionWinnersCount} tickets allocated to the auction.
                       </li>
                       <li>
-                        If your bid is below the top 20 highest bids, you will be entered into the raffle. If you win
-                        the raffle, you will be able to withdraw the difference between your bid and the reserve price
-                        (0.08 ETH).
+                        If your bid is below the top {auctionWinnersCount} highest bids, you will be entered into the
+                        raffle. If you win the raffle, you will be able to withdraw the difference between your bid and
+                        the reserve price ({reservePrice} ETH).
                       </li>
                     </ol>
                   </li>
@@ -173,31 +173,6 @@ export const InfoAccordion = () => {
               example={`You bid ${exampleBid} ETH and end up not winning a ticket. You can withdraw your ${exampleBid} ETH.`}
             />
             <Rule
-              heading={`What if there’s less than ${totalCount} participants?`}
-              rule={
-                <>
-                  In the event there are:
-                  <BulletList>
-                    <li>
-                      <Bold>1-80 Participants:</Bold> All bidders win in the raffle.
-                    </li>
-                    <li>
-                      <Bold>81 Participants:</Bold> Top 1 bidder wins in the auction. 80 remaining bidders win in the
-                      raffle.
-                    </li>
-                    <li>
-                      <Bold>101 Participants:</Bold> Top 20 bidders win in the auction. Out of 81 remaining bidders, 80
-                      are randomly chosen to win in the raffle.
-                    </li>
-                    <li>
-                      <Bold>120 Participants:</Bold> Top 20 bidders win in the auction. Out of 100 remaining bidders, 80
-                      are randomly chosen to win in the raffle.
-                    </li>
-                  </BulletList>
-                </>
-              }
-            />
-            <Rule
               heading="What happens when there's a draw?"
               rule="In case there’s a draw between two bids, the earlier bidder takes precedence."
               example={
@@ -257,20 +232,21 @@ export const InfoAccordion = () => {
                     </li>
                     <li>
                       <Bold>185 Participants:</Bold> The highest valid bid shall be deemed the winner in the Auction.
-                      The remaining 184 Participants shall be deemed winners in the Raffle;
+                      The remaining {raffleWinnersCount} Participants shall be deemed winners in the Raffle;
                     </li>
                     <li>
                       <Bold>186 Participants:</Bold> The two (2) highest valid bids shall be deemed the winners in the
-                      Auction. The remaining 184 Participants shall be deemed winners in the Raffle;
+                      Auction. The remaining {raffleWinnersCount} Participants shall be deemed winners in the Raffle;
                     </li>
                     <li>
                       <Bold>187 Participants:</Bold> The three (3) highest valid bids shall be deemed the winners in the
-                      Auction. The remaining 184 Participants shall be deemed winners in the Raffle;
+                      Auction. The remaining {raffleWinnersCount} Participants shall be deemed winners in the Raffle;
                     </li>
                     <li>
-                      <Bold>Up to 204 Participants:</Bold> And so on up to and including the case where there are 204
-                      Participants, wherein the twenty (20) highest valid bids shall be deemed the winners in the
-                      Auction and the remaining 184 Participants shall be deemed winners in the Raffle.
+                      <Bold>Up to 204 Participants:</Bold> And so on up to and including the case where there are{' '}
+                      {totalCount} Participants, wherein the twenty ({auctionWinnersCount}) highest valid bids shall be
+                      deemed the winners in the Auction and the remaining {raffleWinnersCount} Participants shall be
+                      deemed winners in the Raffle.
                     </li>
                   </BulletList>
                 </>
