@@ -269,7 +269,7 @@ export const InfoAccordion = () => {
                     here
                   </Link>
                   .<br /> The contract has been verified on Sourcify, available{' '}
-                  <Link href="https://sourcify.dev/#/lookup/0xe2EF0Cb2A3ccf8107D28f01dC721055225D5fedA" target="_blank">
+                  <Link href="https://sourcify.dev/#/lookup/0x1E7aC276CBdae55689Df1d99108d69Fff444cB88" target="_blank">
                     here
                   </Link>
                   .
