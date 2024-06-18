@@ -176,24 +176,24 @@ export const InfoAccordion = () => {
               example={`You bid ${exampleBid} ETH and end up not winning a ticket. You can withdraw your ${exampleBid} ETH.`}
             />
             <Rule
-              heading="What if there’s less than 100 participants?"
+              heading={`What if there’s less than ${totalCount} participants?`}
               rule={
                 <>
                   In the event there are:
                   <BulletList>
                     <li>
-                      <Bold>1-80 participants:</Bold> All bidders win in the raffle.
+                      <Bold>1-80 Participants:</Bold> All bidders win in the raffle.
                     </li>
                     <li>
-                      <Bold>81 participants:</Bold> Top 1 bidder wins in the auction. 80 remaining bidders win in the
+                      <Bold>81 Participants:</Bold> Top 1 bidder wins in the auction. 80 remaining bidders win in the
                       raffle.
                     </li>
                     <li>
-                      <Bold>101 participants:</Bold> Top 20 bidders win in the auction. Out of 81 remaining bidders, 80
+                      <Bold>101 Participants:</Bold> Top 20 bidders win in the auction. Out of 81 remaining bidders, 80
                       are randomly chosen to win in the raffle.
                     </li>
                     <li>
-                      <Bold>120 participants:</Bold> Top 20 bidders win in the auction. Out of 100 remaining bidders, 80
+                      <Bold>120 Participants:</Bold> Top 20 bidders win in the auction. Out of 100 remaining bidders, 80
                       are randomly chosen to win in the raffle.
                     </li>
                   </BulletList>
@@ -244,14 +244,79 @@ export const InfoAccordion = () => {
             <AccordionStyledTrigger heading="Other FAQ" />
           </StyledHeader>
           <StyledContent>
-            <span>
-              Please read our Terms & Conditions{' '}
-              <Link href="https://docs.google.com/document/d/1pVU-G8mpPD33EwOwE96MTB_4AZrYa2TNWXLSfkOPCJQ/edit?usp=sharing">
-                here
-              </Link>{' '}
-              as well as our full Auction & Raffle FAQ on our website{' '}
-              <Link href="https://devcon.org/en/raffle-auction/">here</Link>.
-            </span>
+            <Rule
+              heading="Do I have to participate to get a ticket to Devcon 7?"
+              rule="No! We are working to make this Devcon more accessible. We’ll be featuring a wide variety of discounts for Ethereum contributors, and our public GA sale waves are scheduled for July. However, we encourage you to participate in this fun, early opportunity to acquire a ticket!"
+            />
+            <Rule
+              heading={`What if there’s less than ${totalCount} participants?`}
+              rule={
+                <>
+                  In the event there are:
+                  <BulletList>
+                    <li>
+                      <Bold>1-{raffleWinnersCount} Participants:</Bold> All Participants shall be deemed winners in the
+                      Raffle;
+                    </li>
+                    <li>
+                      <Bold>185 Participants:</Bold> The highest valid bid shall be deemed the winner in the Auction.
+                      The remaining 184 Participants shall be deemed winners in the Raffle;
+                    </li>
+                    <li>
+                      <Bold>186 Participants:</Bold> The two (2) highest valid bids shall be deemed the winners in the
+                      Auction. The remaining 184 Participants shall be deemed winners in the Raffle;
+                    </li>
+                    <li>
+                      <Bold>187 Participants:</Bold> The three (3) highest valid bids shall be deemed the winners in the
+                      Auction. The remaining 184 Participants shall be deemed winners in the Raffle;
+                    </li>
+                    <li>
+                      <Bold>Up to 204 Participants:</Bold> And so on up to and including the case where there are 204
+                      Participants, wherein the twenty (20) highest valid bids shall be deemed the winners in the
+                      Auction and the remaining 184 Participants shall be deemed winners in the Raffle.
+                    </li>
+                  </BulletList>
+                </>
+              }
+            />
+            <Rule
+              heading="Why are you doing this?"
+              rule="We want to continue demonstrating the power of Ethereum to host provably fair and verifiable Raffles & Auctions, while increasing the ways we distribute tickets to the thousands that want to attend each year."
+            />
+            <Rule
+              heading="Where can I find the Smart Contracts or Audit report?"
+              rule={
+                <span>
+                  The Smart Contracts for the Raffle-Auction can be viewed{' '}
+                  <Link href="https://github.com/efdevcon/devcon-raffle" target="_blank">
+                    here
+                  </Link>
+                  .<br /> The contracts were audited by Trail of Bits. You can view the audit report{' '}
+                  <Link href="https://github.com/efdevcon/devcon-raffle" target="_blank">
+                    here
+                  </Link>
+                  .<br /> The contract has been verified on Sourcify, available{' '}
+                  <Link href="https://sourcify.dev/#/lookup/0xe2EF0Cb2A3ccf8107D28f01dC721055225D5fedA" target="_blank">
+                    here
+                  </Link>
+                  .
+                </span>
+              }
+            />
+            <Rule
+              heading="Where can I view the full terms?"
+              rule={
+                <span>
+                  Please read the full Raffle-Auction Terms & Conditions{' '}
+                  <Link
+                    href="https://docs.google.com/document/d/1YJfq5MU091dkmy6nmUfZWD1uUCqtVPlkIHY1n0odTUo"
+                    target="_blank"
+                  >
+                    here
+                  </Link>
+                </span>
+              }
+            />
           </StyledContent>
         </Accordion.Item>
       </Accordion.Root>
