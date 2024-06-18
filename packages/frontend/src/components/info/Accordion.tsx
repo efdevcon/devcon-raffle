@@ -8,6 +8,8 @@ import { useVoucherRedeemDeadline } from '@/blockchain/hooks/useVoucherRedeemDea
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 import { MediaQueries } from '@/styles/mediaQueries'
 
+const gitcoinSupportUrl = 'https://support.passport.xyz/passport-knowledge-base'
+
 export const InfoAccordion = () => {
   const { auctionWinnersCount, raffleWinnersCount } = useReadAuctionParams()
   const redeemTimestamp = useVoucherRedeemDeadline()
@@ -20,45 +22,59 @@ export const InfoAccordion = () => {
       <Accordion.Root type="single" defaultValue="item-1" collapsible>
         <Accordion.Item value="item-1">
           <StyledHeader>
-            <AccordionStyledTrigger heading="What is this?"/>
+            <AccordionStyledTrigger heading="What is this?" />
           </StyledHeader>
           <StyledContent>
             <span>
-            With the generous help of the <Link href="https://x.com/fairyrnd" target="_blank">Fairy</Link> & <Link
-            href="https://x.com/archblock_" target="_blank">Archblock</Link> teams, we are building off of Devcon VI’s
-            iteration of the Raffle-Auction to sell a portion of this year’s tickets. This iteration will include <Link
-            href="https://support.passport.xyz/passport-knowledge-base" target="_blank">Gitcoin Passport</Link> as a
-            sybil-resistance mechanism.
-            <br/>
-            <br/>
-            We want to continue demonstrating the power of Ethereum to host provably fair and verifiable Raffles &
-            Auctions, while also increasing the methods we use to distribute tickets to the thousands that want to
-            attend each year.
-              </span>
+              With the generous help of the{' '}
+              <Link href="https://x.com/fairyrnd" target="_blank">
+                Fairy
+              </Link>{' '}
+              &{' '}
+              <Link href="https://x.com/archblock_" target="_blank">
+                Archblock
+              </Link>{' '}
+              teams, we are building off of Devcon VI’s iteration of the Raffle-Auction to sell a portion of this year’s
+              tickets. This iteration will include{' '}
+              <Link href={gitcoinSupportUrl} target="_blank">
+                Gitcoin Passport
+              </Link>{' '}
+              as a sybil-resistance mechanism.
+              <br />
+              <br />
+              We want to continue demonstrating the power of Ethereum to host provably fair and verifiable Raffles &
+              Auctions, while also increasing the methods we use to distribute tickets to the thousands that want to
+              attend each year.
+            </span>
           </StyledContent>
         </Accordion.Item>
 
         <Accordion.Item value="item-2">
           <StyledHeader>
-            <AccordionStyledTrigger heading="How do I participate in the Auction & Raffle?"/>
+            <AccordionStyledTrigger heading="How do I participate in the Auction & Raffle?" />
           </StyledHeader>
           <StyledContent>
-            Join the contest by submitting a bid for the ticket based on the amount you would value having a Devcon
-            ticket. Bid high to compete for the 20 tickets distributed in the auction, or be entered into the raffle for
-            a chance to buy a ticket at the reserve price. You need to bid at least the reserve price, which is set to
-            the price of a standard Devcon ticket at time of publication: <Bold>{reservePrice} ETH.</Bold> Please note
-            there is a one-person-one-bid rule in place. You will need to submit your name at check-out, and we will
-            check IDs at Devcon to verify that the participant is the ticket holder.
+            <span>
+              Connect or create your{' '}
+              <Link href={gitcoinSupportUrl} target="_blank">
+                Gitcoin Passport
+              </Link>
+              . Once you prove your humanity with a Passport score of 20+, submit a bid for a ticket based on the amount
+              you would value a Devcon ticket. Bid high to compete for the 20 tickets distributed in the auction, or bid
+              the reserve price to be entered into the raffle. You need to bid at least the reserve price, which is set
+              to the price of a Devcon Builder ticket at time of publication: <Bold>0.08 ETH</Bold>. Please note that
+              you will need to submit your name at the time of check-out, as we will check IDs at Devcon to verify that
+              the participant is the ticket holder.
+            </span>
           </StyledContent>
         </Accordion.Item>
 
         <Accordion.Item value="item-3">
           <StyledHeader>
-            <AccordionStyledTrigger heading="ELI5 plz?"/>
+            <AccordionStyledTrigger heading="ELI5 plz?" />
           </StyledHeader>
           <StyledContent>
-            Place a bid of at least {reservePrice} ETH for a chance to win a Devcon ticket. If your bid is in the
-            top{' '}
+            Place a bid of at least {reservePrice} ETH for a chance to win a Devcon ticket. If your bid is in the top{' '}
             {Number(auctionWinnersCount)}, you will win a Devcon ticket in exchange for the amount you paid in your bid.
             At any point, you can top up your bid if you want. If your bid is not in the top {auctionWinnersCount}, you
             will be entered into a raffle and may be randomly chosen to win a Devcon ticket — if you were randomly
@@ -69,7 +85,7 @@ export const InfoAccordion = () => {
 
         <Accordion.Item value="item-4">
           <StyledHeader>
-            <AccordionStyledTrigger heading="Contest rules"/>
+            <AccordionStyledTrigger heading="Contest rules" />
           </StyledHeader>
           <StyledContent>
             <RuleText>
@@ -132,8 +148,7 @@ export const InfoAccordion = () => {
                   Bidder A places their first bid of {exampleBid} ETH which puts them in the 1st place. Later Bidder B
                   places their first bid of the same amount which puts them in 2nd place. Next, Bidder B bumps their bid
                   to {exampleBid + 0.1} ETH which puts them in 1st place. Bidder A notices that they lost the first
-                  place and decides to bump their bid as well. Bidder A bumps their bid to {exampleBid + 0.1} ETH
-                  which{' '}
+                  place and decides to bump their bid as well. Bidder A bumps their bid to {exampleBid + 0.1} ETH which{' '}
                   <Bold>puts them in the 1st place</Bold>, because they placed their first bid before Bidder B.
                 </>
               }
@@ -143,7 +158,7 @@ export const InfoAccordion = () => {
 
         <Accordion.Item value="item-5">
           <StyledHeader>
-            <AccordionStyledTrigger heading="In what form will I get the ticket?"/>
+            <AccordionStyledTrigger heading="In what form will I get the ticket?" />
           </StyledHeader>
           <StyledContent>
             After the raffle is settled, you will have 48 hours (<Bold>until {formatDate(redeemTimestamp)}</Bold>) to
@@ -155,7 +170,7 @@ export const InfoAccordion = () => {
 
         <Accordion.Item value="item-6">
           <StyledHeader>
-            <AccordionStyledTrigger heading="Okay, I got a voucher code. What do I do now?"/>
+            <AccordionStyledTrigger heading="Okay, I got a voucher code. What do I do now?" />
           </StyledHeader>
           <StyledContent>
             <span>
@@ -170,13 +185,12 @@ export const InfoAccordion = () => {
 
         <Accordion.Item value="item-7">
           <StyledHeader>
-            <AccordionStyledTrigger heading="Other FAQ"/>
+            <AccordionStyledTrigger heading="Other FAQ" />
           </StyledHeader>
           <StyledContent>
             <span>
               Please read our Terms & Conditions{' '}
-              <Link
-                href="https://docs.google.com/document/d/1pVU-G8mpPD33EwOwE96MTB_4AZrYa2TNWXLSfkOPCJQ/edit?usp=sharing">
+              <Link href="https://docs.google.com/document/d/1pVU-G8mpPD33EwOwE96MTB_4AZrYa2TNWXLSfkOPCJQ/edit?usp=sharing">
                 here
               </Link>{' '}
               as well as our full Auction & Raffle FAQ on our website{' '}
@@ -197,7 +211,7 @@ const AccordionStyledTrigger = ({ heading }: AccordionTriggerProps) => {
   return (
     <StyledTrigger>
       <span>{heading}</span>
-      <AccordionArrow color={Colors.Black} size={22}/>
+      <AccordionArrow color={Colors.Black} size={22} />
     </StyledTrigger>
   )
 }
