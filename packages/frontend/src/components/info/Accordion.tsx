@@ -152,30 +152,28 @@ export const InfoAccordion = () => {
           <StyledContent>
             <RuleText>
               The total number of {totalCount} tickets will be divided between the auction and the raffle pools. All
-              winners will receive a voucher code that must be redeemed for a Devcon ticket.
+              winners will receive a link that can be redeemed for a Devcon ticket.
             </RuleText>
             <Rule
-              heading={`Auction pool: ${auctionWinnersCount} tickets`}
-              rule="Tickets from the auction pool will be distributed to the highest bidding participants. The price paid by a winner in that pool is equal to the amount of their bid. All proceeds will go towards Public Goods."
-              example={`You bid ${exampleBid} ETH and end up in the top ${auctionWinnersCount} of the bidders. You receive a ticket for ${exampleBid} ETH.`}
-            />
-            <Rule
               heading={`Raffle pool: ${raffleWinnersCount} tickets`}
-              rule={`From participants who bid below the last bid in the auction pool, ${raffleWinnersCount} will be chosen at random. A winner in that pool will receive a ticket for ${reservePrice} ETH. All funds that they bid over that price will be claimable after the raffle is settled.`}
-              example={`You bid ${exampleBid} ETH and end up below the top ${auctionWinnersCount}. If you are selected in the raffle, you pay ${reservePrice} ETH for the ticket and get ${(
+              rule={`From participants who bid below the lowest winning bid in the auction pool, ${raffleWinnersCount} will be chosen at random. A winner in that pool will receive a ticket for ${reservePrice} ETH. All funds that they bid over that price will be reclaimable after the raffle is settled.`}
+              example={`You bid ${exampleBid} ETH and don’t win in the auction. If you win in the raffle, you pay ${reservePrice} ETH for the ticket and get ${(
                 exampleBid - reservePrice
               ).toFixed(2)} ETH back.`}
             />
             <Rule
+              heading={`Auction pool: ${auctionWinnersCount} tickets`}
+              rule={`Tickets from the auction pool will be distributed to the ${auctionWinnersCount} highest bidding participants. The price paid by a winner in that pool is equal to the amount of their bid. All proceeds will go towards Public Goods.`}
+              example={`You bid ${exampleBid} ETH and end up in the top ${auctionWinnersCount} of the bidders. You receive a ticket for ${exampleBid} ETH.`}
+            />
+            <Rule
               heading="Golden Ticket: 1 ticket"
-              rule="One lucky bidder from the raffle pool will receive a ticket for Devcon 6 totally for free! The Golden Ticket winner will be able to claim the whole amount of their bid after the raffle is settled."
+              rule="One lucky bidder from the raffle pool will receive a ticket to Devcon 7 for free! The Golden Ticket winner will be able to claim the whole amount of their bid after the raffle is settled."
             />
             <Rule
               heading="No luck?"
-              rule="In case you don't win, you will be able to withdraw your bid amount minus a 2% sybil-resistance fee."
-              example={`You bid ${exampleBid} ETH and end up not winning a ticket. You can get ${
-                exampleBid * 0.98
-              } ETH back.`}
+              rule="In case you don't win at all, you will be able to withdraw your full bid amount."
+              example={`You bid ${exampleBid} ETH and end up not winning a ticket. You can withdraw your ${exampleBid} ETH.`}
             />
             <Rule
               heading="What if there’s less than 100 participants?"
@@ -220,28 +218,24 @@ export const InfoAccordion = () => {
 
         <Accordion.Item value="item-6">
           <StyledHeader>
-            <AccordionStyledTrigger heading="In what form will I get the ticket?" />
+            <AccordionStyledTrigger heading="Okay, I won a ticket. Now what?" />
           </StyledHeader>
           <StyledContent>
-            After the raffle is settled, you will have 48 hours (<Bold>until {formatDate(redeemTimestamp)}</Bold>) to
-            claim your voucher code for the ticket. In order to do so, you will be asked to sign a message using your
-            wallet to authenticate as the owner of the winning account. The voucher code will be presented to you on
-            this page.
+            <span>
+              Your Voucher Link will be claimable on this site July 19-31. This will send you to our shop to complete
+              the standard ticket checkout. See you in Bangkok!
+            </span>
           </StyledContent>
         </Accordion.Item>
 
         <Accordion.Item value="item-7">
           <StyledHeader>
-            <AccordionStyledTrigger heading="Okay, I got a voucher code. What do I do now?" />
+            <AccordionStyledTrigger heading="In what form will I get the ticket?" />
           </StyledHeader>
           <StyledContent>
-            <span>
-              Your Voucher Code will be available to you for 48 hours after the closing of the Auction & Raffle (
-              <Bold>until {formatDate(redeemTimestamp)}</Bold>). Once you have input your voucher code into our ticket
-              portal, you will go through the standard ticket checkout flow. You can go to{' '}
-              <Link href="https://tickets.devcon.org/">our ticket shop here</Link> to redeem your voucher code for a
-              Devcon 6 ticket. See you at the conference!
-            </span>
+            After the raffle is settled, you will have all of July to claim your voucher code for the ticket. In order
+            to do so, you will be asked to sign a message using your wallet to authenticate as the owner of the winning
+            account. If you win, a voucher redemption link will reveal itself after the raffle concludes.
           </StyledContent>
         </Accordion.Item>
 
