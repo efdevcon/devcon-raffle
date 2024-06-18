@@ -1,3 +1,4 @@
+import { MediaQueries } from '@/styles/mediaQueries'
 import styled from 'styled-components'
 
 export const BidsColumns = styled.div`
@@ -11,15 +12,27 @@ export const BidsColumns = styled.div`
 export const PlaceColumn = styled.div`
   grid-area: place;
   z-index: 2;
+
+  ${MediaQueries.medium} {
+    font-size: 14px;
+  }
 `
 
 export const BidColumn = styled.div`
   grid-area: bid;
   z-index: 2;
+
+  ${MediaQueries.medium} {
+    font-size: 14px;
+  }
 `
 
 export const AddressColumn = styled.div`
   grid-area: address;
   text-align: right;
   z-index: 2;
+
+  ${MediaQueries.medium} {
+    font-size: 14px;
+  }
 `

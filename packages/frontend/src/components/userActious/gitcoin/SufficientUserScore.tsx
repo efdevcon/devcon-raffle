@@ -4,6 +4,7 @@ import { UserScoreProps } from '@/components/userActious/gitcoin/UserGitcoinScor
 import { environment } from '@/config/environment'
 import styled from 'styled-components'
 import { Colors } from '@/styles/colors'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export const SufficientUserScore = ({ userScore, gitcoinSettled }: UserScoreProps) => {
   return (
@@ -18,7 +19,7 @@ export const SufficientUserScore = ({ userScore, gitcoinSettled }: UserScoreProp
         </p>
       </FormRow>
       <FormRow>
-        <h4>You can place your bid now!</h4>
+        <FormRowHeading>You can place your bid now!</FormRowHeading>
       </FormRow>
       <Button onClick={gitcoinSettled}>Continue</Button>
     </FormWrapper>
@@ -27,4 +28,10 @@ export const SufficientUserScore = ({ userScore, gitcoinSettled }: UserScoreProp
 
 const Score = styled.span`
   color: ${Colors.Green};
+`
+
+const FormRowHeading = styled.h4`
+  ${MediaQueries.medium} {
+    font-size: 16px;
+  }
 `

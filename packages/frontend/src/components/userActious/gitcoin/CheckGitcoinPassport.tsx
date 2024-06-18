@@ -3,6 +3,7 @@ import { FormHeading, FormRow, FormWrapper } from '../../form'
 import { Button } from '../../buttons'
 import { SeparatorWithText } from '@/components/common/Separator'
 import { urls } from '@/constants/urls'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 interface Props {
   onCheckScoreClick: () => void
@@ -15,7 +16,7 @@ export const CheckGitcoinPassport = ({ onCheckScoreClick }: Props) => {
       <FormRow>
         <span>To place a bid we need to check your score. By verifying your score we checking if you are a human.</span>
       </FormRow>
-      <Button wide onClick={onCheckScoreClick}>
+      <Button onClick={onCheckScoreClick} wide>
         Check Score
       </Button>
       <SeparatorWithText text="Or" />
@@ -33,4 +34,9 @@ export const CheckGitcoinPassport = ({ onCheckScoreClick }: Props) => {
 
 const Wrapper = styled(FormWrapper)`
   width: 390px;
+
+  ${MediaQueries.medium} {
+    width: 100%;
+    padding: 0;
+  }
 `

@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Colors } from '@/styles/colors'
 import { UserActionSection } from '../userActious/UserActionSection'
 import { BidsShortListSection } from '@/components/bids/bidsShortList/BidsShortListSection'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export const Auction = () => {
   return (
@@ -18,4 +19,14 @@ const Wrapper = styled.div`
   width: 670px;
   padding: 0 115px;
   background: ${Colors.GreyLight};
+
+  ${MediaQueries.large} {
+    width: 60%;
+    padding: 0 48px;
+  }
+
+  ${MediaQueries.medium} {
+    width: 100%;
+    padding: 0;
+  }
 `

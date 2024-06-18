@@ -3,6 +3,7 @@ import { Colors } from '@/styles/colors'
 import { useBids } from '@/providers/BidsProvider'
 import { HeaderBar } from '@/components/common/Header'
 import { BackButton } from '@/components/buttons/BackButton'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export const Header = () => {
   const { bidList } = useBids()
@@ -26,6 +27,13 @@ const StyledHeader = styled(HeaderBar)`
   height: 160px;
   padding: 28px 68px;
   overflow: hidden;
+
+  ${MediaQueries.medium} {
+    flex-direction: column;
+    row-gap: 8px;
+    height: 128px;
+    padding: 12px 32px 8px;
+  }
 `
 
 const Wrapper = styled.div`
@@ -34,6 +42,10 @@ const Wrapper = styled.div`
   height: 100%;
   width: 100%;
   color: ${Colors.White};
+
+  ${MediaQueries.medium} {
+    justify-content: flex-start;
+  }
 `
 
 const TitleColumn = styled.div`
@@ -41,11 +53,29 @@ const TitleColumn = styled.div`
   flex-direction: column;
   align-items: center;
   row-gap: 8px;
+
+  ${MediaQueries.medium} {
+    align-items: flex-start;
+    row-gap: 0;
+  }
 `
 
 const Title = styled.h2`
   background-color: ${Colors.White};
   padding: 4px 20px;
+
+  ${MediaQueries.large} {
+    font-size: 32px;
+  }
+
+  ${MediaQueries.medium} {
+    font-size: 24px;
+    padding: 0 10px;
+  }
+
+  ${MediaQueries.small} {
+    font-size: 20px;
+  }
 `
 
 const ButtonWrapper = styled.div`
@@ -54,4 +84,8 @@ const ButtonWrapper = styled.div`
   align-items: center;
   padding: 16px;
   background: ${Colors.White};
+
+  ${MediaQueries.medium} {
+    padding: 0;
+  }
 `

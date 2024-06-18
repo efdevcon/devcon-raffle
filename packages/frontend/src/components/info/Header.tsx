@@ -4,6 +4,7 @@ import { VoucherTimeLeft } from './VoucherTimeLeft'
 import { Colors } from '@/styles/colors'
 import { HeaderBar } from '@/components/common/Header'
 import { AuctionState, useAuctionState } from '@/blockchain/hooks/useAuctionState'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export const Header = () => {
   const state = useAuctionState()
@@ -38,6 +39,15 @@ const Wrapper = styled.div`
 const StyledHeader = styled(HeaderBar)`
   height: 225px;
   padding: 16px 68px;
+
+  ${MediaQueries.large} {
+    padding: 16px 32px;
+  }
+
+  ${MediaQueries.medium} {
+    height: 128px;
+    padding: 12px 32px 8px;
+  }
 `
 
 const HeaderWrapper = styled.div`
@@ -47,6 +57,10 @@ const HeaderWrapper = styled.div`
   max-width: 1058px;
   margin: 0 auto;
   position: relative;
+
+  ${MediaQueries.medium} {
+    max-width: 440px;
+  }
 `
 
 const InfoWrapper = styled.div`
@@ -67,12 +81,20 @@ const Title = styled.h1`
   background-color: ${Colors.White};
   padding: 0 10px;
 
-  @media screen and (max-width: 1260px) {
+  ${MediaQueries.large} {
     font-size: 40px;
+  }
+
+  ${MediaQueries.medium} {
+    font-size: 20px;
   }
 `
 
 const SubTitle = styled.h3`
   background-color: ${Colors.White};
   padding: 0 10px;
+
+  ${MediaQueries.medium} {
+    font-size: 14px;
+  }
 `

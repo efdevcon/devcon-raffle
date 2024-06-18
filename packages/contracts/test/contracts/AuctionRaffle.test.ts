@@ -380,8 +380,9 @@ describe('AuctionRaffle', function () {
       await bid(9)
     })
 
-    it('reverts if called not by owner', async function () {
-      await expect(auctionRaffle.settleAuction()).to.be.revertedWith('Ownable: caller is not the owner')
+    it('can be called by anyone', async function () {
+      await endBidding(auctionRaffleAsOwner)
+      await expect(auctionRaffle.settleAuction()).to.not.be.reverted
     })
 
     it('reverts if bidding is in progress', async function () {
@@ -483,8 +484,10 @@ describe('AuctionRaffle', function () {
       await bid(9)
     })
 
-    it('reverts if called not by owner', async function () {
-      await expect(auctionRaffle.settleRaffle()).to.be.revertedWith('Ownable: caller is not the owner')
+    it('can be called by anyone', async function () {
+      await endBidding(auctionRaffleAsOwner)
+      await auctionRaffle.settleAuction()
+      await expect(auctionRaffle.settleRaffle()).to.not.be.reverted
     })
 
     it('reverts if raffle is not settled', async function () {

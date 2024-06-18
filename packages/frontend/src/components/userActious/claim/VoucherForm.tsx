@@ -7,6 +7,7 @@ import { useVoucherRedeemDeadline } from '@/blockchain/hooks/useVoucherRedeemDea
 import { Button } from '@/components/buttons'
 import { FormHeading, InputLabel } from '@/components/form'
 import { Colors } from '@/styles/colors'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 interface Props {
   voucher: string
@@ -64,6 +65,11 @@ const VoucherFormHeading = styled(FormHeading)`
   font-size: 24px;
   margin-bottom: 16px;
   text-align: center;
+
+  ${MediaQueries.medium} {
+    text-align: start;
+    margin-bottom: 0;
+  }
 `
 
 const VoucherIdBox = styled.div`

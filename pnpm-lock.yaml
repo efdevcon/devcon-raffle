@@ -21,6 +21,9 @@ importers:
       '@ethereum-waffle/chai':
         specifier: ^3.4.3
         version: 3.4.4
+      '@kevincharm/gfc-fpe':
+        specifier: ^1.1.0
+        version: 1.1.0
       '@nomicfoundation/hardhat-verify':
         specifier: ^2.0.5
         version: 2.0.5(hardhat@2.19.4)
@@ -9272,24 +9275,13 @@ snapshots:
 
   '@kamilkisiela/fast-url-parser@1.1.4': {}
 
-  '@lens-protocol/blockchain-bindings@0.10.0':
-    dependencies:
-      '@ethersproject/abi': 5.7.0
-      '@ethersproject/contracts': 5.7.0
-      '@ethersproject/providers': 5.7.2
-      '@ethersproject/units': 5.7.0
-      '@lens-protocol/domain': 0.11.0
-      '@lens-protocol/shared-kernel': 0.11.0
-      ethers: 5.7.2
-      tslib: 2.6.2
-    transitivePeerDependencies:
-      - '@faker-js/faker'
-      - '@jest/globals'
-      - bufferutil
-      - jest-mock-extended
-      - jest-when
-      - utf-8-validate
-      - wait-for-expect
+  /@kevincharm/gfc-fpe@1.1.0:
+    resolution: {integrity: sha512-Kg9wOa3T1ttOVxqeomid3zqWcqXVWZA7l1nXhOLrn/NTKmaTIM873rComzuG/b3Xv1CogLTZgK/+HeVf3Fn0fg==}
+    dev: true
+
+  /@lit-labs/ssr-dom-shim@1.2.0:
+    resolution: {integrity: sha512-yWJKmpGE6lUURKAaIltoPIE/wrbY3TEkqQt+X0m+7fQNnAv0keydnYvbiJFP1PnMhizmIWRWOG5KLhYyc/xl+g==}
+    dev: false
 
   '@lens-protocol/client@2.0.0(@types/react@18.2.74)(react@18.2.0)':
     dependencies:

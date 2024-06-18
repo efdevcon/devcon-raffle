@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation'
 import { Colors } from '@/styles/colors'
 import { BidsShortList } from '@/components/bids/bidsShortList/BidsShortList'
 import { BidsListHeaders } from '@/components/bids/BidsListHeaders'
+import { MediaQueries } from '@/styles/mediaQueries'
+import { FormSubHeading } from '@/components/form'
 
 export const BidsShortListSection = () => {
   const state = useAuctionState()
@@ -32,8 +34,8 @@ export const BidsShortListSection = () => {
       ) : (
         <>
           <ListHeader>
-            <h3>Number of participants:</h3>
-            <HeaderText>{bidList.length}</HeaderText>
+            <FormSubHeading>Number of participants:</FormSubHeading>
+            <FormSubHeading>{bidList.length}</FormSubHeading>
           </ListHeader>
           <ListContainer>
             <BidsListHeaders />
@@ -57,6 +59,14 @@ const BidsListContainer = styled.div`
   row-gap: 44px;
   width: 100%;
   padding: 44px 0;
+
+  ${MediaQueries.medium} {
+    justify-content: center;
+    row-gap: 16px;
+    max-width: 440px;
+    padding: 32px;
+    margin: 0 auto;
+  }
 `
 
 const ListContainer = styled.div`

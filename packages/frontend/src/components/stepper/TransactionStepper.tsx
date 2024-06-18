@@ -2,7 +2,8 @@ import { Transactions } from '@/blockchain/transaction'
 import { Stepper } from './Stepper'
 import { heading } from '../auction/AuctionTransaction'
 import { styled } from 'styled-components'
-import { Colors } from '@/styles/colors'
+import { useResponsiveHelpers } from '@/hooks/useResponsiveHelper'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 interface Props<StepName extends string> {
   current: StepName
@@ -11,11 +12,13 @@ interface Props<StepName extends string> {
 }
 
 export const TransactionStepper = <StepName extends string>({ action, current, isFailed }: Props<StepName>) => {
+  const { isMobileWidth } = useResponsiveHelpers()
   const steps = getTransactionSteps(action)
   const currentStepIndex = steps.findIndex((step) => [step.default.name, step.failed?.name].includes(current)) + 1
+
   return (
     <StepperContainer>
-      <StepperHeader>Finalize {header[action]}</StepperHeader>
+      {!isMobileWidth && <StepperHeader>Finalize {header[action]}</StepperHeader>}
       <Stepper steps={steps} currentStep={currentStepIndex} isFailed={isFailed} />
     </StepperContainer>
   )
@@ -59,8 +62,17 @@ const StepperContainer = styled.div`
   flex-direction: column;
   width: 313px;
   padding: 82px 20px 82px 0;
-  background-color: ${Colors.Pink};
+
+  ${MediaQueries.large} {
+    width: 100%;
+    max-width: 440px;
+    padding: 0;
+  }
 `
 const StepperHeader = styled.h3`
   margin: 0 0 24px 24px;
+
+  ${MediaQueries.large} {
+    margin: 0 0 16px 24px;
+  }
 `

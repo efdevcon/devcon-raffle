@@ -2,12 +2,16 @@ import styled from 'styled-components'
 import { Colors } from '@/styles/colors'
 import { useExplorerAddressLink } from '@/blockchain/hooks/useExplorerLinks'
 import { Hex } from 'viem'
+import { useResponsiveHelpers } from '@/hooks/useResponsiveHelper'
+import { shortenHexString } from '@/utils/formatters/shortenHexString'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 interface Props {
   bidderAddress: Hex
 }
 
 export const GoldenTicketWinner = ({ bidderAddress }: Props) => {
+  const { isMobileWidth } = useResponsiveHelpers()
   const explorerLink = useExplorerAddressLink(bidderAddress)
 
   return (
@@ -16,7 +20,7 @@ export const GoldenTicketWinner = ({ bidderAddress }: Props) => {
       <Section>
         <HeaderText>THE GOLDEN TICKET WINNER IS:</HeaderText>
         <AddressLink href={explorerLink} target="_blank" rel="noopener noreferrer">
-          {bidderAddress}
+          {isMobileWidth ? shortenHexString(bidderAddress) : bidderAddress}
         </AddressLink>
       </Section>
       <Doot>🎉</Doot>
@@ -31,6 +35,12 @@ const Container = styled.div`
   width: 100%;
   height: 90px;
   background-color: ${Colors.Pink};
+
+  ${MediaQueries.medium} {
+    padding: 8px;
+    height: auto;
+    text-align: center;
+  }
 `
 
 const Section = styled.div`
@@ -46,6 +56,10 @@ const Doot = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 40px;
+
+  ${MediaQueries.medium} {
+    font-size: 24px;
+  }
 `
 
 const ReverseDoot = styled(Doot)`

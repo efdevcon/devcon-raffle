@@ -5,6 +5,7 @@ import { RemainingTime } from './TimeLeft'
 import { formatDate } from '@/utils/formatters/formatDate'
 import { useVoucherRedeemDeadline } from '@/blockchain/hooks/useVoucherRedeemDeadline'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export const VoucherTimeLeft = () => {
   const { biddingEndTime } = useReadAuctionParams()
@@ -30,6 +31,11 @@ const VoucherTimeBox = styled.div<TimeProps>`
   width: calc(100% - 54px);
   padding: 8px 24px 8px 68px;
   background: ${({ isPeriodExpired }) => (isPeriodExpired ? Colors.Red : Colors.Black)};
+
+  ${MediaQueries.large} {
+    width: 100%;
+    padding: 32px;
+  }
 `
 const TimeRow = styled.div<TimeProps>`
   display: flex;
@@ -39,5 +45,5 @@ const TimeRow = styled.div<TimeProps>`
   margin: 0 auto;
   max-width: 1112px;
   font-family: 'Space Mono', 'Roboto Mono', monospace;
-  color: ${({ isPeriodExpired }) => (isPeriodExpired ? Colors.Red : Colors.White)};
+  color: ${Colors.White};
 `

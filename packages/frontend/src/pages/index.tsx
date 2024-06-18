@@ -1,9 +1,8 @@
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 import Head from 'next/head'
-import { Info } from '@/components/info/Info'
 import styled from 'styled-components'
-import { Auction } from '@/components/auction/Auction'
 import { fetchMetadata, metadataToMetaTags } from 'frames.js/next/pages-router/client'
+import { Layout } from '@/components/layout/Layout'
 
 export default function Home({ metadata }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
@@ -15,10 +14,7 @@ export default function Home({ metadata }: InferGetServerSidePropsType<typeof ge
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <PageContainer>
-        <Info />
-        <Auction />
-      </PageContainer>
+      <Layout />
     </>
   )
 }

@@ -10,6 +10,9 @@ import { Form, InputLabel } from '@/components/form'
 import { Colors } from '@/styles/colors'
 import { shortenHexString } from '@/utils/formatters/shortenHexString'
 import { Hex } from 'viem'
+import { MediaQueries } from '@/styles/mediaQueries'
+import { shareText } from '@/constants/shareText'
+import { FarcasterIcon, TwitterIcon } from '@/components/icons'
 
 interface Props {
   txHash: Hex | undefined
@@ -36,12 +39,31 @@ export const TransactionSuccess = ({ txHash, action, setView, onBackHome }: Prop
       <TransactionIdWrapper>
         <TransactionIdLabel>Your transaction hash</TransactionIdLabel>
         <TransactionIdBox>
-          <TransactionIdText>{shortenHexString(txHash, 12)}</TransactionIdText>
+          <TransactionIdText>{shortenHexString(txHash, 6, 12)}</TransactionIdText>
           <CopyButton value={txHash} side="top" text="Copy transaction hash" />
           <RedirectButton link={transactionLink} side="top" tooltip="View on Arbiscan" />
         </TransactionIdBox>
       </TransactionIdWrapper>
-      <Button view="primary" onClick={goHome}>
+      {action === Transactions.Place && (
+        <>
+          <Button
+            onClick={() => window.open(`https://warpcast.com/~/compose?text=${shareText}`, '_blank')}
+            wide
+            icon={FarcasterIcon}
+          >
+            Share on Farcaster
+          </Button>
+          <Button
+            onClick={() => window.open(`https://twitter.com/intent/tweet?text=${shareText}`, '_blank')}
+            className="twitter-share-button"
+            wide
+            icon={TwitterIcon}
+          >
+            Share on X
+          </Button>
+        </>
+      )}
+      <Button view="secondary" onClick={goHome} wide>
         Back to home
       </Button>
     </Container>
@@ -50,6 +72,10 @@ export const TransactionSuccess = ({ txHash, action, setView, onBackHome }: Prop
 
 const Container = styled(Form)`
   row-gap: 24px;
+
+  ${MediaQueries.large} {
+    row-gap: 16px;
+  }
 `
 
 const TransactionIdWrapper = styled.div`

@@ -35,7 +35,6 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
     uint256[] _raffleParticipants;
 
     uint256[] _auctionWinners;
-    uint256[] _raffleWinners;
 
     bool _proceedsClaimed;
 
@@ -126,7 +125,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
      * This is done to efficiently remove auction winners from _raffleParticipants array as they no longer take part
      * in the raffle.
      */
-    function settleAuction() external onlyOwner onlyInState(State.BIDDING_CLOSED) {
+    function settleAuction() external onlyInState(State.BIDDING_CLOSED) {
         _settleState = SettleState.AUCTION_SETTLED;
         uint256 biddersCount = getBiddersCount();
         uint256 raffleWinnersCount = _raffleWinnersCount;
@@ -154,7 +153,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
     /**
      * @notice Initiate raffle draw by requesting a random number from Chainlink VRF.
      */
-    function settleRaffle() external onlyOwner onlyInState(State.AUCTION_SETTLED) returns (uint256) {
+    function settleRaffle() external onlyInState(State.AUCTION_SETTLED) returns (uint256) {
         uint256 reqId = _getRandomNumber();
         emit RandomNumberRequested(reqId);
         return reqId;
@@ -176,7 +175,7 @@ contract AuctionRaffle is Ownable, Config, BidModel, StateModel, VRFRequester {
      * @notice Allows a bidder to claim their funds after the raffle is settled.
      * Golden Ticket winner can withdraw the full bid amount.
      * Raffle winner can withdraw the bid amount minus `_reservePrice`.
-     * Non-winning bidder can withdraw the bid amount minus 2% fee.
+     * Non-winning bidder can withdraw the full bid amount.
      * Auction winner pays the full bid amount and is not entitled to any withdrawal.
      */
     function claim(uint256 bidderID) external onlyInState(State.RAFFLE_SETTLED) {

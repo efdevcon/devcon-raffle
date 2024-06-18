@@ -1,8 +1,9 @@
-import { ReactNode } from 'react'
+import { FC, ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 import { Colors } from '@/styles/colors'
-import { LoadingIcon } from '@/components/icons'
+import { IconProps, LoadingIcon } from '@/components/icons'
 import { TransientProps } from '@/styles/transientProps'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export interface ButtonProps {
   children: ReactNode
@@ -12,9 +13,19 @@ export interface ButtonProps {
   disabled?: boolean
   isLoading?: boolean
   onClick?: () => void
+  icon?: FC<IconProps>
 }
 
-export const Button = ({ children, className, view = 'primary', wide, disabled, isLoading, onClick }: ButtonProps) => {
+export const Button = ({
+  children,
+  className,
+  view = 'primary',
+  wide,
+  disabled,
+  isLoading,
+  onClick,
+  icon: Icon,
+}: ButtonProps) => {
   return (
     <ButtonContainer
       className={className}
@@ -23,7 +34,13 @@ export const Button = ({ children, className, view = 'primary', wide, disabled, 
       disabled={disabled || isLoading}
       isLoading={isLoading}
       onClick={onClick}
+      icon={Icon}
     >
+      {Icon && (
+        <IconWrapper>
+          <Icon />
+        </IconWrapper>
+      )}
       {isLoading ? <LoadingIcon /> : children}
     </ButtonContainer>
   )
@@ -49,6 +66,10 @@ const commonButtonStyles = css<ButtonTransientProps>`
   outline: none;
   overflow: hidden;
   transition: all 0.25s ease;
+
+  ${MediaQueries.medium} {
+    width: 100%;
+  }
 
   &:disabled {
     opacity: 0.5;
@@ -77,6 +98,16 @@ const SecondaryButtonStyles = css<ButtonTransientProps>`
   &:active {
     background-color: ${Colors.Pink};
   }
+`
+
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
 `
 
 export const ButtonContainer = styled.button<ButtonTransientProps>`

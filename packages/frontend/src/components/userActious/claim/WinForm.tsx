@@ -7,6 +7,7 @@ import { FormWrapper } from '@/components/form'
 import { WinBidForm } from '@/components/userActious/claim/WinBidForm'
 import { VoucherForm } from '@/components/userActious/claim/VoucherForm'
 import { WinType } from '@/types/winType'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 interface WinFormProps {
   userBid: UserBid
@@ -25,7 +26,7 @@ export const WinForm = ({ userBid, withdrawalAmount, setView }: WinFormProps) =>
   }, [address])
 
   return (
-    <>
+    <WinFormWrapper>
       {((!userBid.claimed && userBid.winType !== WinType.Auction) || !voucher) && (
         <Wrapper>
           <WinBidFormWrapper $twoColumns={twoColumns}>
@@ -44,15 +45,41 @@ export const WinForm = ({ userBid, withdrawalAmount, setView }: WinFormProps) =>
           <VoucherForm voucher={voucher} />
         </Wrapper>
       )}
-    </>
+    </WinFormWrapper>
   )
 }
+
+const WinFormWrapper = styled.div`
+  display: flex;
+
+  ${MediaQueries.large} {
+    gap: 16px;
+  }
+
+  ${MediaQueries.medium} {
+    flex-direction: column;
+    gap: 32px;
+  }
+`
 
 const WinBidFormWrapper = styled(FormWrapper)<{ $twoColumns?: boolean }>`
   justify-content: center;
   width: ${(props) => (props.$twoColumns ? '289px' : '431px')};
+  padding: 0;
+
+  ${MediaQueries.large} {
+    width: ${(props) => (props.$twoColumns ? 'fit-content' : '431px')};
+  }
+
+  ${MediaQueries.medium} {
+    width: 100%;
+  }
 `
 
 const Wrapper = styled.div`
   padding: 0 35px;
+
+  ${MediaQueries.large} {
+    padding: 0;
+  }
 `
