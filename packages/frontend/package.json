@@ -39,7 +39,7 @@
     "sonner": "^1.4.41",
     "styled-components": "^6.1.8",
     "viem": "^2.9.3",
-    "wagmi": "^2.7.1",
+    "wagmi": "^2.10.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {

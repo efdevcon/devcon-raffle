@@ -14,7 +14,7 @@ const handleRequest = frames(async (req) => {
       image: `/images?status=ended`,
       imageOptions: {
         headers: {
-          "Cache-Control": "public, max-age=0",
+          'Cache-Control': 'public, max-age=0',
         },
       },
       buttons: [
@@ -34,7 +34,7 @@ const handleRequest = frames(async (req) => {
       image: `/images?status=withdrawal`,
       imageOptions: {
         headers: {
-          "Cache-Control": "public, max-age=0",
+          'Cache-Control': 'public, max-age=0',
         },
       },
       buttons: [
@@ -52,7 +52,7 @@ const handleRequest = frames(async (req) => {
     image: `/images?status=active`,
     imageOptions: {
       headers: {
-        "Cache-Control": "public, max-age=0",
+        'Cache-Control': 'public, max-age=0',
       },
     },
     buttons: [

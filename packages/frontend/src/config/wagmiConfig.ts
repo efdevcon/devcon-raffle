@@ -1,8 +1,12 @@
-import { createConfig, webSocket } from 'wagmi'
+import { cookieStorage, createConfig, createStorage, webSocket } from 'wagmi'
 import { arbitrum, arbitrumSepolia, hardhat } from 'wagmi/chains'
 import { coinbaseWallet, walletConnect } from 'wagmi/connectors'
 import { environment } from '@/config/environment'
 import { SupportedChains } from '@/blockchain/chain'
+
+const storage = createStorage({
+  storage: cookieStorage,
+})
 
 export const wagmiConfig = createConfig({
   chains: SupportedChains,
@@ -16,6 +20,7 @@ export const wagmiConfig = createConfig({
     walletConnect({ projectId: environment.walletConnectProjectId }),
     coinbaseWallet({ appName: 'Devcon Auction/Raffle' }),
   ],
+  storage,
 })
 
 declare module 'wagmi' {
