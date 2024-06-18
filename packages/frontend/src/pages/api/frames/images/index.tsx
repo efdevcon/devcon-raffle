@@ -8,6 +8,8 @@ import moment from 'moment'
 import { frameConfig, getBids } from '../utils'
 
 export const runtime = 'edge'
+export const dynamic = 'force-dynamic' // defaults to auto
+export const revalidate = 0
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const svg = encodeURIComponent(renderToStaticMarkup(<DotsIcon />))
@@ -27,6 +29,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ? 100
       : ((totalNrOfParticipants - numberOfWinners) / totalNrOfParticipants) * 100
 
+  res.setHeader('Cache-Control', 'no-store, no-cache, max-age=1, must-revalidate')
+
   // Withdrawal period ended
   if (moment().isAfter(withdraw)) {
     return new ImageResponse(
@@ -40,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         width: 1146,
         height: 600,
         headers: {
-          'Cache-Control': 'public, max-age=0',
+          'Cache-Control': 'max-age=60',
         },
       },
     )
@@ -79,7 +83,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         width: 1146,
         height: 600,
         headers: {
-          'Cache-Control': 'public, max-age=0',
+          'Cache-Control': 'max-age=60',
         },
       },
     )
@@ -128,7 +132,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       width: 1146,
       height: 600,
       headers: {
-        'Cache-Control': 'public, max-age=0',
+        'Cache-Control': 'max-age=60',
       },
     },
   )
