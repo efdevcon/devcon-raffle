@@ -122,6 +122,31 @@ export const InfoAccordion = () => {
 
         <Accordion.Item value="item-4">
           <StyledHeader>
+            <AccordionStyledTrigger heading="What is a Gitcoin Passport?" />
+          </StyledHeader>
+          <StyledContent>
+            <span>
+              <Link href={gitcoinSupportUrl} target="_blank">
+                Gitcoin Passport
+              </Link>{' '}
+              is a best-in-class proof of humanity tool that enables users like you to verify that you are a unique
+              human using a variety of different activities and tools, such as KYC, wallet transaction history, and web2
+              activities.
+              <br /> <br />
+              By using Passport, Devcon is enhancing fairness & equity in our Raffle-Auction, making sure that only
+              humans will be able to participate in their raffle-auction, and not Sybils or other malicious accounts.
+              <br />
+              <br />
+              <Link href={gitcoinSupportUrl} target="_blank">
+                Learn all about it here
+              </Link>
+              .
+            </span>
+          </StyledContent>
+        </Accordion.Item>
+
+        <Accordion.Item value="item-5">
+          <StyledHeader>
             <AccordionStyledTrigger heading="Contest rules" />
           </StyledHeader>
           <StyledContent>
@@ -193,7 +218,7 @@ export const InfoAccordion = () => {
           </StyledContent>
         </Accordion.Item>
 
-        <Accordion.Item value="item-5">
+        <Accordion.Item value="item-6">
           <StyledHeader>
             <AccordionStyledTrigger heading="In what form will I get the ticket?" />
           </StyledHeader>
@@ -205,7 +230,7 @@ export const InfoAccordion = () => {
           </StyledContent>
         </Accordion.Item>
 
-        <Accordion.Item value="item-6">
+        <Accordion.Item value="item-7">
           <StyledHeader>
             <AccordionStyledTrigger heading="Okay, I got a voucher code. What do I do now?" />
           </StyledHeader>
@@ -220,7 +245,7 @@ export const InfoAccordion = () => {
           </StyledContent>
         </Accordion.Item>
 
-        <Accordion.Item value="item-7">
+        <Accordion.Item value="item-8">
           <StyledHeader>
             <AccordionStyledTrigger heading="Other FAQ" />
           </StyledHeader>
