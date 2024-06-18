@@ -67,4 +67,7 @@ module.exports = {
       arbitrumOne: process.env.ARBISCAN_API_KEY,
     },
   },
+  sourcify: {
+    enabled: true,
+  },
 }

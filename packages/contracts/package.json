@@ -38,7 +38,8 @@
     "rinkeby:init-bids": "hardhat --network rinkeby init-bids",
     "ethereum:generate-random-numbers": "hardhat --network ethereum generate-random-numbers",
     "arbitrum:withdrawals-stats": "hardhat --network arbitrum withdrawals-stats",
-    "deploy:arb-sepolia": "hardhat run scripts/deploy.ts --network arbSepolia"
+    "deploy:arb-sepolia": "hardhat run --network arbSepolia scripts/deploy.ts",
+    "deploy:arb1": "hardhat --network arbitrum run scripts/deploy.ts"
   },
   "devDependencies": {
     "@ethereum-waffle/chai": "^3.4.3",
