@@ -3,20 +3,17 @@ import styled from 'styled-components'
 import { ArrowDownIcon } from '../icons'
 import { Colors } from '@/styles/colors'
 import { Rule, RuleText } from '@/components/info/Rules'
-import { formatDate } from '@/utils/formatters/formatDate'
-import { useVoucherRedeemDeadline } from '@/blockchain/hooks/useVoucherRedeemDeadline'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 import { MediaQueries } from '@/styles/mediaQueries'
 import { urls } from '@/constants/urls'
 
 const gitcoinSupportUrl = 'https://support.passport.xyz/passport-knowledge-base'
 const reservePrice = 0.08
+const exampleBid = 0.5
 
 export const InfoAccordion = () => {
   const { auctionWinnersCount, raffleWinnersCount } = useReadAuctionParams()
-  const redeemTimestamp = useVoucherRedeemDeadline()
   const totalCount = auctionWinnersCount && raffleWinnersCount && auctionWinnersCount + raffleWinnersCount
-  const exampleBid = 0.5
 
   return (
     <Wrapper>
@@ -397,11 +394,6 @@ const StyledContent = styled(Accordion.AccordionContent)`
       margin-bottom: 16px;
     }
   }
-`
-
-const Italic = styled.span`
-  font-style: italic;
-  display: contents;
 `
 
 const Underline = styled.span`
