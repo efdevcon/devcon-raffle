@@ -265,7 +265,10 @@ export const InfoAccordion = () => {
                     here
                   </Link>
                   .<br /> The contracts were audited by Trail of Bits. You can view the audit report{' '}
-                  <Link href="https://github.com/efdevcon/devcon-raffle" target="_blank">
+                  <Link
+                    href="https://github.com/efdevcon/devcon-raffle/blob/master/audits/Ethereum%20Foundation%20Devcon%20Auction-Raffle%20Summary%20Report.pdf"
+                    target="_blank"
+                  >
                     here
                   </Link>
                   .<br /> The contract has been verified on Sourcify, available{' '}
