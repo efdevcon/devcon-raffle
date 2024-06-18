@@ -27,7 +27,7 @@
     "@web3modal/wagmi": "^4.1.9",
     "copy-to-clipboard": "^3.3.3",
     "expiry-set": "^1.0.0",
-    "frames.js": "^0.16.4",
+    "frames.js": "^0.16.6",
     "jose": "^5.2.4",
     "lru-cache": "^10.2.1",
     "moment": "^2.29.1",

@@ -147,7 +147,7 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       frames.js:
-        specifier: ^0.16.4
+        specifier: ^0.16.6
         version: 0.16.6(next@14.1.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.3)(zod@3.22.4)
       jose:
         specifier: ^5.2.4
