@@ -6,8 +6,8 @@ import { ReactNode } from 'react'
 import { TopBar } from '@/components/topBar/TopBar'
 import { Footer } from '@/components/footer/Footer'
 import { Toaster } from 'sonner'
-import { cookieToInitialState } from "wagmi";
-import { wagmiConfig } from "@/config/wagmiConfig";
+import { cookieToInitialState } from 'wagmi'
+import { wagmiConfig } from '@/config/wagmiConfig'
 
 export default function App({ Component, pageProps, cookie }: AppProps & CustomProps) {
   const initialState = cookieToInitialState(wagmiConfig, cookie)
@@ -37,8 +37,6 @@ interface CustomProps {
   cookie: string | undefined
 }
 
-App.getInitialProps = async (
-  context: AppContext,
-): Promise<CustomProps> => {
+App.getInitialProps = async (context: AppContext): Promise<CustomProps> => {
   return { cookie: context.ctx.req?.headers.cookie }
 }
