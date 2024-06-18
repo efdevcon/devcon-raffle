@@ -28,7 +28,7 @@ export const InfoAccordion = () => {
               <Link href="https://x.com/fairyrnd" target="_blank">
                 Fairy
               </Link>{' '}
-              &{' '}
+              &amp;{' '}
               <Link href="https://x.com/archblock_" target="_blank">
                 Archblock
               </Link>{' '}
@@ -40,7 +40,7 @@ export const InfoAccordion = () => {
               as a sybil-resistance mechanism.
               <br />
               <br />
-              We want to continue demonstrating the power of Ethereum to host provably fair and verifiable Raffles &
+              We want to continue demonstrating the power of Ethereum to host provably fair and verifiable Raffles &amp;
               Auctions, while also increasing the methods we use to distribute tickets to the thousands that want to
               attend each year.
             </span>
@@ -109,7 +109,7 @@ export const InfoAccordion = () => {
               <li>
                 Please note:{' '}
                 <Underline>
-                  We will be requiring name input at the time of ticket check-out & IDs will be cross-checked at the
+                  We will be requiring name input at the time of ticket check-out &amp; IDs will be cross-checked at the
                   door, to ensure no scalping or resale of the discounted ticket takes place.
                 </Underline>
               </li>
@@ -130,7 +130,7 @@ export const InfoAccordion = () => {
               human using a variety of different activities and tools, such as KYC, wallet transaction history, and web2
               activities.
               <br /> <br />
-              By using Passport, Devcon is enhancing fairness & equity in our Raffle-Auction, making sure that only
+              By using Passport, Devcon is enhancing fairness &amp; equity in our Raffle-Auction, making sure that only
               humans will be able to participate in their raffle-auction, and not Sybils or other malicious accounts.
               <br />
               <br />
@@ -280,7 +280,7 @@ export const InfoAccordion = () => {
               heading="Where can I view the full terms?"
               rule={
                 <span>
-                  Please read the full Raffle-Auction Terms & Conditions{' '}
+                  Please read the full Raffle-Auction Terms &amp; Conditions{' '}
                   <Link
                     href="https://docs.google.com/document/d/1YJfq5MU091dkmy6nmUfZWD1uUCqtVPlkIHY1n0odTUo"
                     target="_blank"
