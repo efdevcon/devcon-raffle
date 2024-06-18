@@ -12,6 +12,11 @@ const handleRequest = frames(async (req) => {
   if (moment().isAfter(frameConfig.withdrawDate)) {
     return {
       image: `/images`,
+      imageOptions: {
+        headers: {
+          "Cache-Control": "public, max-age=0",
+        },
+      },
       buttons: [
         <Button action="link" target={`${frameConfig.url}/bids`}>
           🏆 View Winners
@@ -27,6 +32,11 @@ const handleRequest = frames(async (req) => {
   if (moment().isAfter(frameConfig.endDate)) {
     return {
       image: `/images`,
+      imageOptions: {
+        headers: {
+          "Cache-Control": "public, max-age=0",
+        },
+      },
       buttons: [
         <Button action="link" target={`${frameConfig.url}/bids`}>
           🏆 View Winners
@@ -40,6 +50,11 @@ const handleRequest = frames(async (req) => {
 
   return {
     image: `/images`,
+    imageOptions: {
+      headers: {
+        "Cache-Control": "public, max-age=0",
+      },
+    },
     buttons: [
       <Button action="link" target={`${frameConfig.url}/bids`}>
         🏆 View Bids

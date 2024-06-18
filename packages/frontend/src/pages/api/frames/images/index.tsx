@@ -17,7 +17,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const timer = moment().isBefore(start)
     ? `Till start ${formatTimeLeft(BigInt(start.unix()))}`
     : `Time left ${formatTimeLeft(BigInt(end.unix()))}`
-  const imageOptions = { width: 1146, height: 600, headers: { 'Cache-Control': 'public, max-age=0' } }
 
   const bids = await getBids()
 
@@ -37,7 +36,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           <p tw="text-6xl">has ended ⌛️</p>
         </div>
       ),
-      imageOptions,
+      {
+        width: 1146,
+        height: 600,
+        headers: {
+          'Cache-Control': 'public, max-age=0',
+        },
+      },
     )
   }
 
@@ -70,7 +75,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           </div>
         </div>
       ),
-      imageOptions,
+      {
+        width: 1146,
+        height: 600,
+        headers: {
+          'Cache-Control': 'public, max-age=0',
+        },
+      },
     )
   }
 
@@ -113,6 +124,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         </div>
       </div>
     ),
-    imageOptions,
+    {
+      width: 1146,
+      height: 600,
+      headers: {
+        'Cache-Control': 'public, max-age=0',
+      },
+    },
   )
 }
