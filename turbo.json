@@ -19,7 +19,9 @@
         "WHITELISTED_ORIGINS",
         "RATE_LIMIT_GLOBAL",
         "RATE_LIMIT_NONCES",
-        "NONCE_EXPIRY"
+        "NONCE_EXPIRY",
+        "SITE_URL",
+        "URL"
       ],
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "build/**", "cache"]
