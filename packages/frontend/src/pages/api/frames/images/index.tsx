@@ -8,6 +8,8 @@ import moment from 'moment'
 import { frameConfig, getBids } from '../utils'
 
 export const runtime = 'edge'
+export const dynamic = 'force-dynamic' // defaults to auto
+export const revalidate = 0
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const svg = encodeURIComponent(renderToStaticMarkup(<DotsIcon />))

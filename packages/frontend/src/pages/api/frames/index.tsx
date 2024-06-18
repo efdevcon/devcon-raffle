@@ -11,7 +11,7 @@ const handleRequest = frames(async (req) => {
   // Withdrawal period ended
   if (moment().isAfter(frameConfig.withdrawDate)) {
     return {
-      image: `/images`,
+      image: `/images?status=ended`,
       imageOptions: {
         headers: {
           "Cache-Control": "public, max-age=0",
@@ -31,7 +31,7 @@ const handleRequest = frames(async (req) => {
   // Bidding ended
   if (moment().isAfter(frameConfig.endDate)) {
     return {
-      image: `/images`,
+      image: `/images?status=withdrawal`,
       imageOptions: {
         headers: {
           "Cache-Control": "public, max-age=0",
@@ -49,7 +49,7 @@ const handleRequest = frames(async (req) => {
   }
 
   return {
-    image: `/images`,
+    image: `/images?status=active`,
     imageOptions: {
       headers: {
         "Cache-Control": "public, max-age=0",
