@@ -7,14 +7,15 @@ import { formatDate } from '@/utils/formatters/formatDate'
 import { useVoucherRedeemDeadline } from '@/blockchain/hooks/useVoucherRedeemDeadline'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 import { MediaQueries } from '@/styles/mediaQueries'
+import { urls } from '@/constants/urls'
 
 const gitcoinSupportUrl = 'https://support.passport.xyz/passport-knowledge-base'
+const reservePrice = 0.08
 
 export const InfoAccordion = () => {
   const { auctionWinnersCount, raffleWinnersCount } = useReadAuctionParams()
   const redeemTimestamp = useVoucherRedeemDeadline()
   const totalCount = auctionWinnersCount && raffleWinnersCount && auctionWinnersCount + raffleWinnersCount
-  const reservePrice = 0.25
   const exampleBid = 0.5
 
   return (
@@ -74,12 +75,48 @@ export const InfoAccordion = () => {
             <AccordionStyledTrigger heading="ELI5 plz?" />
           </StyledHeader>
           <StyledContent>
-            Place a bid of at least {reservePrice} ETH for a chance to win a Devcon ticket. If your bid is in the top{' '}
-            {Number(auctionWinnersCount)}, you will win a Devcon ticket in exchange for the amount you paid in your bid.
-            At any point, you can top up your bid if you want. If your bid is not in the top {auctionWinnersCount}, you
-            will be entered into a raffle and may be randomly chosen to win a Devcon ticket — if you were randomly
-            selected in the Raffle & bid more than the reserve price, you can withdraw the difference. If you do not
-            win, you can withdraw your entire bid, minus a 2% sybil-resistance fee.
+            <ol>
+              <li>
+                Connect or create a{' '}
+                <Link href={urls.gitcoin} target="_blank">
+                  Gitcoin Passport
+                </Link>
+              </li>
+              <li>
+                Determine how much you would like to bid. The reserve price is 0.08 ETH. At any point you can top-up
+                your bid.
+                <ol type="a">
+                  <li>
+                    If you bid at the reserve price (0.08 ETH), you will be automatically entered into the raffle to win
+                    one of 184 tickets.
+                  </li>
+                  <li>
+                    If you bid more than 0.08 ETH, you have the chance to win a ticket in the auction.
+                    <ol type="i">
+                      <li>
+                        If your bid is in the top 20 highest bids, you will win one of the 20 tickets allocated to the
+                        auction.
+                      </li>
+                      <li>
+                        If your bid is below the top 20 highest bids, you will be entered into the raffle. If you win
+                        the raffle, you will be able to withdraw the difference between your bid and the reserve price
+                        (0.08 ETH).
+                      </li>
+                    </ol>
+                  </li>
+                </ol>
+              </li>
+              <li>
+                If you do not win in the raffle nor the auction, you will be able to withdraw your entire bid amount.
+              </li>
+              <li>
+                Please note:{' '}
+                <Underline>
+                  We will be requiring name input at the time of ticket check-out & IDs will be cross-checked at the
+                  door, to ensure no scalping or resale of the discounted ticket takes place.
+                </Underline>
+              </li>
+            </ol>
           </StyledContent>
         </Accordion.Item>
 
@@ -281,6 +318,10 @@ const StyledContent = styled(Accordion.AccordionContent)`
 const Italic = styled.span`
   font-style: italic;
   display: contents;
+`
+
+const Underline = styled.span`
+  text-decoration: underline;
 `
 
 const Bold = styled.span`
