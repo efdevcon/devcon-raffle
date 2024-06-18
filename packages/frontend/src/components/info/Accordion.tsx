@@ -290,6 +290,7 @@ export const InfoAccordion = () => {
                   >
                     here
                   </Link>
+                  .
                 </span>
               }
             />
