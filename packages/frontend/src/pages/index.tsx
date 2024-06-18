@@ -1,6 +1,5 @@
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 import Head from 'next/head'
-import styled from 'styled-components'
 import { fetchMetadata, metadataToMetaTags } from 'frames.js/next/pages-router/client'
 import { Layout } from '@/components/layout/Layout'
 
@@ -30,9 +29,3 @@ export const getServerSideProps = async function getServerSideProps() {
 } satisfies GetServerSideProps<{
   metadata: Awaited<ReturnType<typeof fetchMetadata>>
 }>
-
-const PageContainer = styled.div`
-  display: flex;
-  flex: 1;
-  width: 100%;
-`
