@@ -1,4 +1,4 @@
-import { WagmiProvider } from 'wagmi'
+import { State, WagmiProvider } from 'wagmi'
 import { ReactNode } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { wagmiConfig } from '@/config/wagmiConfig'
@@ -7,6 +7,7 @@ import { environment } from '@/config/environment'
 
 interface ProviderProps {
   children: ReactNode
+  initialState: State | undefined
 }
 
 const queryClient = new QueryClient()
@@ -16,9 +17,9 @@ createWeb3Modal({
   wagmiConfig,
 })
 
-export const BlockchainProviders = ({ children }: ProviderProps) => {
+export const BlockchainProviders = ({ children, initialState }: ProviderProps) => {
   return (
-    <WagmiProvider config={wagmiConfig}>
+    <WagmiProvider config={wagmiConfig} initialState={initialState} reconnectOnMount>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </WagmiProvider>
   )
