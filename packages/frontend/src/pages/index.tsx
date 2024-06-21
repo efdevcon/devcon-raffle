@@ -19,12 +19,20 @@ export default function Home({ metadata }: InferGetServerSidePropsType<typeof ge
 }
 
 export const getServerSideProps = async function getServerSideProps() {
-  const baseUrl = process.env.SITE_URL ?? process.env.URL ?? 'http://localhost:3000'
+  try {
+    const baseUrl = process.env.SITE_URL ?? process.env.URL ?? 'http://localhost:3000'
 
-  return {
-    props: {
-      metadata: await fetchMetadata(new URL('/api/frames', baseUrl)),
-    },
+    return {
+      props: {
+        metadata: await fetchMetadata(new URL('/api/frames', baseUrl)),
+      },
+    }
+  } catch (error) {
+    return {
+      props: {
+        metadata: {},
+      },
+    }
   }
 } satisfies GetServerSideProps<{
   metadata: Awaited<ReturnType<typeof fetchMetadata>>

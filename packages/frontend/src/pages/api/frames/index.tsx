@@ -7,6 +7,9 @@ import { formatTimeLeft } from '@/utils/formatters/formatTimeLeft'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { formatDate } from '@/utils/formatters/formatDate'
 
+export const revalidate = 60
+export const dynamic = 'force-dynamic'
+
 const frames = createFrames({
   basePath: '/api/frames',
 })
