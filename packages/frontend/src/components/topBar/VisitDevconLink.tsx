@@ -1,6 +1,7 @@
 import { styled } from 'styled-components'
 import { LanguageIcon } from '../icons'
 import { Colors } from '@/styles/colors'
+import { MediaQueries } from '@/styles/mediaQueries'
 
 export const VisitDevconLink = () => {
   return (
@@ -16,6 +17,11 @@ const VisitLink = styled.a`
   align-items: center;
   gap: 8px;
   color: ${Colors.Black};
+
+  ${MediaQueries.medium} {
+    width: 100%;
+    padding: 8px 32px;
+  }
 `
 
 const VisitLinkText = styled.p`
