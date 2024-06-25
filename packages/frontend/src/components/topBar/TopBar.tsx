@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import { LanguageIcon, Logo } from '@/components/icons'
+import { Logo } from '@/components/icons'
 import { Colors } from '@/styles/colors'
 import { AccountButton } from '@/components/topBar/AccountButton'
 import { MediaQueries } from '@/styles/mediaQueries'
+import { VisitDevconLink } from './VisitDevconLink'
 
 export const TopBar = () => {
   return (
@@ -11,10 +12,7 @@ export const TopBar = () => {
         <Logo />
       </HomeLink>
       <ButtonWrapper>
-        <VisitLink href="https://devcon.org/en/tickets/" target="_blank">
-          <VisitLinkText>Visit Devcon Website</VisitLinkText>
-          <LanguageIcon />
-        </VisitLink>
+        <VisitDevconLink />
         <AccountButton />
       </ButtonWrapper>
     </TopBarContainer>
@@ -45,15 +43,4 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 24px;
-`
-
-const VisitLink = styled.a`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: ${Colors.Black};
-`
-
-const VisitLinkText = styled.p`
-  text-decoration: underline;
 `
