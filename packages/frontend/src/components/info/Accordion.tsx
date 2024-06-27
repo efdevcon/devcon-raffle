@@ -160,7 +160,18 @@ export const InfoAccordion = () => {
             />
             <Rule
               heading={`Auction pool: ${auctionWinnersCount} tickets`}
-              rule={`Tickets from the auction pool will be distributed to the ${auctionWinnersCount} highest bidding participants. The price paid by a winner in that pool is equal to the amount of their bid. All proceeds will go towards Public Goods.`}
+              rule={
+                <span>
+                  Tickets from the auction pool will be distributed to the ${auctionWinnersCount} highest bidding
+                  participants. The price paid by a winner in that pool is equal to the amount of their bid. All
+                  proceeds from the Auction above the reserve price will be used to help people attend Devcon through
+                  funding programs like the{' '}
+                  <Link href="https://blog.ethereum.org/2024/06/07/devcon7-scholars" target="_blank">
+                    EF Next Billion Scholars program
+                  </Link>{' '}
+                  and other Devcon initiatives.
+                </span>
+              }
               example={`You bid ${exampleBid} ETH and end up in the top ${auctionWinnersCount} of the bidders. You receive a ticket for ${exampleBid} ETH.`}
             />
             <Rule
