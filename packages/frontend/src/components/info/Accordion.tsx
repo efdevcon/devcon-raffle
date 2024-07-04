@@ -17,7 +17,7 @@ export const InfoAccordion = () => {
 
   return (
     <Wrapper>
-      <Accordion.Root type="single" defaultValue="item-1" collapsible>
+      <Accordion.Root type="single" defaultValue="item-0" collapsible>
         <Accordion.Item value="item-0">
           <StyledHeader>
             <AccordionStyledTrigger heading="TL;DR" />
