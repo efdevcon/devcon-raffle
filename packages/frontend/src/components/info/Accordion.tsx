@@ -17,7 +17,38 @@ export const InfoAccordion = () => {
 
   return (
     <Wrapper>
-      <Accordion.Root type="single" defaultValue="item-1" collapsible>
+      <Accordion.Root type="single" defaultValue="item-0" collapsible>
+        <Accordion.Item value="item-0">
+          <StyledHeader>
+            <AccordionStyledTrigger heading="TL;DR" />
+          </StyledHeader>
+          <StyledContent>
+            <span>
+              The raffle-auction is your first chance to get a Devcon ticket!
+              <br />
+              We built this together with the{' '}
+              <Link href="https://x.com/fairyrnd" target="_blank">
+                Fairy
+              </Link>{' '}
+              &amp;{' '}
+              <Link href="https://x.com/archblock_" target="_blank">
+                Archblock
+              </Link>{' '}
+              teams 🤝
+              <ol>
+                <li>Connect your Gitcoin Passport with a humanity score of {auctionWinnersCount}</li>
+                <li>
+                  Buy a raffle ticket for the price of a builder discount ({reservePrice} ETH), and potentially win 1 of{' '}
+                  {raffleWinnersCount} tickets.
+                </li>
+                <li>Top up your bid if you want to be sure to win a ticket. Top {auctionWinnersCount} bids win!</li>
+                <li>If you don&apos;t win at all, you can withdraw the whole amount you paid.</li>
+              </ol>
+              Read more details below:
+            </span>
+          </StyledContent>
+        </Accordion.Item>
+
         <Accordion.Item value="item-1">
           <StyledHeader>
             <AccordionStyledTrigger heading="What is this?" />
