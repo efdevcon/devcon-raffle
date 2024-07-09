@@ -32,7 +32,7 @@ export const VoucherForm = ({ voucher }: Props) => {
 
       <Button
         view="primary"
-        onClick={() => window.open('https://tickets.devcon.org/', '_blank')}
+        onClick={() => window.open(`https://tickets.devcon.org/redeem?voucher=${voucher}`, '_blank')}
         wide
         disabled={isVoucherExpired}
       >
