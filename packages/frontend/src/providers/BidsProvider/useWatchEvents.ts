@@ -3,9 +3,12 @@ import { AUCTION_ADDRESSES } from '@/blockchain/auctionAddresses'
 import { AUCTION_ABI } from '@/blockchain/abi/auction'
 import { useEffect } from 'react'
 import { ReduceBidsAction } from '@/providers/BidsProvider/reduceBids'
+import { useContractState } from '@/blockchain/hooks/useAuctionState'
+import { ContractState } from '@/types/ContractState'
 
 export const useWatchEvents = (dispatch: (eventsState: ReduceBidsAction) => void) => {
   const chainId = useChainId()
+  const { state } = useContractState()
 
   const { data, isLoading: areInitialBidsLoading } = useReadContract({
     chainId,
@@ -30,7 +33,7 @@ export const useWatchEvents = (dispatch: (eventsState: ReduceBidsAction) => void
     address: AUCTION_ADDRESSES[chainId],
     eventName: 'NewBid',
     onLogs: (logs) => dispatch({ type: 'NewBids', events: logs }),
-    enabled: !areInitialBidsLoading,
+    enabled: !areInitialBidsLoading && state === ContractState.BIDDING_OPEN,
   })
 
   return { isLoading: areInitialBidsLoading }
