@@ -8,9 +8,9 @@ const REDEEM_PERIOD = BigInt(moment.unix(0).add(48, 'h').unix())
 export function useVoucherRedeemDeadline() {
   const { biddingEndTime } = useReadAuctionParams()
   return useMemo(() => {
-    if (biddingEndTime) {
-      return biddingEndTime + REDEEM_PERIOD
+    if (environment.voucherRedeemDeadline) {
+      return BigInt(environment.voucherRedeemDeadline)
     }
-    return environment.voucherRedeemDeadline ? BigInt(environment.voucherRedeemDeadline) : undefined
+    return biddingEndTime ? biddingEndTime + REDEEM_PERIOD : undefined
   }, [biddingEndTime])
 }
