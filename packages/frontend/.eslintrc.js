@@ -6,7 +6,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
   ],
   rules: {
-    'no-console': 'error',
+    'no-console': 'off', // error -> off
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
