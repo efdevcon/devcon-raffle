@@ -6,6 +6,7 @@ import { formatDate } from '@/utils/formatters/formatDate'
 import { useVoucherRedeemDeadline } from '@/blockchain/hooks/useVoucherRedeemDeadline'
 import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 import { MediaQueries } from '@/styles/mediaQueries'
+import Link from 'next/link'
 
 export const VoucherTimeLeft = () => {
   const { claimingEndTime } = useReadAuctionParams()
@@ -23,6 +24,7 @@ export const VoucherTimeLeft = () => {
         <span>{isRedeemingExpired ? 'Voucher redemption expired on ' : 'Voucher redemption ends: '}</span>
         <RemainingTime>{formatDate(redeemTimestamp)}</RemainingTime>
       </TimeRow>
+      <div style={{ background: 'red', color: 'white', padding: '8px', marginTop: '8px', marginBottom: '8px' }}>We are currently experiencing issues and you are unable to claim your raffle ticket! We apologize for the inconvenience and are working on a fix. Follow our <Link href='https://x.com/EFDevcon/status/1810926754820681833'>Twitter</Link> for updates.</div>
     </VoucherTimeBox>
   )
 }
