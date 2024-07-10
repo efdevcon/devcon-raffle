@@ -1,5 +1,5 @@
 export const environment = {
-  voucherRedeemDeadline: getDateEnv(process.env.NEXT_PUBLIC_VOUCHER_REDEEM_DEADLINE),
+  voucherRedeemDeadline: process.env.NEXT_PUBLIC_VOUCHER_REDEEM_DEADLINE,
   walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? '',
   infuraKey: process.env.NEXT_PUBLIC_INFURA_KEY,
   gitcoinRequiredScore: Number(process.env.NEXT_PUBLIC_GITCOIN_REQUIRED_SCORE),
@@ -17,8 +17,4 @@ export const environment = {
     nonce: Number(process.env.RATE_LIMIT_NONCES),
   },
   nonceExpiry: Number(process.env.NONCE_EXPIRY),
-}
-
-function getDateEnv(envValue: string | undefined): number | undefined {
-  return envValue ? Math.floor(new Date(envValue).getTime() / 1000) : undefined
 }

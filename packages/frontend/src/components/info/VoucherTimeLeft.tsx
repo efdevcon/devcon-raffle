@@ -8,15 +8,19 @@ import { useReadAuctionParams } from '@/blockchain/hooks/useReadAuctionParams'
 import { MediaQueries } from '@/styles/mediaQueries'
 
 export const VoucherTimeLeft = () => {
-  const { biddingEndTime } = useReadAuctionParams()
+  const { claimingEndTime } = useReadAuctionParams()
   const redeemTimestamp = useVoucherRedeemDeadline()
-  const isPeriodExpired = redeemTimestamp ? redeemTimestamp * BigInt(1000) < Date.now() : false
+  const isRedeemingExpired = redeemTimestamp ? redeemTimestamp * BigInt(1000) < Date.now() : false
+  const isClaimingExpired = claimingEndTime ? claimingEndTime * BigInt(1000) < Date.now() : false
 
   return (
-    <VoucherTimeBox isPeriodExpired={isPeriodExpired}>
-      <TimeRow isPeriodExpired={isPeriodExpired}>
-        <span>{isPeriodExpired ? 'Voucher redeem period expired on ' : 'Voucher redeem period: '}</span>
-        {!isPeriodExpired && <RemainingTime>{formatDate(biddingEndTime)} - </RemainingTime>}
+    <VoucherTimeBox isPeriodExpired={isRedeemingExpired}>
+      <TimeRow isPeriodExpired={isClaimingExpired}>
+        <span>{isClaimingExpired ? 'Refund claiming expired on ' : 'Refund claiming ends: '}</span>
+        <RemainingTime>{formatDate(claimingEndTime)}</RemainingTime>
+      </TimeRow>
+      <TimeRow isPeriodExpired={isRedeemingExpired}>
+        <span>{isRedeemingExpired ? 'Voucher redemption expired on ' : 'Voucher redemption ends: '}</span>
         <RemainingTime>{formatDate(redeemTimestamp)}</RemainingTime>
       </TimeRow>
     </VoucherTimeBox>

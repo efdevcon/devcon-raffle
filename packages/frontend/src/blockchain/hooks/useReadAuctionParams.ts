@@ -28,6 +28,7 @@ export const useReadAuctionParams = () => {
       raffleWinnersCount: data ? Number(data[3]) : undefined,
       minimumBid: data?.[4],
       minimumBidIncrement: data?.[5],
+      claimingEndTime: data?.[6],
       isLoading,
     }),
     [data, isLoading],
@@ -41,4 +42,5 @@ const params = [
   'raffleWinnersCount',
   'reservePrice',
   'minBidIncrement',
+  'claimingEndTime',
 ] as const
