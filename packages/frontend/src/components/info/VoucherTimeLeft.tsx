@@ -16,7 +16,7 @@ export const VoucherTimeLeft = () => {
   return (
     <VoucherTimeBox isPeriodExpired={isRedeemingExpired}>
       <TimeRow isPeriodExpired={isClaimingExpired}>
-        <span>{isClaimingExpired ? 'Refund claiming expired on ': 'Refund claiming ends: '}</span>
+        <span>{isClaimingExpired ? 'Refund claiming expired on ' : 'Refund claiming ends: '}</span>
         <RemainingTime>{formatDate(claimingEndTime)}</RemainingTime>
       </TimeRow>
       <TimeRow isPeriodExpired={isRedeemingExpired}>

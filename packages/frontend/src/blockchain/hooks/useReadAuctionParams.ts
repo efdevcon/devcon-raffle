@@ -42,5 +42,5 @@ const params = [
   'raffleWinnersCount',
   'reservePrice',
   'minBidIncrement',
-  'claimingEndTime'
+  'claimingEndTime',
 ] as const
