@@ -3,11 +3,12 @@ import { TimeLeft } from './TimeLeft'
 import { VoucherTimeLeft } from './VoucherTimeLeft'
 import { Colors } from '@/styles/colors'
 import { HeaderBar } from '@/components/common/Header'
-import { AuctionState, useAuctionState } from '@/blockchain/hooks/useAuctionState'
+import { useContractState } from '@/blockchain/hooks/useAuctionState'
 import { MediaQueries } from '@/styles/mediaQueries'
+import { ContractState } from "@/types/ContractState";
 
 export const Header = () => {
-  const state = useAuctionState()
+  const { state } = useContractState()
 
   return (
     <Wrapper>
@@ -27,8 +28,8 @@ export const Header = () => {
   )
 }
 
-function isClaimingFlow(state: AuctionState | undefined) {
-  return state === 'ClaimingFlow' || state === 'ClaimingClosed'
+function isClaimingFlow(state: ContractState | undefined) {
+  return state === ContractState.RAFFLE_SETTLED || state === ContractState.CLAIMING_CLOSED
 }
 
 const Wrapper = styled.div`
