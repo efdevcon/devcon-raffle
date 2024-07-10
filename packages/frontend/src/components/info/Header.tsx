@@ -5,7 +5,7 @@ import { Colors } from '@/styles/colors'
 import { HeaderBar } from '@/components/common/Header'
 import { useContractState } from '@/blockchain/hooks/useAuctionState'
 import { MediaQueries } from '@/styles/mediaQueries'
-import { ContractState } from "@/types/ContractState";
+import { ContractState } from '@/types/ContractState'
 
 export const Header = () => {
   const { state } = useContractState()
