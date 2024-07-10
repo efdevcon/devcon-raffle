@@ -3,7 +3,8 @@ import { environment } from '@/config/environment'
 import { readFile } from 'node:fs/promises'
 
 export async function getVoucherCodes() {
-  const encryptedVoucherCodes = await readFile(process.cwd() + `/src/voucherCodes.${process.env.NODE_ENV}`, {
+  console.log('Get voucher codes for', process.env.NODE_ENV)
+  const encryptedVoucherCodes = await readFile(process.cwd() + `/src/voucherCodes.production`, {
     encoding: 'utf-8',
   })
   return decryptVoucherCodes(encryptedVoucherCodes, environment.authSecret)
@@ -18,6 +19,18 @@ export async function getVoucherCodes() {
  * @returns Array of voucher codes
  */
 export async function decryptVoucherCodes(encryptedVoucherCodes: string, secretKey: Uint8Array) {
-  const { plaintext } = await jose.compactDecrypt(encryptedVoucherCodes, secretKey.slice(0, 32))
-  return new TextDecoder().decode(plaintext).split(',')
+  console.log('Decrypting file..')
+  console.log(encryptedVoucherCodes)
+
+  try {
+    const { plaintext } = await jose.compactDecrypt(encryptedVoucherCodes, secretKey.slice(0, 32))
+    console.log('File decrypted..')
+
+    const vouchers = new TextDecoder().decode(plaintext).split(',')
+    console.log('# of vouchers:', vouchers.length)
+    return vouchers
+  } catch (e) {
+    console.error('Error decrypting voucher codes', e)
+    return []
+  }
 }

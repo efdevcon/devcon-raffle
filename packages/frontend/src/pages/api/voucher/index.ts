@@ -42,10 +42,12 @@ async function getVoucherWithJwt(req: NextApiRequest, res: NextApiResponse) {
     return
   }
 
+  console.log('Verify voucher JWT')
   const { payload } = await jose.jwtVerify(voucherCodeJwt, environment.authSecret, {
     requiredClaims: ['chainId', 'address'],
   })
 
+  console.log('Get Winner index..', payload.chainId, payload.address)
   const winnerIndex = await getWinnerIndex(payload.chainId as number, payload.address as `0x${string}`)
 
   if (winnerIndex === -1) {
@@ -64,6 +66,8 @@ async function getVoucherWithJwt(req: NextApiRequest, res: NextApiResponse) {
     } satisfies GetVoucherResponse)
     return
   }
+
+  console.log('Get Voucher for winner index', winnerIndex)
   const voucherCode = voucherCodes[winnerIndex]
   if (!voucherCode) {
     res.status(500).json({
@@ -87,8 +91,11 @@ async function getVoucherWithSig(req: NextApiRequest, res: NextApiResponse) {
   }
 
   const { chainId, userAddress, signature, nonce } = reqParseResult.data
+  console.log('Get voucher with signature', chainId, userAddress, signature, nonce)
+
   // Check & spend nonce
   if (!nonceStore.delete(nonce)) {
+    console.error(`Unknown nonce: ${nonce}`)
     res.status(403).json({
       error: `Unknown nonce: ${nonce}`,
     } satisfies GetVoucherResponse)
@@ -101,6 +108,7 @@ async function getVoucherWithSig(req: NextApiRequest, res: NextApiResponse) {
     message: buildVoucherClaimMessage(chainId, userAddress, nonce),
   })
   if (!isValid) {
+    console.error('Invalid signature')
     res.status(403).json({
       error: 'Invalid signature',
     } satisfies GetVoucherResponse)
@@ -115,8 +123,10 @@ async function getVoucherWithSig(req: NextApiRequest, res: NextApiResponse) {
     return
   }
 
+  console.log('Get Winner index..', chainId, userAddress)
   const winnerIndex = await getWinnerIndex(chainId, userAddress)
   if (winnerIndex === -1) {
+    console.error(`${chainId}:${userAddress} is not qualified for a voucher code.`)
     res.status(403).json({
       error: `${chainId}:${userAddress} is not qualified for a voucher code.`,
     } satisfies GetVoucherResponse)
@@ -128,6 +138,7 @@ async function getVoucherWithSig(req: NextApiRequest, res: NextApiResponse) {
     voucherCodes = await getVoucherCodes()
   } catch (err) {
     log.error(err)
+    console.error(`Voucher not available for winner index ${winnerIndex}`)
     res.status(500).json({
       error: `Voucher not available for winner index ${winnerIndex}`,
     } satisfies GetVoucherResponse)
@@ -135,6 +146,7 @@ async function getVoucherWithSig(req: NextApiRequest, res: NextApiResponse) {
   }
   const voucherCode = voucherCodes[winnerIndex]
   if (!voucherCode) {
+    console.error(`Voucher not available for winner index ${winnerIndex}`)
     res.status(500).json({
       error: `Voucher not available for winner index ${winnerIndex}`,
     } satisfies GetVoucherResponse)
@@ -143,6 +155,7 @@ async function getVoucherWithSig(req: NextApiRequest, res: NextApiResponse) {
 
   // All good
   // Send back JWT for future requests
+  console.log('All good. Send back JWT')
   const jwt = await new jose.SignJWT({ chainId, address: userAddress })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
