@@ -27,7 +27,7 @@ export const useAuctionWinners = () => {
     ],
     allowFailure: false,
     query: {
-      enabled: !!isStateLoading && state === ContractState.RAFFLE_SETTLED,
+      enabled: !isStateLoading && state === ContractState.RAFFLE_SETTLED,
     },
   })
 
@@ -83,7 +83,6 @@ const useAuctionWinnersInClosedState = () => {
           break
       }
     })
-    console.log('goldenWinner: ', goldenWinner)
     return {
       auctionWinners,
       raffleWinners,
