@@ -22,10 +22,10 @@ interface SettledBidsListProps {
 export const SettledBidsList = ({ search }: SettledBidsListProps) => {
   const { bidList } = useBids()
   const matchesSearch = bidMatchesSearch(search)
-  const { auctionWinners, raffleWinners } = useAuctionWinners()
+  const { auctionWinners, raffleWinners, goldenWinner } = useAuctionWinners()
 
   const settledBids = useMemo(
-    () => divideBids(bidList, auctionWinners, raffleWinners),
+    () => divideBids(bidList, auctionWinners, raffleWinners, goldenWinner),
     [bidList, auctionWinners, raffleWinners],
   )
 
@@ -52,6 +52,7 @@ function divideBids(
   bids: Bid[],
   auctionWinners: readonly bigint[] | undefined,
   raffleWinners: readonly bigint[] | undefined,
+  goldenWinner: bigint | undefined
 ): Bids {
   const settledBids: Bids = {
     auction: [],
@@ -69,7 +70,7 @@ function divideBids(
       settledBids.auction.push(bid)
       return
     }
-    if (bidderID === raffleWinners[0]) {
+    if (bidderID === goldenWinner) {
       settledBids.goldenTicket = bid
       return
     }
