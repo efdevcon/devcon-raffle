@@ -1,11 +1,11 @@
 import { useChainId, useReadContracts } from 'wagmi'
 import { AUCTION_ABI } from '@/blockchain/abi/auction'
 import { AUCTION_ADDRESSES } from '@/blockchain/auctionAddresses'
-import { useContractState } from "@/blockchain/hooks/useAuctionState";
-import { ContractState } from "@/types/ContractState";
-import { useBids } from "@/providers/BidsProvider";
-import { WinType } from "@/types/winType";
-import { useMemo } from "react";
+import { useContractState } from '@/blockchain/hooks/useAuctionState'
+import { ContractState } from '@/types/ContractState'
+import { useBids } from '@/providers/BidsProvider'
+import { WinType } from '@/types/winType'
+import { useMemo } from 'react'
 
 export const useAuctionWinners = () => {
   const chainId = useChainId()
@@ -27,17 +27,19 @@ export const useAuctionWinners = () => {
     ],
     allowFailure: false,
     query: {
-      enabled: !!isStateLoading && state === ContractState.RAFFLE_SETTLED
-    }
+      enabled: !!isStateLoading && state === ContractState.RAFFLE_SETTLED,
+    },
   })
 
   const closedState = useAuctionWinnersInClosedState()
-  return state === ContractState.CLAIMING_CLOSED ? closedState : {
-    auctionWinners: data?.[0],
-    raffleWinners: data?.[1],
-    goldenWinner: data?.[1]?.[0],
-    isLoading: isLoading,
-  }
+  return state === ContractState.CLAIMING_CLOSED
+    ? closedState
+    : {
+        auctionWinners: data?.[0],
+        raffleWinners: data?.[1],
+        goldenWinner: data?.[1]?.[0],
+        isLoading: isLoading,
+      }
 }
 
 const useAuctionWinnersInClosedState = () => {
@@ -45,20 +47,23 @@ const useAuctionWinnersInClosedState = () => {
   const { bidList } = useBids()
   const { state, isLoading: isStateLoading } = useContractState()
 
-  const bidWinTypeContracts = bidList.map(bid => ({
-    chainId,
-    abi: AUCTION_ABI,
-    address: AUCTION_ADDRESSES[chainId],
-    functionName: 'getBidWinType',
-    args: [bid.bidderId]
-  } as const))
+  const bidWinTypeContracts = bidList.map(
+    (bid) =>
+      ({
+        chainId,
+        abi: AUCTION_ABI,
+        address: AUCTION_ADDRESSES[chainId],
+        functionName: 'getBidWinType',
+        args: [bid.bidderId],
+      } as const),
+  )
 
   const { data, isLoading } = useReadContracts({
     contracts: bidWinTypeContracts,
     allowFailure: false,
     query: {
-      enabled: !isStateLoading && state === ContractState.CLAIMING_CLOSED
-    }
+      enabled: !isStateLoading && state === ContractState.CLAIMING_CLOSED,
+    },
   })
 
   return useMemo(() => {
@@ -87,5 +92,3 @@ const useAuctionWinnersInClosedState = () => {
     }
   }, [bidList, data, isLoading, isStateLoading])
 }
-
-

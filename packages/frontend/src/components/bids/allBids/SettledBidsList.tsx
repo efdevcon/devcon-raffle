@@ -26,7 +26,7 @@ export const SettledBidsList = ({ search }: SettledBidsListProps) => {
 
   const settledBids = useMemo(
     () => divideBids(bidList, auctionWinners, raffleWinners, goldenWinner),
-    [bidList, auctionWinners, raffleWinners],
+    [bidList, auctionWinners, raffleWinners, goldenWinner],
   )
 
   const filteredBids = useMemo(() => filterBids(settledBids, matchesSearch), [settledBids, matchesSearch])
@@ -52,7 +52,7 @@ function divideBids(
   bids: Bid[],
   auctionWinners: readonly bigint[] | undefined,
   raffleWinners: readonly bigint[] | undefined,
-  goldenWinner: bigint | undefined
+  goldenWinner: bigint | undefined,
 ): Bids {
   const settledBids: Bids = {
     auction: [],
